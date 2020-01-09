@@ -1,0 +1,9 @@
+.header_sider-trigger {
+  padding-left: 20px;
+  transform: scale(1.4);
+  transition: all 0.1s linear;
+  &:hover {
+    color: blue;
+    cursor: pointer;
+  }
+}

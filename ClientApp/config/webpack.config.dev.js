@@ -1,0 +1,32 @@
+const { ScriptDist } = require('./config.js');
+
+module.exports = {
+  output: {
+    filename: ScriptDist('[name].js'),
+  },
+  devtool: 'nosources-source-map',
+  optimization: {
+    noEmitOnErrors: true,
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          reuseExistingChunk: true,
+        },
+        commons: {
+          chunks: 'initial',
+          name: 'common',
+          minChunks: 1,
+          maxInitialRequests: 5,
+          minSize: 0,
+        },
+      },
+    },
+    runtimeChunk: {
+      name: entry => `r~${entry.name}`,
+    },
+  },
+  plugins: [],
+};
