@@ -18,14 +18,14 @@ type UserDropdownMenuItem =
 
 type UserDropdownMenuDispatch = Disp<ApplicationState, undefined, LogAction>;
 
-interface UserDropdownMenuReceivededProps {
+interface UserDropdownMenuReceivedProps {
   username: string | None;
 }
 interface UserDropdownMenuOwnedProps {
   login: (user: UserAuthentication) => void;
   logout: () => void;
 }
-type UserDropdownMenuProps = UserDropdownMenuReceivededProps &
+type UserDropdownMenuProps = UserDropdownMenuReceivedProps &
   UserDropdownMenuOwnedProps;
 
 const UserDropdownMenuComponent = (props: UserDropdownMenuProps) => {

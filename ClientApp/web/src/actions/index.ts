@@ -9,4 +9,4 @@ export {
   LogAction,
   login,
   logout
-} from "./log";
+} from './log';

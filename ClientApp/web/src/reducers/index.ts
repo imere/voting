@@ -1,4 +1,4 @@
-import { log, LogState } from './log'
+import { log, LogState } from './log';
 
 export type ApplicationState = {
   log: LogState

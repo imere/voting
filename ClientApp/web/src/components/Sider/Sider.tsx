@@ -1,6 +1,7 @@
-import PropTypes from 'prop-types'
-import React from 'react'
-import { Icon, Layout, Menu } from 'antd'
+import './Sider.scss';
+
+import React from 'react';
+import { Icon, Layout, Menu } from 'antd';
 
 interface SiderProps {
   collapsed: boolean;
@@ -12,7 +13,7 @@ const { SubMenu } = Menu;
 export const SiderComponent = (props: SiderProps) => (
   <Sider trigger={null} collapsible collapsed={props.collapsed}>
     <div className="logo" />
-    <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
       <Menu.Item key="1">
         <Icon type="pie-chart" />
         <span>Option 1</span>
@@ -53,7 +54,3 @@ export const SiderComponent = (props: SiderProps) => (
     </Menu>
   </Sider>
 );
-
-SiderComponent.propTypes = {
-  collapsed: PropTypes.bool
-};

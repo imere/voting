@@ -1,4 +1,4 @@
-import { Http } from './request'
+import { Http } from './request';
 
 const { get: Get, post: Post, put: Put, del: Delete } = Http
 

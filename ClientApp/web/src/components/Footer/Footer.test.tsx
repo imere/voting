@@ -1,10 +1,12 @@
-import React from "react";
-import "@testing-library/jest-dom/extend-expect";
-import { render } from "@testing-library/react";
-import { FooterComponent } from "./Footer";
 
-test("renders copyright", () => {
+import React from 'react';
+import { render } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+
+import { FooterComponent } from './Footer';
+
+test('renders copyright', () => {
   const { getByText } = render(React.createElement(FooterComponent));
-  const ele = getByText("Voting System ©2020 Created by ime");
+  const ele = getByText('Voting System ©2020 Created by ime');
   expect(ele).toBeInTheDocument();
 });
