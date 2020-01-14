@@ -54,11 +54,11 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="CopyFileToOutput" DependsOnTargets="PublishRunWebpack">
+  <Target Name="CopyFileToOutput" AfterTargets="ComputeFilesToPublish" DependsOnTargets="PublishRunWebpack">
     <ItemGroup>
       <_CopyItems Include="$(SpaRoot)dist\**\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(_CopyItems)" DestinationFiles="@(_CopyItems->'obj\Release\net461\ClientApp\dist\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(_CopyItems)" DestinationFiles="@(_CopyItems->'bin\Release\net461\ClientApp\dist\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
 </Project>
