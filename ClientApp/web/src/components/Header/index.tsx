@@ -3,18 +3,18 @@ import './Header.scss';
 import React from 'react';
 import { Icon, Layout } from 'antd';
 
-import { HeaderRight } from '../HeaderRight/HeaderRight';
+import HeaderNav from '../HeaderNav';
 
 const { Header } = Layout;
 
-interface HeaderProps {
+interface HeaderReceivedProps {
   collapsed: boolean;
   toggleTrigger: React.MouseEventHandler;
 }
 
 interface HeaderState {}
 
-export class HeaderComponent extends React.Component<HeaderProps, HeaderState> {
+class HeaderComponent extends React.Component<HeaderReceivedProps, HeaderState> {
   render = () => (
     <Header style={{ background: '#fff', padding: 0 }}>
       <Icon
@@ -22,7 +22,9 @@ export class HeaderComponent extends React.Component<HeaderProps, HeaderState> {
         type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'}
         onClick={this.props.toggleTrigger}
       />
-      <HeaderRight />
+      <HeaderNav />
     </Header>
   );
 }
+
+export default HeaderComponent;

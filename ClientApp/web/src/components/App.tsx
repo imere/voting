@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Layout } from 'antd';
 
-import { SiderComponent } from './Sider/Sider';
-import { ContentComponent } from './Content/Content';
-import { HeaderComponent } from './Header/Header';
-import { FooterComponent } from './Footer/Footer';
+import ContentComponent from './Content';
+import FooterComponent from './Footer';
+import HeaderComponent from './Header';
+import SiderComponent from './Sider';
 
 export default () => {
   const [collapsed, toggleTrigger] = useState(false);

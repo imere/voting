@@ -28,7 +28,7 @@ export interface RequestLogoutCompleteAction extends Action<ActionLogoutComplete
 
 export type LogAction = RequestLoginAction | RequestLoginCompleteAction | RequestLogoutAction | RequestLogoutCompleteAction
 
-export const login = (user: UserAuthentication): AppThunkAction<LogAction> => (dispatch, getState) => {
+export const login = (user: UserAuthentication): AppThunkAction<LogAction> => (dispatch) => {
   const requestLogin = (): RequestLoginAction => ({
     type: LoginActions.LOGIN,
   })
@@ -42,8 +42,8 @@ export const login = (user: UserAuthentication): AppThunkAction<LogAction> => (d
 
   dispatch(requestLogin())
   return Http.post(`https://www.reddit.com/r/.json`)
-    .then(data => dispatch(requestLoginSuc(user.username)))
-    .catch(data => dispatch(requestLoginErr()))
+    .then(_ => dispatch(requestLoginSuc(user.username)))
+    .catch(_ => dispatch(requestLoginErr()))
 }
 
 export const logout = (): AppThunkAction<LogAction> => (dispatch) => {
@@ -57,6 +57,6 @@ export const logout = (): AppThunkAction<LogAction> => (dispatch) => {
 
   dispatch(requestLogout())
   return Http.post(`https://www.reddit.com/r/json`)
-    .then(json => dispatch(requestLogoutComplete()))
-    .catch(ex => dispatch(requestLogoutComplete()))
+    .then(_ => dispatch(requestLogoutComplete()))
+    .catch(_ => dispatch(requestLogoutComplete()))
 }

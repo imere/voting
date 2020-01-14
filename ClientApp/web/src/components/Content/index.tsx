@@ -3,7 +3,7 @@ import { Breadcrumb, Layout } from 'antd';
 
 const { Content } = Layout;
 
-export const ContentComponent = (props: { children?: React.ReactNode }) => (
+const ContentComponent: React.FC = (props) => (
   <Content style={{ margin: '0 16px' }}>
     <Breadcrumb style={{ margin: '16px 0' }}>
       <Breadcrumb.Item>User</Breadcrumb.Item>
@@ -12,3 +12,5 @@ export const ContentComponent = (props: { children?: React.ReactNode }) => (
     {props.children}
   </Content>
 );
+
+export default ContentComponent;

@@ -1,4 +1,3 @@
-import '@babel/polyfill';
 import 'antd/dist/antd.css';
 import './index.scss';
 
@@ -6,14 +5,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { ConnectedRouter } from 'connected-react-router';
-import { Action, Dispatch } from 'redux';
 
 import * as serviceWorker from './serviceWorker';
 import App from './components/App';
 import { configureStore } from './store';
-import { initialState } from './actions/initialState';
+import { initialState } from './reducers/initialState';
 
 const baseUrl = document
   .getElementsByTagName('base')[0]
@@ -21,8 +18,6 @@ const baseUrl = document
 const history = createBrowserHistory({ basename: baseUrl });
 
 const store = configureStore(history, initialState);
-
-export type Disp<S, E, A extends Action> = Dispatch<A> & ThunkDispatch<S, E, A>;
 
 ReactDOM.render(
   <Provider store={store}>

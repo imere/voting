@@ -4,7 +4,9 @@ module.exports = {
   output: {
     filename: ScriptDist('[name].js'),
   },
-  devtool: 'nosources-source-map',
+  devServer: {
+    disableHostCheck: true,
+  },
   optimization: {
     noEmitOnErrors: true,
     splitChunks: {
@@ -28,5 +30,7 @@ module.exports = {
       name: entry => `r~${entry.name}`,
     },
   },
-  plugins: [],
+  performance: {
+    hints: 'warning',
+  },
 };

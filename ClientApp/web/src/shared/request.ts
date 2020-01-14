@@ -1,14 +1,14 @@
 export class Http {
   static get(url: string): Promise<any> {
-    return Promise.resolve(1);
+    return Promise.resolve(url);
   }
   static post(url: string): Promise<any> {
-    return Promise.resolve(2);
+    return Promise.resolve(url);
   }
   static put(url: string): Promise<any> {
-    return Promise.resolve(3);
+    return Promise.resolve(url);
   }
   static del(url: string): Promise<any> {
-    return Promise.resolve(4);
+    return Promise.resolve(url);
   }
 }

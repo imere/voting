@@ -3,14 +3,14 @@ import './Sider.scss';
 import React from 'react';
 import { Icon, Layout, Menu } from 'antd';
 
-interface SiderProps {
+interface SiderReceivedProps {
   collapsed: boolean;
 }
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-export const SiderComponent = (props: SiderProps) => (
+const SiderComponent: React.FC<SiderReceivedProps> = (props) => (
   <Sider trigger={null} collapsible collapsed={props.collapsed}>
     <div className="logo" />
     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
@@ -54,3 +54,5 @@ export const SiderComponent = (props: SiderProps) => (
     </Menu>
   </Sider>
 );
+
+export default SiderComponent;

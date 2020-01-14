@@ -12,6 +12,7 @@ module.exports = {
   ScriptDist: sub => {
     return path.join('web', 'assets', 'scripts', sub);
   },
+  CacheDir: () => require('path').resolve(__dirname, '../node_modules/.cache/cache-loader'),
   Externals: env => [
     {
       'react': 'React',

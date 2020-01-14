@@ -4,15 +4,15 @@ import React from 'react';
 import { Avatar, Dropdown, Icon } from 'antd';
 import { connect } from 'react-redux';
 
+import UserDropdownMenu from '../UserDropdownMenu';
 import { ApplicationState } from '../../reducers';
-import { UserDropdownMenu } from '../UserDropdownMenu/UserDropdownMenu';
-import { LogState } from '../../reducers';
+import { LogState } from '../../reducers/log';
 
-interface UserDropdownProps {
+interface UserDropdownOwnProps {
   log: LogState;
 }
 
-export const UserDropdownComponent = (props: UserDropdownProps) => {
+const UserDropdownComponent = (props: UserDropdownOwnProps) => {
   return (
     <div className="user-dropdown">
       <Dropdown
@@ -30,10 +30,10 @@ export const UserDropdownComponent = (props: UserDropdownProps) => {
   );
 };
 
-const mapStateToProps = (state: ApplicationState): UserDropdownProps => {
+const mapStateToProps = (state: ApplicationState): UserDropdownOwnProps => {
   return {
     log: state.log,
   };
 };
 
-export const UserDropdown = connect(mapStateToProps)(UserDropdownComponent);
+export default connect(mapStateToProps)(UserDropdownComponent);

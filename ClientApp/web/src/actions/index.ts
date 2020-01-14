@@ -1,12 +1,4 @@
 export {
-  UserAuthentication,
-  RequestLoginAction,
-  RequestLoginSucAction,
-  RequestLoginErrAction,
-  RequestLoginCompleteAction,
-  RequestLogoutAction,
-  RequestLogoutCompleteAction,
-  LogAction,
   login,
-  logout
+  logout,
 } from './log';

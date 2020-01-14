@@ -4,9 +4,22 @@ import { ClickParam } from 'antd/lib/menu';
 import { connect } from 'react-redux';
 
 import { None } from '../../types';
-import { Disp } from '../../';
+import { Disp } from '../../types';
 import { ApplicationState } from '../../reducers';
-import { LogAction, login, logout, UserAuthentication } from '../../actions';
+import { login, logout } from '../../actions';
+import { LogAction, UserAuthentication } from '../../actions/log';
+
+type UserDropdownMenuDispatch = Disp<ApplicationState, undefined, LogAction>;
+
+interface UserDropdownMenuReceivedProps {
+  username: string | None;
+}
+interface UserDropdownMenuOwnProps {
+  login: (user: UserAuthentication) => void;
+  logout: () => void;
+}
+type UserDropdownMenuProps = UserDropdownMenuOwnProps &
+  UserDropdownMenuReceivedProps;
 
 type UserDropdownMenuItem =
   | {
@@ -15,18 +28,6 @@ type UserDropdownMenuItem =
       onClick?: (param: ClickParam) => void;
     }
   | undefined;
-
-type UserDropdownMenuDispatch = Disp<ApplicationState, undefined, LogAction>;
-
-interface UserDropdownMenuReceivedProps {
-  username: string | None;
-}
-interface UserDropdownMenuOwnedProps {
-  login: (user: UserAuthentication) => void;
-  logout: () => void;
-}
-type UserDropdownMenuProps = UserDropdownMenuReceivedProps &
-  UserDropdownMenuOwnedProps;
 
 const UserDropdownMenuComponent = (props: UserDropdownMenuProps) => {
   const normalItems: UserDropdownMenuItem[] = [
@@ -67,14 +68,11 @@ const UserDropdownMenuComponent = (props: UserDropdownMenuProps) => {
 
 const mapDispatchToState = (
   dispatch: UserDropdownMenuDispatch
-): UserDropdownMenuOwnedProps => {
+): UserDropdownMenuOwnProps => {
   return {
     login: (user: UserAuthentication) => dispatch(login(user)),
     logout: () => dispatch(logout()),
   };
 };
 
-export const UserDropdownMenu = connect(
-  null,
-  mapDispatchToState
-)(UserDropdownMenuComponent);
+export default connect(null, mapDispatchToState)(UserDropdownMenuComponent);

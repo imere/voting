@@ -7,9 +7,6 @@ module.exports = {
   output: {
     filename: ScriptDist('[name].[hash:5].js'),
   },
-  devServer: {
-    disableHostCheck: true,
-  },
   optimization: {
     noEmitOnErrors: true,
     splitChunks: {
@@ -21,18 +18,23 @@ module.exports = {
           reuseExistingChunk: true,
         },
         babel: {
-          test: /[\\/]node_modules[\\/](.*babel.*)[\\/]/,
+          test: /[\\/]node_modules[\\/](.*(babel|core|runtime).*)[\\/]/,
           name: 'polyfill',
+          reuseExistingChunk: true,
+        },
+        router: {
+          test: /[\\/]node_modules[\\/](.*router.*)[\\/]/,
+          name: 'cu',
+          reuseExistingChunk: true,
+        },
+        state: {
+          test: /[\\/]node_modules[\\/](.*redux.*)[\\/]/,
+          name: 'cs',
           reuseExistingChunk: true,
         },
         loader: {
           test: /[\\/]node_modules[\\/](.*loader.*)[\\/]/,
           name: 'cl',
-          reuseExistingChunk: true,
-        },
-        vue: {
-          test: /[\\/]node_modules[\\/](vue.*)[\\/]/,
-          name: 'cv',
           reuseExistingChunk: true,
         },
         http: {
@@ -43,11 +45,6 @@ module.exports = {
         aui: {
           test: /[\\/]node_modules[\\/](.*antd.*)[\\/]/,
           name: 'cd',
-          reuseExistingChunk: true,
-        },
-        eui: {
-          test: /[\\/]node_modules[\\/](element.*)[\\/]/,
-          name: 'ce',
           reuseExistingChunk: true,
         },
       },
@@ -65,27 +62,25 @@ module.exports = {
         },
         extractComments: false,
       }),
+      new OptimizeCSSAssetsWebpackPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessor: require('cssnano'),
+        cssProcessorPluginOptions: {
+          preset: [
+            'default',
+            {
+              discardComments: {
+                removeAll: true,
+              },
+            },
+          ],
+        },
+        canPrint: true,
+      }),
     ],
   },
   performance: {
-    hints: false,
+    hints: 'warning',
   },
-  plugins: [
-    new OptimizeCSSAssetsWebpackPlugin({
-      assetNameRegExp: /\.css$/g,
-      cssProcessor: require('cssnano'),
-      cssProcessorPluginOptions: {
-        preset: [
-          'default',
-          {
-            discardComments: {
-              removeAll: true,
-            },
-          },
-        ],
-      },
-      canPrint: true,
-    }),
-  ],
   externals: Externals(),
 };
