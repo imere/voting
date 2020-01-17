@@ -1,13 +1,12 @@
-import React from 'react';
-import { Menu } from 'antd';
-import { ClickParam } from 'antd/lib/menu';
-import { connect } from 'react-redux';
+import React from "react";
+import { Menu } from "antd";
+import { ClickParam } from "antd/lib/menu";
+import { connect } from "react-redux";
+import { ApplicationState } from "@reducers/index";
+import { login, logout } from "@actions/index";
+import { LogAction, UserAuthentication } from "@actions/log";
 
-import { None } from '../../types';
-import { Disp } from '../../types';
-import { ApplicationState } from '../../reducers';
-import { login, logout } from '../../actions';
-import { LogAction, UserAuthentication } from '../../actions/log';
+import { Disp, None } from "@/types";
 
 type UserDropdownMenuDispatch = Disp<ApplicationState, undefined, LogAction>;
 
@@ -32,20 +31,20 @@ type UserDropdownMenuItem =
 const UserDropdownMenuComponent = (props: UserDropdownMenuProps) => {
   const normalItems: UserDropdownMenuItem[] = [
     {
-      content: '登录',
-      onClick: () => props.login({ username: 'asdlkj', password: '' }),
+      content: "登录",
+      onClick: () => props.login({ username: "asdlkj", password: "" }),
     },
   ];
   const loggedItems: UserDropdownMenuItem[] = [
     {
-      content: '用户中心',
+      content: "用户中心",
     },
     {
-      content: '用户设置',
+      content: "用户设置",
     },
     undefined,
     {
-      content: '退出登录',
+      content: "退出登录",
       onClick: () => props.logout(),
     },
   ];

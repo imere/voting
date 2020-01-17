@@ -1,14 +1,14 @@
-import './HeaderNav.scss';
+import "./HeaderNav.scss";
 
-import React from 'react';
-import { connect } from 'react-redux';
+import UserDropdown from "@components/UserDropdown";
+import React from "react";
+import { connect } from "react-redux";
+import { login } from "@actions/index";
+import { LogAction } from "@actions/log";
+import { ApplicationState } from "@reducers/index";
+import { UserAuthentication } from "@actions/log";
 
-import UserDropdown from '../UserDropdown';
-import { UserAuthentication } from '../../actions/log';
-import { login } from '../../actions';
-import { LogAction } from '../../actions/log';
-import { Disp } from '../../types';
-import { ApplicationState } from '../../reducers';
+import { Disp } from "@/types";
 
 type HeaderNavDispatch = Disp<ApplicationState, undefined, LogAction>;
 
@@ -23,7 +23,7 @@ class HeaderNavComponent extends React.Component<
   HeaderNavState
 > {
   render = () => {
-    this.props.login({ username: 'usernames', password: '' });
+    this.props.login({ username: "usernames", password: "" });
     return (
       <div className="header-nav">
         <UserDropdown />

@@ -1,15 +1,15 @@
-import { Action } from 'redux';
-
-import { AppThunkAction } from '../types';
-import { LoginActions } from '../constants';
-import { Http } from '../shared';
+import { Action } from "redux";
+import { LoginActions } from "@constants/index";
 import {
   ActionLogin,
   ActionLoginErr,
   ActionLoginSuc,
   ActionLogout,
   ActionLogoutComplete,
-} from '../constants/UserActions';
+} from "@constants/UserActions";
+
+import { AppThunkAction } from "@/types";
+import { Http } from "@/shared";
 
 export interface UserAuthentication {
   username: string

@@ -1,7 +1,7 @@
-import './Sider.scss';
+import "./Sider.scss";
 
-import React from 'react';
-import { Icon, Layout, Menu } from 'antd';
+import React from "react";
+import { Icon, Layout, Menu } from "antd";
 
 interface SiderReceivedProps {
   collapsed: boolean;
@@ -13,7 +13,7 @@ const { SubMenu } = Menu;
 const SiderComponent: React.FC<SiderReceivedProps> = (props) => (
   <Sider trigger={null} collapsible collapsed={props.collapsed}>
     <div className="logo" />
-    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+    <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
       <Menu.Item key="1">
         <Icon type="pie-chart" />
         <span>Option 1</span>

@@ -9,6 +9,8 @@ module.exports = {
   },
   optimization: {
     noEmitOnErrors: true,
+    removeAvailableModules: false,
+    removeEmptyChunks: false,
     splitChunks: {
       chunks: 'all',
       cacheGroups: {

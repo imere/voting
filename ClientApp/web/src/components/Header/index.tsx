@@ -1,9 +1,8 @@
-import './Header.scss';
+import "./Header.scss";
 
-import React from 'react';
-import { Icon, Layout } from 'antd';
-
-import HeaderNav from '../HeaderNav';
+import HeaderNav from "@components/HeaderNav";
+import React from "react";
+import { Icon, Layout } from "antd";
 
 const { Header } = Layout;
 
@@ -14,12 +13,15 @@ interface HeaderReceivedProps {
 
 interface HeaderState {}
 
-class HeaderComponent extends React.Component<HeaderReceivedProps, HeaderState> {
+class HeaderComponent extends React.Component<
+  HeaderReceivedProps,
+  HeaderState
+> {
   render = () => (
-    <Header style={{ background: '#fff', padding: 0 }}>
+    <Header style={{ background: "#fff", padding: 0 }}>
       <Icon
         className="header_sider-trigger"
-        type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'}
+        type={this.props.collapsed ? "menu-unfold" : "menu-fold"}
         onClick={this.props.toggleTrigger}
       />
       <HeaderNav />

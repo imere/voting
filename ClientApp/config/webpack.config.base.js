@@ -1,15 +1,17 @@
+const fs = require('fs');
 const webpack = require('webpack');
-const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 // const BuildNotifier = require('webpack-build-notifier');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCSSExtractWebpackPlugin = require('mini-css-extract-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const HtmlPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const ForkTsCheckerPlugin = require('fork-ts-checker-webpack-plugin');
+// const HardSourcePlugin = require('hard-source-webpack-plugin');
 
-const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const WebpackMerge = require('webpack-merge');
 
 const {
@@ -36,6 +38,12 @@ const args = require('yargs-parser')(process.argv.slice(2));
 const currentEnv = (ENVS.includes(args.mode)) ? args.mode : 'development';
 const isProd = currentEnv === 'production';
 require('node-bash-title')(currentEnv);
+
+if (isProd) {
+  ['./dist'].forEach(name => {
+    if (fs.existsSync(name)) fs.rmdirSync(name, { recursive: true });
+  });
+}
 
 const baseConfig = {
   entry: {
@@ -73,26 +81,30 @@ const baseConfig = {
   resolve: {
     symlinks: false,
     extensions: ['.ts', '.tsx', '.js', '.jsx',],
+    plugins: [
+      // @ts-ignore
+      new TsconfigPathsPlugin({
+        configFile: 'tsconfig.json'
+      }),
+    ]
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin({
+    new ForkTsCheckerPlugin({
       checkSyntacticErrors: true,
       memoryLimit: 256,
       workers: 1,
       silent: false,
     }),
-    new ProgressBarWebpackPlugin(),
+    // @ts-ignore
+    new ProgressBarPlugin(),
     // new BuildNotifier({
     //   title: currentEnv.toUpperCase(),
     //   showDuration: true,
     //   excludeWarnings: true,
     //   suppressSuccess: true,
     // }),
-    new CleanWebpackPlugin({
-      // cleanStaleWebpackAssets: false, // resolve conflict with `CopyWebpackPlugin`
-    }),
     new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.tsx?$/]),
-    // new HardSourceWebpackPlugin({
+    // new HardSourcePlugin({
     //   // Either an absolute path or relative to webpack's options.context.
     //   cacheDirectory: './node_modules/.cache/hard-source/[confighash]',
     //   // Either a string of object hash function given a webpack config.
@@ -124,7 +136,7 @@ const baseConfig = {
     //     sizeThreshold: 50 * 1024 * 1024
     //   },
     // }),
-    new HtmlWebpackPlugin({
+    new HtmlPlugin({
       filename: 'index.html',
       template: './web/public/index.html',
       inject: true,
@@ -137,11 +149,11 @@ const baseConfig = {
       },
       chunksSortMode: 'dependency',
     }),
-    new CopyWebpackPlugin([
+    new CopyPlugin([
       { from: './web/public/robots.txt', to: '.' },
       { from: './web/public/*.png', to: '.', flatten: true },
     ]),
-    new MiniCSSExtractWebpackPlugin({
+    new MiniCSSExtractPlugin({
       filename: isProd
         ? CssDist('[name].[contenthash:5].css')
         : CssDist('[name].css'),
@@ -149,6 +161,12 @@ const baseConfig = {
         ? CssDist('[name].[contenthash:5].css')
         : CssDist('[name].css'),
       ignoreOrder: false,
+    }),
+    new WorkboxPlugin.GenerateSW({
+      // these options encourage the ServiceWorkers to get in there fast
+      // and not allow any straggling "old" SWs to hang around
+      clientsClaim: true,
+      skipWaiting: true,
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
@@ -166,6 +184,7 @@ const baseConfig = {
   },
 };
 
-module.exports = new SpeedMeasureWebpackPlugin().wrap(
+module.exports = new SpeedMeasurePlugin().wrap(
+  // @ts-ignore
   WebpackMerge(baseConfig, require(`./webpack.config.${isProd ? 'prod' : 'dev'}.js`))
 );

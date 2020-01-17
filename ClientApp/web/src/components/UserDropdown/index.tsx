@@ -1,12 +1,11 @@
-import './UserDropdown.scss';
+import "./UserDropdown.scss";
 
-import React from 'react';
-import { Avatar, Dropdown, Icon } from 'antd';
-import { connect } from 'react-redux';
-
-import UserDropdownMenu from '../UserDropdownMenu';
-import { ApplicationState } from '../../reducers';
-import { LogState } from '../../reducers/log';
+import UserDropdownMenu from "@components/UserDropdownMenu";
+import React from "react";
+import { Avatar, Dropdown, Icon } from "antd";
+import { connect } from "react-redux";
+import { ApplicationState } from "@reducers/index";
+import { LogState } from "@reducers/log";
 
 interface UserDropdownOwnProps {
   log: LogState;

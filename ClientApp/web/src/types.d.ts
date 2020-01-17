@@ -1,7 +1,7 @@
-import { Action } from 'redux';
-import { ThunkDispatch } from 'redux-thunk';
+import { Action } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 
-import { ApplicationState } from './reducers';
+import { ApplicationState } from "./reducers";
 
 export interface AppThunkAction<TAction> {
   (dispatch: (action: TAction) => void, getState: () => ApplicationState): void;

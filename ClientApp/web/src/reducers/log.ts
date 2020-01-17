@@ -1,7 +1,6 @@
-import { Reducer } from 'redux';
-
-import { LoginActions } from '../constants';
-import { LogAction } from '../actions/log';
+import { Reducer } from "redux";
+import { LoginActions } from "@constants/index";
+import { LogAction } from "@actions/log";
 
 export interface LogState {
   pending?: boolean
