@@ -13,6 +13,7 @@ const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin');
 const WebpackMerge = require('webpack-merge');
 
 const {
+  OUTPUT_PATH,
   PUBLIC_PATH,
   FALLBACK_PORT,
   CssDist
@@ -21,9 +22,10 @@ const {
 const {
   PugLoader,
   CssLoader,
+  LessLoader,
   ScssLoader,
   SassLoader,
-  TsxLoader,
+  BabelLoader,
   ImageLoader,
   MediaLoader,
   FontLoader,
@@ -41,8 +43,7 @@ const baseConfig = {
   },
   output: {
     publicPath: PUBLIC_PATH,
-    hotUpdateChunkFilename: '[id].[hash].hot-update.js',
-    pathinfo: false,
+    path: OUTPUT_PATH,
   },
   devServer: {
     port: process.env.PORT || FALLBACK_PORT,
@@ -60,9 +61,10 @@ const baseConfig = {
     rules: [
       PugLoader(currentEnv),
       CssLoader(currentEnv),
+      LessLoader(currentEnv),
       ScssLoader(currentEnv),
       SassLoader(currentEnv),
-      TsxLoader(currentEnv),
+      BabelLoader(currentEnv),
       ImageLoader(currentEnv),
       MediaLoader(currentEnv),
       FontLoader(currentEnv),
@@ -75,7 +77,7 @@ const baseConfig = {
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       checkSyntacticErrors: true,
-      memoryLimit: 512,
+      memoryLimit: 256,
       workers: 1,
       silent: false,
     }),
@@ -87,7 +89,7 @@ const baseConfig = {
     //   suppressSuccess: true,
     // }),
     new CleanWebpackPlugin({
-      cleanStaleWebpackAssets: false, // resolve conflict with `CopyWebpackPlugin`
+      // cleanStaleWebpackAssets: false, // resolve conflict with `CopyWebpackPlugin`
     }),
     new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.tsx?$/]),
     // new HardSourceWebpackPlugin({

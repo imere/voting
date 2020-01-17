@@ -4,11 +4,13 @@ const MiniCSSExtractWebpackPlugin = require('mini-css-extract-plugin');
 exports.createSassLoader = env => {
   return {
     test: /\.sass$/,
-    use: (env === 'production' ? [
-      {
-        loader: MiniCSSExtractWebpackPlugin.loader,
-      },
-    ] : [
+    use: (env === 'production'
+      ? [
+        {
+          loader: MiniCSSExtractWebpackPlugin.loader,
+        },
+      ]
+      : [
         // {
         //   loader: "thread-loader",
         //   options: {
@@ -25,7 +27,7 @@ exports.createSassLoader = env => {
       {
         loader: 'cache-loader',
         options: {
-          cacheDirectory: require('../../config').CacheDir(),
+          cacheDirectory: require('../../config').CacheDir,
         }
       },
       {

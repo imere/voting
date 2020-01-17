@@ -6,6 +6,8 @@ const { ScriptDist, Externals } = require('./config.js');
 module.exports = {
   output: {
     filename: ScriptDist('[name].[hash:5].js'),
+    hotUpdateChunkFilename: '[id].[hash].hot-update.js',
+    pathinfo: false,
   },
   optimization: {
     noEmitOnErrors: true,
@@ -14,37 +16,47 @@ module.exports = {
       cacheGroups: {
         hot: {
           test: /[\\/]node_modules[\\/](.*hot.*)[\\/]/,
-          name: 'ch',
+          name: 'c0',
+          reuseExistingChunk: true,
+        },
+        react: {
+          test: /[\\/]node_modules[\\/](.*react.*)[\\/]/,
+          name: 'c01',
           reuseExistingChunk: true,
         },
         babel: {
-          test: /[\\/]node_modules[\\/](.*(babel|core|runtime).*)[\\/]/,
-          name: 'polyfill',
+          test: /[\\/]node_modules[\\/](.*babel.*)[\\/]/,
+          name: 'c1',
+          reuseExistingChunk: true,
+        },
+        core: {
+          test: /[\\/]node_modules[\\/](.*core.*)[\\/]/,
+          name: 'c2',
           reuseExistingChunk: true,
         },
         router: {
           test: /[\\/]node_modules[\\/](.*router.*)[\\/]/,
-          name: 'cu',
+          name: 'c3',
           reuseExistingChunk: true,
         },
         state: {
           test: /[\\/]node_modules[\\/](.*redux.*)[\\/]/,
-          name: 'cs',
+          name: 'c4',
           reuseExistingChunk: true,
         },
         loader: {
           test: /[\\/]node_modules[\\/](.*loader.*)[\\/]/,
-          name: 'cl',
+          name: 'c5',
           reuseExistingChunk: true,
         },
         http: {
           test: /[\\/]node_modules[\\/](.*(axios|fetch).*)[\\/]/,
-          name: 'ct',
+          name: 'c6',
           reuseExistingChunk: true,
         },
         aui: {
           test: /[\\/]node_modules[\\/](.*antd.*)[\\/]/,
-          name: 'cd',
+          name: 'c7',
           reuseExistingChunk: true,
         },
       },
@@ -82,5 +94,5 @@ module.exports = {
   performance: {
     hints: 'warning',
   },
-  externals: Externals(),
+  externals: Externals,
 };

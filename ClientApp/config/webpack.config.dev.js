@@ -31,6 +31,6 @@ module.exports = {
     },
   },
   performance: {
-    hints: 'warning',
+    hints: false,
   },
 };

@@ -1,6 +1,5 @@
 module.exports = {
   process(src, filename) {
-
-    return '';
+    return require('path').resolve(src, filename);
   },
 };

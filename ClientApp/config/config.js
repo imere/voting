@@ -1,19 +1,20 @@
 const path = require('path');
 
 module.exports = {
+  OUTPUT_PATH: path.resolve(__dirname, '../dist'),
   PUBLIC_PATH: '/',
   FALLBACK_HOST: '0.0.0.0',
   FALLBACK_PORT: 5000,
   FALLBACK_UURI: 'mongodb://127.0.0.1:27017/test',
   FALLBACK_SURI: 'mongodb://127.0.0.1:27017/session',
-  CssDist: sub => {
-    return path.join('web', 'assets', 'styles', sub);
+  CssDist: name => {
+    return path.posix.join('assets', 'styles', name);
   },
-  ScriptDist: sub => {
-    return path.join('web', 'assets', 'scripts', sub);
+  ScriptDist: name => {
+    return path.posix.join('assets', 'scripts', name);
   },
-  CacheDir: () => require('path').resolve(__dirname, '../node_modules/.cache/cache-loader'),
-  Externals: env => [
+  CacheDir: require('path').resolve(__dirname, '../node_modules/.cache/cache-loader'),
+  Externals: [
     {
       'react': 'React',
       'react-dom': 'ReactDOM',

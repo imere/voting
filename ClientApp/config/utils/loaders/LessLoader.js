@@ -1,9 +1,9 @@
 // @ts-nocheck
 const MiniCSSExtractWebpackPlugin = require('mini-css-extract-plugin');
 
-exports.createScssLoader = env => {
+exports.createLessLoader = env => {
   return {
-    test: /\.scss$/,
+    test: /\.less$/,
     use: (env === 'production'
       ? [
         {
@@ -11,14 +11,6 @@ exports.createScssLoader = env => {
         },
       ]
       : [
-        // {
-        //   loader: "thread-loader",
-        //   options: {
-        //        // node-sass has a bug which blocks threads from the Node.js thread pool.
-        //     workerParallelJobs: 2,
-        //     name: "css"
-        //   }
-        // },
         {
           loader: 'style-loader',
         },
@@ -38,10 +30,12 @@ exports.createScssLoader = env => {
       },
       'postcss-loader',
       {
-        loader: 'sass-loader',
+        loader: 'less-loader',
         options: {
-          implementation: require("sass"),
-        },
+          javascriptEnabled: true,
+          strictMath: false,
+          noIeCompat: false,
+        }
       },
     ]),
   };

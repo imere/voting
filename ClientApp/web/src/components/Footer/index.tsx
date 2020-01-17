@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
 
-const { Footer } = Layout;
+const Footer = Layout.Footer;
 
 const FooterComponent: React.FC = () => (
   <Footer style={{ textAlign: 'center' }}>

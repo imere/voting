@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import { FooterComponent } from './Footer';
+import FooterComponent from './index';
 
 test('renders copyright', () => {
   const { getByText } = render(React.createElement(FooterComponent));
