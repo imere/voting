@@ -28,7 +28,7 @@ const UserDropdownComponent = (props: UserDropdownOwnProps) => (
 );
 
 const mapStateToProps = (state: ApplicationState): UserDropdownOwnProps => ({
-  log: state.log,
+  "log": state.log,
 });
 
 export default connect(mapStateToProps)(UserDropdownComponent);

@@ -71,6 +71,21 @@
       2
     ],
     "jsx-quotes": "error",
-    "new-parens": "error"
+    "new-parens": "error",
+    "no-dupe-args": "error",
+    "no-dupe-class-members": "error",
+    "no-dupe-keys": "error",
+    "no-duplicate-case": "error",
+    "no-duplicate-imports": "error",
+    "object-curly-newline": "error",
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "quote-props": [
+      "error",
+      "always"
+    ],
+    "unicode-bom": "error"
   }
 }

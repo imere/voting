@@ -30,14 +30,14 @@ export type LogAction = RequestLoginAction | RequestLoginCompleteAction | Reques
 
 export const login = (user: UserAuthentication): AppThunkAction<LogAction> => (dispatch) => {
   const requestLogin = (): RequestLoginAction => ({
-    type: LoginActions.LOGIN,
+    "type": LoginActions.LOGIN,
   })
   const requestLoginSuc = (username: string): RequestLoginSucAction => ({
-    type: LoginActions.LOGIN_SUC,
+    "type": LoginActions.LOGIN_SUC,
     username,
   })
   const requestLoginErr = (): RequestLoginErrAction => ({
-    type: LoginActions.LOGIN_ERR,
+    "type": LoginActions.LOGIN_ERR,
   })
 
   dispatch(requestLogin())
@@ -48,11 +48,11 @@ export const login = (user: UserAuthentication): AppThunkAction<LogAction> => (d
 
 export const logout = (): AppThunkAction<LogAction> => (dispatch) => {
   const requestLogout = (): RequestLogoutAction => ({
-    type: LoginActions.LOGOUT
+    "type": LoginActions.LOGOUT
   })
 
   const requestLogoutComplete = (): RequestLogoutCompleteAction => ({
-    type: LoginActions.LOGOUT_COMPLETE
+    "type": LoginActions.LOGOUT_COMPLETE
   })
 
   dispatch(requestLogout())

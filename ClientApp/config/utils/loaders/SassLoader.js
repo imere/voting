@@ -2,11 +2,11 @@
 const MiniCSSExtractWebpackPlugin = require("mini-css-extract-plugin");
 
 exports.createSassLoader = (env) => ({
-  test: /\.sass$/,
-  use: (env === "production"
+  "test": /\.sass$/,
+  "use": (env === "production"
     ? [
       {
-        loader: MiniCSSExtractWebpackPlugin.loader,
+        "loader": MiniCSSExtractWebpackPlugin.loader,
       },
     ]
     : [
@@ -19,25 +19,25 @@ exports.createSassLoader = (env) => ({
       //   }
       // },
       {
-        loader: "style-loader",
+        "loader": "style-loader",
       },
     ]
   ).concat([
     {
-      loader: "cache-loader",
-      options: {
-        cacheDirectory: require("../../config").CacheDir,
+      "loader": "cache-loader",
+      "options": {
+        "cacheDirectory": require("../../config").CacheDir,
       }
     },
     {
-      loader: "css-loader",
+      "loader": "css-loader",
     },
     "postcss-loader",
     {
-      loader: "sass-loader",
-      options: {
-        implementation: require("sass"),
-        indentedSyntax: true,
+      "loader": "sass-loader",
+      "options": {
+        "implementation": require("sass"),
+        "indentedSyntax": true,
       },
     },
   ]),

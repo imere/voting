@@ -1,38 +1,38 @@
 const { ScriptDist } = require("./config.js");
 
 module.exports = {
-  output: {
-    filename: ScriptDist("[name].js"),
+  "output": {
+    "filename": ScriptDist("[name].js"),
   },
-  devServer: {
-    disableHostCheck: true,
+  "devServer": {
+    "disableHostCheck": true,
   },
-  optimization: {
-    noEmitOnErrors: true,
-    removeAvailableModules: false,
-    removeEmptyChunks: false,
-    splitChunks: {
-      chunks: "all",
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendor",
-          reuseExistingChunk: true,
+  "optimization": {
+    "noEmitOnErrors": true,
+    "removeAvailableModules": false,
+    "removeEmptyChunks": false,
+    "splitChunks": {
+      "chunks": "all",
+      "cacheGroups": {
+        "vendors": {
+          "test": /[\\/]node_modules[\\/]/,
+          "name": "vendor",
+          "reuseExistingChunk": true,
         },
-        commons: {
-          chunks: "initial",
-          name: "common",
-          minChunks: 1,
-          maxInitialRequests: 5,
-          minSize: 0,
+        "commons": {
+          "chunks": "initial",
+          "name": "common",
+          "minChunks": 1,
+          "maxInitialRequests": 5,
+          "minSize": 0,
         },
       },
     },
-    runtimeChunk: {
-      name: (entry) => `r~${entry.name}`,
+    "runtimeChunk": {
+      "name": (entry) => `r~${entry.name}`,
     },
   },
-  performance: {
-    hints: false,
+  "performance": {
+    "hints": false,
   },
 };

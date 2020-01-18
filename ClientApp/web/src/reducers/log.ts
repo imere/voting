@@ -13,35 +13,35 @@ export const log: Reducer<LogState, LogAction> = (state = {}, action): LogState 
   case LoginActions.LOGIN:
     return {
       ...state,
-      pending: true,
+      "pending": true,
     };
 
   case LoginActions.LOGIN_SUC:
     return {
       ...state,
-      pending: false,
-      username: action.username,
+      "pending": false,
+      "username": action.username,
     };
 
   case LoginActions.LOGIN_ERR:
     return {
       ...state,
-      pending: false,
-      username: undefined,
+      "pending": false,
+      "username": undefined,
     };
 
   case LoginActions.LOGOUT:
     return {
       ...state,
-      pending: false,
-      username: undefined
+      "pending": false,
+      "username": undefined
     };
 
   case LoginActions.LOGOUT_COMPLETE:
     return {
       ...state,
-      pending: false,
-      username: undefined
+      "pending": false,
+      "username": undefined
     };
 
   default:

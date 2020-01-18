@@ -4,9 +4,8 @@ import UserDropdown from "@components/UserDropdown";
 import React from "react";
 import { connect } from "react-redux";
 import { login } from "@actions/index";
-import { LogAction } from "@actions/log";
+import { LogAction, UserAuthentication } from "@actions/log";
 import { ApplicationState } from "@reducers/index";
-import { UserAuthentication } from "@actions/log";
 
 import { Disp } from "@/types";
 
@@ -23,7 +22,7 @@ class HeaderNavComponent extends React.Component<
   HeaderNavState
 > {
   render = () => {
-    this.props.login({ username: "usernames", password: "" });
+    this.props.login({ "username": "usernames", "password": "" });
     return (
       <div className="header-nav">
         <UserDropdown />
@@ -33,7 +32,7 @@ class HeaderNavComponent extends React.Component<
 }
 
 const mapDispatchToProps = (dispatch: HeaderNavDispatch): HeaderNavOwnProps => ({
-  login: (user: UserAuthentication) => dispatch(login(user)),
+  "login": (user: UserAuthentication) => dispatch(login(user)),
 });
 
 export default connect(null, mapDispatchToProps)(HeaderNavComponent);

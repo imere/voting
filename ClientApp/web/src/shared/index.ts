@@ -1,6 +1,6 @@
 import { Http } from "./request";
 
-const { get: Get, post: Post, put: Put, del: Delete } = Http
+const { "get": Get, "post": Post, "put": Put, "del": Delete } = Http
 
 export {
   Http,

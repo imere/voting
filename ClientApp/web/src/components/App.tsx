@@ -13,7 +13,7 @@ export default function App ()  {
   ] = useState(false);
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ "minHeight": "100vh" }}>
       <SiderComponent collapsed={collapsed} />
       <Layout>
         <HeaderComponent

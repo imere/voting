@@ -46,33 +46,33 @@ require("node-bash-title")(currentEnv);
 if (isProd) {
   ["./dist"].forEach((name) => {
     if (fs.existsSync(name)) {
-      fs.rmdirSync(name, { recursive: true });
+      fs.rmdirSync(name, { "recursive": true });
     }
   });
 }
 
 const baseConfig = {
-  entry: {
-    app: "./web/src/index.tsx",
+  "entry": {
+    "app": "./web/src/index.tsx",
   },
-  output: {
-    publicPath: PUBLIC_PATH,
-    path: OUTPUT_PATH,
+  "output": {
+    "publicPath": PUBLIC_PATH,
+    "path": OUTPUT_PATH,
   },
-  devServer: {
-    port: process.env.PORT || FALLBACK_PORT,
-    historyApiFallback: {
-      rewrites: [
+  "devServer": {
+    "port": process.env.PORT || FALLBACK_PORT,
+    "historyApiFallback": {
+      "rewrites": [
         {
-          from: /.*/,
-          to: "/index.html",
+          "from": /.*/,
+          "to": "/index.html",
         },
       ],
     },
   },
-  module: {
-    noParse: /jquery|lodash|moment|immutable/,
-    rules: [
+  "module": {
+    "noParse": /jquery|lodash|moment|immutable/,
+    "rules": [
       EslintLoader(currentEnv),
       PugLoader(currentEnv),
       CssLoader(currentEnv),
@@ -85,26 +85,26 @@ const baseConfig = {
       FontLoader(currentEnv),
     ],
   },
-  resolve: {
-    symlinks: false,
-    extensions: [
+  "resolve": {
+    "symlinks": false,
+    "extensions": [
       ".ts",
       ".tsx",
       ".js",
       ".jsx",
     ],
-    plugins: [
+    "plugins": [
       new TsconfigPathsPlugin({
-        configFile: "tsconfig.json"
+        "configFile": "tsconfig.json"
       }),
     ]
   },
-  plugins: [
+  "plugins": [
     new ForkTsCheckerPlugin({
-      checkSyntacticErrors: true,
-      memoryLimit: 256,
-      workers: 1,
-      silent: false,
+      "checkSyntacticErrors": true,
+      "memoryLimit": 256,
+      "workers": 1,
+      "silent": false,
     }),
     new ProgressBarPlugin(),
     // new BuildNotifier({
@@ -150,44 +150,44 @@ const baseConfig = {
     //   },
     // }),
     new HtmlPlugin({
-      filename: "index.html",
-      template: "./web/public/index.html",
-      inject: true,
+      "filename": "index.html",
+      "template": "./web/public/index.html",
+      "inject": true,
       PUBLIC_PATH,
-      favicon: "./web/public/favicon.ico",
-      minify: {
-        removeComments: isProd,
-        collapseWhitespace: isProd,
-        removeAttributeQuotes: isProd,
+      "favicon": "./web/public/favicon.ico",
+      "minify": {
+        "removeComments": isProd,
+        "collapseWhitespace": isProd,
+        "removeAttributeQuotes": isProd,
       },
-      chunksSortMode: "dependency",
+      "chunksSortMode": "dependency",
     }),
     new CopyPlugin([
-      { from: "./web/public/robots.txt", to: "." },
-      { from: "./web/public/*.png", to: ".", flatten: true },
+      { "from": "./web/public/robots.txt", "to": "." },
+      { "from": "./web/public/*.png", "to": ".", "flatten": true },
     ]),
     new MiniCSSExtractPlugin({
-      filename: isProd
+      "filename": isProd
         ? CssDist("[name].[contenthash:5].css")
         : CssDist("[name].css"),
-      chunkFilename: isProd
+      "chunkFilename": isProd
         ? CssDist("[name].[contenthash:5].css")
         : CssDist("[name].css"),
-      ignoreOrder: false,
+      "ignoreOrder": false,
     }),
     new WorkboxPlugin.GenerateSW({
       // these options encourage the ServiceWorkers to get in there fast
       // and not allow any straggling "old" SWs to hang around
-      clientsClaim: true,
-      skipWaiting: true,
+      "clientsClaim": true,
+      "skipWaiting": true,
     }),
     new BundleAnalyzerPlugin({
-      analyzerMode: "static",
-      reportFilename: require("path").resolve(__dirname, "../docs/bundle", "report.html"),
-      openAnalyzer: false,
+      "analyzerMode": "static",
+      "reportFilename": require("path").resolve(__dirname, "../docs/bundle", "report.html"),
+      "openAnalyzer": false,
     }),
   ],
-  node: {
+  "node": {
     "setImmediate": false,
     "dgram": "empty",
     "fs": "empty",

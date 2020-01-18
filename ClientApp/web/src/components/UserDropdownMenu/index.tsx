@@ -31,21 +31,21 @@ type UserDropdownMenuItem =
 const UserDropdownMenuComponent = (props: UserDropdownMenuProps) => {
   const normalItems: UserDropdownMenuItem[] = [
     {
-      content: "登录",
-      onClick: () => props.login({ username: "asdlkj", password: "" }),
+      "content": "登录",
+      "onClick": () => props.login({ "username": "asdlkj", "password": "" }),
     },
   ];
   const loggedItems: UserDropdownMenuItem[] = [
     {
-      content: "用户中心",
+      "content": "用户中心",
     },
     {
-      content: "用户设置",
+      "content": "用户设置",
     },
     undefined,
     {
-      content: "退出登录",
-      onClick: () => props.logout(),
+      "content": "退出登录",
+      "onClick": () => props.logout(),
     },
   ];
   return (
@@ -66,8 +66,8 @@ const UserDropdownMenuComponent = (props: UserDropdownMenuProps) => {
 const mapDispatchToState = (
   dispatch: UserDropdownMenuDispatch
 ): UserDropdownMenuOwnProps => ({
-  login: (user: UserAuthentication) => dispatch(login(user)),
-  logout: () => dispatch(logout()),
+  "login": (user: UserAuthentication) => dispatch(login(user)),
+  "logout": () => dispatch(logout()),
 });
 
 export default connect(null, mapDispatchToState)(UserDropdownMenuComponent);

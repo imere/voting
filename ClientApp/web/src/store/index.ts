@@ -12,7 +12,7 @@ export function configureStore(history: History, initialState: ApplicationState)
 
   const rootReducer = combineReducers({
     ...reducers,
-    router: connectRouter(history),
+    "router": connectRouter(history),
   });
 
   const enhancers = [];
