@@ -31,6 +31,9 @@ exports.createSassLoader = (env) => ({
     },
     {
       "loader": "css-loader",
+      "options": {
+        "importLoaders": 2
+      }
     },
     "postcss-loader",
     {
