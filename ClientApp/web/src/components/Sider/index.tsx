@@ -10,7 +10,7 @@ interface SiderReceivedProps {
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-const SiderComponent: React.FC<SiderReceivedProps> = (props) => (
+const SiderComponent: React.FC<SiderReceivedProps> = (props: SiderReceivedProps) => (
   <Sider trigger={null} collapsible collapsed={props.collapsed}>
     <div className="logo" />
     <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">

@@ -1,46 +1,44 @@
 // @ts-nocheck
-const MiniCSSExtractWebpackPlugin = require('mini-css-extract-plugin');
+const MiniCSSExtractWebpackPlugin = require("mini-css-extract-plugin");
 
-exports.createSassLoader = env => {
-  return {
-    test: /\.sass$/,
-    use: (env === 'production'
-      ? [
-        {
-          loader: MiniCSSExtractWebpackPlugin.loader,
-        },
-      ]
-      : [
-        // {
-        //   loader: "thread-loader",
-        //   options: {
-        //        // node-sass has a bug which blocks threads from the Node.js thread pool.
-        //     workerParallelJobs: 2,
-        //     name: "css"
-        //   }
-        // },
-        {
-          loader: 'style-loader',
-        },
-      ]
-    ).concat([
+exports.createSassLoader = (env) => ({
+  test: /\.sass$/,
+  use: (env === "production"
+    ? [
       {
-        loader: 'cache-loader',
-        options: {
-          cacheDirectory: require('../../config').CacheDir,
-        }
+        loader: MiniCSSExtractWebpackPlugin.loader,
       },
+    ]
+    : [
+      // {
+      //   loader: "thread-loader",
+      //   options: {
+      //        // node-sass has a bug which blocks threads from the Node.js thread pool.
+      //     workerParallelJobs: 2,
+      //     name: "css"
+      //   }
+      // },
       {
-        loader: 'css-loader',
+        loader: "style-loader",
       },
-      'postcss-loader',
-      {
-        loader: 'sass-loader',
-        options: {
-          implementation: require("sass"),
-          indentedSyntax: true,
-        },
+    ]
+  ).concat([
+    {
+      loader: "cache-loader",
+      options: {
+        cacheDirectory: require("../../config").CacheDir,
+      }
+    },
+    {
+      loader: "css-loader",
+    },
+    "postcss-loader",
+    {
+      loader: "sass-loader",
+      options: {
+        implementation: require("sass"),
+        indentedSyntax: true,
       },
-    ]),
-  };
-};
+    },
+  ]),
+});

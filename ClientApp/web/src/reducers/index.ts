@@ -1,7 +1,7 @@
 import { log, LogState } from "./log";
 
 export type ApplicationState = {
-  log: LogState
+  log: LogState;
 }
 
 export default {

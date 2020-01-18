@@ -32,10 +32,8 @@ class HeaderNavComponent extends React.Component<
   };
 }
 
-const mapDispatchToProps = (dispatch: HeaderNavDispatch): HeaderNavOwnProps => {
-  return {
-    login: (user: UserAuthentication) => dispatch(login(user)),
-  };
-};
+const mapDispatchToProps = (dispatch: HeaderNavDispatch): HeaderNavOwnProps => ({
+  login: (user: UserAuthentication) => dispatch(login(user)),
+});
 
 export default connect(null, mapDispatchToProps)(HeaderNavComponent);

@@ -1,27 +1,28 @@
-const fs = require('fs');
-const webpack = require('webpack');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const fs = require("fs");
+const webpack = require("webpack");
+const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 // const BuildNotifier = require('webpack-build-notifier');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const HtmlPlugin = require('html-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
-const WorkboxPlugin = require('workbox-webpack-plugin');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const ForkTsCheckerPlugin = require('fork-ts-checker-webpack-plugin');
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const HtmlPlugin = require("html-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
+const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
+const WorkboxPlugin = require("workbox-webpack-plugin");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const ForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
 // const HardSourcePlugin = require('hard-source-webpack-plugin');
 
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
-const WebpackMerge = require('webpack-merge');
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const WebpackMerge = require("webpack-merge");
 
 const {
   OUTPUT_PATH,
   PUBLIC_PATH,
   FALLBACK_PORT,
   CssDist
-} = require('./config.js');
+} = require("./config.js");
 
 const {
+  EslintLoader,
   PugLoader,
   CssLoader,
   LessLoader,
@@ -31,23 +32,28 @@ const {
   ImageLoader,
   MediaLoader,
   FontLoader,
-} = require('./utils/loaders');
+} = require("./utils/loaders");
 
-const ENVS = ['production', 'development']
-const args = require('yargs-parser')(process.argv.slice(2));
-const currentEnv = (ENVS.includes(args.mode)) ? args.mode : 'development';
-const isProd = currentEnv === 'production';
-require('node-bash-title')(currentEnv);
+const ENVS = [
+  "production",
+  "development"
+]
+const args = require("yargs-parser")(process.argv.slice(2));
+const currentEnv = (ENVS.includes(args.mode)) ? args.mode : "development";
+const isProd = currentEnv === "production";
+require("node-bash-title")(currentEnv);
 
 if (isProd) {
-  ['./dist'].forEach(name => {
-    if (fs.existsSync(name)) fs.rmdirSync(name, { recursive: true });
+  ["./dist"].forEach((name) => {
+    if (fs.existsSync(name)) {
+      fs.rmdirSync(name, { recursive: true });
+    }
   });
 }
 
 const baseConfig = {
   entry: {
-    app: './web/src/index.tsx',
+    app: "./web/src/index.tsx",
   },
   output: {
     publicPath: PUBLIC_PATH,
@@ -59,7 +65,7 @@ const baseConfig = {
       rewrites: [
         {
           from: /.*/,
-          to: '/index.html',
+          to: "/index.html",
         },
       ],
     },
@@ -67,6 +73,7 @@ const baseConfig = {
   module: {
     noParse: /jquery|lodash|moment|immutable/,
     rules: [
+      EslintLoader(currentEnv),
       PugLoader(currentEnv),
       CssLoader(currentEnv),
       LessLoader(currentEnv),
@@ -80,11 +87,15 @@ const baseConfig = {
   },
   resolve: {
     symlinks: false,
-    extensions: ['.ts', '.tsx', '.js', '.jsx',],
+    extensions: [
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+    ],
     plugins: [
-      // @ts-ignore
       new TsconfigPathsPlugin({
-        configFile: 'tsconfig.json'
+        configFile: "tsconfig.json"
       }),
     ]
   },
@@ -95,7 +106,6 @@ const baseConfig = {
       workers: 1,
       silent: false,
     }),
-    // @ts-ignore
     new ProgressBarPlugin(),
     // new BuildNotifier({
     //   title: currentEnv.toUpperCase(),
@@ -103,7 +113,10 @@ const baseConfig = {
     //   excludeWarnings: true,
     //   suppressSuccess: true,
     // }),
-    new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.tsx?$/]),
+    new webpack.WatchIgnorePlugin([
+      /\.js$/,
+      /\.d\.tsx?$/
+    ]),
     // new HardSourcePlugin({
     //   // Either an absolute path or relative to webpack's options.context.
     //   cacheDirectory: './node_modules/.cache/hard-source/[confighash]',
@@ -137,29 +150,29 @@ const baseConfig = {
     //   },
     // }),
     new HtmlPlugin({
-      filename: 'index.html',
-      template: './web/public/index.html',
+      filename: "index.html",
+      template: "./web/public/index.html",
       inject: true,
       PUBLIC_PATH,
-      favicon: './web/public/favicon.ico',
+      favicon: "./web/public/favicon.ico",
       minify: {
         removeComments: isProd,
         collapseWhitespace: isProd,
         removeAttributeQuotes: isProd,
       },
-      chunksSortMode: 'dependency',
+      chunksSortMode: "dependency",
     }),
     new CopyPlugin([
-      { from: './web/public/robots.txt', to: '.' },
-      { from: './web/public/*.png', to: '.', flatten: true },
+      { from: "./web/public/robots.txt", to: "." },
+      { from: "./web/public/*.png", to: ".", flatten: true },
     ]),
     new MiniCSSExtractPlugin({
       filename: isProd
-        ? CssDist('[name].[contenthash:5].css')
-        : CssDist('[name].css'),
+        ? CssDist("[name].[contenthash:5].css")
+        : CssDist("[name].css"),
       chunkFilename: isProd
-        ? CssDist('[name].[contenthash:5].css')
-        : CssDist('[name].css'),
+        ? CssDist("[name].[contenthash:5].css")
+        : CssDist("[name].css"),
       ignoreOrder: false,
     }),
     new WorkboxPlugin.GenerateSW({
@@ -169,22 +182,21 @@ const baseConfig = {
       skipWaiting: true,
     }),
     new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      reportFilename: require('path').resolve(__dirname, '../docs/bundle', 'report.html'),
+      analyzerMode: "static",
+      reportFilename: require("path").resolve(__dirname, "../docs/bundle", "report.html"),
       openAnalyzer: false,
     }),
   ],
   node: {
-    setImmediate: false,
-    dgram: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty',
+    "setImmediate": false,
+    "dgram": "empty",
+    "fs": "empty",
+    "net": "empty",
+    "tls": "empty",
+    "child_process": "empty",
   },
 };
 
 module.exports = new SpeedMeasurePlugin().wrap(
-  // @ts-ignore
-  WebpackMerge(baseConfig, require(`./webpack.config.${isProd ? 'prod' : 'dev'}.js`))
+  WebpackMerge(baseConfig, require(`./webpack.config.${isProd ? "prod" : "dev"}.js`))
 );

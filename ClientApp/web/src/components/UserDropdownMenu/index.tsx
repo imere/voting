@@ -50,28 +50,24 @@ const UserDropdownMenuComponent = (props: UserDropdownMenuProps) => {
   ];
   return (
     <Menu>
-      {(props.username ? loggedItems : normalItems).map((item, i) => {
-        return item ? (
-          <Menu.Item key={i} onClick={item.onClick}>
-            <a rel="noopener noreferrer" href={item.link}>
-              {item.content}
-            </a>
-          </Menu.Item>
-        ) : (
-          <Menu.Divider key={i} />
-        );
-      })}
+      {(props.username ? loggedItems : normalItems).map((item, i) => item ? (
+        <Menu.Item key={i} onClick={item.onClick}>
+          <a rel="noopener noreferrer" href={item.link}>
+            {item.content}
+          </a>
+        </Menu.Item>
+      ) : (
+        <Menu.Divider key={i} />
+      ))}
     </Menu>
   );
 };
 
 const mapDispatchToState = (
   dispatch: UserDropdownMenuDispatch
-): UserDropdownMenuOwnProps => {
-  return {
-    login: (user: UserAuthentication) => dispatch(login(user)),
-    logout: () => dispatch(logout()),
-  };
-};
+): UserDropdownMenuOwnProps => ({
+  login: (user: UserAuthentication) => dispatch(login(user)),
+  logout: () => dispatch(logout()),
+});
 
 export default connect(null, mapDispatchToState)(UserDropdownMenuComponent);

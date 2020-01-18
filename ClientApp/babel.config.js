@@ -1,8 +1,10 @@
-const opts = require('./tsconfig.json').compilerOptions;
+const opts = require("./tsconfig.json").compilerOptions;
 const alias = {};
 if (opts) {
   const { paths } = opts;
-  if (paths) Object.keys(paths).forEach(k => alias[k] = paths[k][0]);
+  if (paths) {
+    Object.keys(paths).forEach((k) => alias[k] = paths[k][0]);
+  }
 }
 
 module.exports = {
@@ -22,9 +24,7 @@ module.exports = {
     [
       "module-resolver",
       {
-        "root": [
-          "."
-        ],
+        "root": ["."],
         "alias": alias
       }
     ],

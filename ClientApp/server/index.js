@@ -1,9 +1,9 @@
-const Koa = require('koa');
+const Koa = require("koa");
 const app = new Koa();
 
-app.use(async ctx => {
+app.use(async (ctx) => {
   ctx.body = {
-    data: 'x',
+    data: "x",
   };
 });
 

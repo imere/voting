@@ -12,13 +12,13 @@ import { AppThunkAction } from "@/types";
 import { Http } from "@/shared";
 
 export interface UserAuthentication {
-  username: string
-  password: string
+  username: string;
+  password: string;
 }
 
 export interface RequestLoginAction extends Action<ActionLogin> { }
 export interface RequestLoginSucAction extends Action<ActionLoginSuc> {
-  username: string
+  username: string;
 }
 export interface RequestLoginErrAction extends Action<ActionLoginErr> { }
 export type RequestLoginCompleteAction = RequestLoginSucAction | RequestLoginErrAction
@@ -41,9 +41,9 @@ export const login = (user: UserAuthentication): AppThunkAction<LogAction> => (d
   })
 
   dispatch(requestLogin())
-  return Http.post(`https://www.reddit.com/r/.json`)
-    .then(_ => dispatch(requestLoginSuc(user.username)))
-    .catch(_ => dispatch(requestLoginErr()))
+  return Http.post("https://www.reddit.com/r/.json").
+    then(() => dispatch(requestLoginSuc(user.username))).
+    catch(() => dispatch(requestLoginErr()))
 }
 
 export const logout = (): AppThunkAction<LogAction> => (dispatch) => {
@@ -56,7 +56,7 @@ export const logout = (): AppThunkAction<LogAction> => (dispatch) => {
   })
 
   dispatch(requestLogout())
-  return Http.post(`https://www.reddit.com/r/json`)
-    .then(_ => dispatch(requestLogoutComplete()))
-    .catch(_ => dispatch(requestLogoutComplete()))
+  return Http.post("https://www.reddit.com/r/json").
+    then(() => dispatch(requestLogoutComplete())).
+    catch(() => dispatch(requestLogoutComplete()))
 }

@@ -10,8 +10,9 @@
       "ScriptHost"
     ],
     "allowJs": true,
-    "checkJs": true,
+    "checkJs": false,
     "jsx": "react",
+    "resolveJsonModule": true,
     "outDir": "build",
     "rootDir": ".",
     "removeComments": true,
@@ -63,13 +64,16 @@
   },
   "include": [
     "./web/**/*.ts",
-    "./web/**/*.tsx"
+    "./web/**/*.tsx",
+    "./tests/**/*.ts",
+    "./config/**/*.js",
+    "./server/**/*.js",
+    "./tests/**/*.js",
+    "./*.js"
   ],
   "exclude": [
     "node_modules",
     ".git",
-    ".vs",
-    "./web/**/*.test.ts",
-    "./web/**/*.test.tsx"
+    ".vs"
   ]
 }

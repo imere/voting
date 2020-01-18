@@ -21,7 +21,7 @@ export type ThunkAction<R, S, E> = (dispatch: Dispatch<S>, getState: () => S, ex
 
 export type None = null | undefined
 
-export type Empty = '' | None
+export type Empty = "" | None
 
 export type Maybe<T> = T | None | void
 

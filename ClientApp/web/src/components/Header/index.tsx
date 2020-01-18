@@ -11,22 +11,15 @@ interface HeaderReceivedProps {
   toggleTrigger: React.MouseEventHandler;
 }
 
-interface HeaderState {}
-
-class HeaderComponent extends React.Component<
-  HeaderReceivedProps,
-  HeaderState
-> {
-  render = () => (
-    <Header style={{ background: "#fff", padding: 0 }}>
-      <Icon
-        className="header_sider-trigger"
-        type={this.props.collapsed ? "menu-unfold" : "menu-fold"}
-        onClick={this.props.toggleTrigger}
-      />
-      <HeaderNav />
-    </Header>
-  );
-}
+const HeaderComponent: React.FC<HeaderReceivedProps> = (props: HeaderReceivedProps) => (
+  <Header style={{ background: "#fff", padding: 0 }}>
+    <Icon
+      className="header_sider-trigger"
+      type={props.collapsed ? "menu-unfold" : "menu-fold"}
+      onClick={props.toggleTrigger}
+    />
+    <HeaderNav />
+  </Header>
+);
 
 export default HeaderComponent;

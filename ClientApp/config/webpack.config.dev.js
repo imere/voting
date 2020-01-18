@@ -1,8 +1,8 @@
-const { ScriptDist } = require('./config.js');
+const { ScriptDist } = require("./config.js");
 
 module.exports = {
   output: {
-    filename: ScriptDist('[name].js'),
+    filename: ScriptDist("[name].js"),
   },
   devServer: {
     disableHostCheck: true,
@@ -12,16 +12,16 @@ module.exports = {
     removeAvailableModules: false,
     removeEmptyChunks: false,
     splitChunks: {
-      chunks: 'all',
+      chunks: "all",
       cacheGroups: {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendor',
+          name: "vendor",
           reuseExistingChunk: true,
         },
         commons: {
-          chunks: 'initial',
-          name: 'common',
+          chunks: "initial",
+          name: "common",
           minChunks: 1,
           maxInitialRequests: 5,
           minSize: 0,
@@ -29,7 +29,7 @@ module.exports = {
       },
     },
     runtimeChunk: {
-      name: entry => `r~${entry.name}`,
+      name: (entry) => `r~${entry.name}`,
     },
   },
   performance: {

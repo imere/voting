@@ -6,8 +6,11 @@ import FooterComponent from "./Footer";
 import HeaderComponent from "./Header";
 import SiderComponent from "./Sider";
 
-export default () => {
-  const [collapsed, toggleTrigger] = useState(false);
+export default function App ()  {
+  const [
+    collapsed,
+    toggleTrigger
+  ] = useState(false);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -22,4 +25,4 @@ export default () => {
       </Layout>
     </Layout>
   );
-};
+}

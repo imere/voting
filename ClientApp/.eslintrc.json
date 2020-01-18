@@ -1,7 +1,76 @@
 {
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module"
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:react/recommended",
+    "prettier/@typescript-eslint"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
     }
+  },
+  "parserOptions": {
+    "tsconfigRootDir": ".",
+    "project": [
+      "./tsconfig.json"
+    ],
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/require-await": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "accessor-pairs": "warn",
+    "array-callback-return": "warn",
+    "arrow-body-style": "error",
+    "array-bracket-newline": "warn",
+    "array-element-newline": "warn",
+    "arrow-parens": "error",
+    "arrow-spacing": "error",
+    "block-scoped-var": "error",
+    "block-spacing": "error",
+    "brace-style": "error",
+    "callback-return": "warn",
+    "class-methods-use-this": "error",
+    "comma-style": "error",
+    "complexity": "error",
+    "computed-property-spacing": "error",
+    "consistent-this": "error",
+    "constructor-super": "error",
+    "curly": "error",
+    "default-case": "error",
+    "dot-location": "warn",
+    "dot-notation": "warn",
+    "eol-last": "error",
+    "eqeqeq": "error",
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "indent": [
+      "error",
+      2
+    ],
+    "jsx-quotes": "error",
+    "new-parens": "error"
+  }
 }
