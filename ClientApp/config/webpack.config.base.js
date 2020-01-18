@@ -37,7 +37,7 @@ const {
 const ENVS = [
   "production",
   "development"
-]
+];
 const args = require("yargs-parser")(process.argv.slice(2));
 const currentEnv = (ENVS.includes(args.mode)) ? args.mode : "development";
 const isProd = currentEnv === "production";
@@ -102,7 +102,7 @@ const baseConfig = {
   "plugins": [
     new ForkTsCheckerPlugin({
       "checkSyntacticErrors": true,
-      "memoryLimit": 256,
+      "memoryLimit": 512,
       "workers": 1,
       "silent": false,
     }),

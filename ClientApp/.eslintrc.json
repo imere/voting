@@ -86,6 +86,7 @@
       "error",
       "always"
     ],
-    "unicode-bom": "error"
+    "unicode-bom": "error",
+    "semi": "error"
   }
 }

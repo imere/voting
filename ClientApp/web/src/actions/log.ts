@@ -31,32 +31,32 @@ export type LogAction = RequestLoginAction | RequestLoginCompleteAction | Reques
 export const login = (user: UserAuthentication): AppThunkAction<LogAction> => (dispatch) => {
   const requestLogin = (): RequestLoginAction => ({
     "type": LoginActions.LOGIN,
-  })
+  });
   const requestLoginSuc = (username: string): RequestLoginSucAction => ({
     "type": LoginActions.LOGIN_SUC,
     username,
-  })
+  });
   const requestLoginErr = (): RequestLoginErrAction => ({
     "type": LoginActions.LOGIN_ERR,
-  })
+  });
 
-  dispatch(requestLogin())
+  dispatch(requestLogin());
   return Http.post("https://www.reddit.com/r/.json").
     then(() => dispatch(requestLoginSuc(user.username))).
-    catch(() => dispatch(requestLoginErr()))
-}
+    catch(() => dispatch(requestLoginErr()));
+};
 
 export const logout = (): AppThunkAction<LogAction> => (dispatch) => {
   const requestLogout = (): RequestLogoutAction => ({
     "type": LoginActions.LOGOUT
-  })
+  });
 
   const requestLogoutComplete = (): RequestLogoutCompleteAction => ({
     "type": LoginActions.LOGOUT_COMPLETE
-  })
+  });
 
-  dispatch(requestLogout())
+  dispatch(requestLogout());
   return Http.post("https://www.reddit.com/r/json").
     then(() => dispatch(requestLogoutComplete())).
-    catch(() => dispatch(requestLogoutComplete()))
-}
+    catch(() => dispatch(requestLogoutComplete()));
+};

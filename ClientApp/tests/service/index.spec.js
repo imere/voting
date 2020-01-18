@@ -4,7 +4,7 @@ const app = require("../../server/index.js");
 
 let server;
 
-const request = () => supertest(server = app.listen(3000))
+const request = () => supertest(server = app.listen(3000));
 
 describe("api", function () {
 
@@ -23,11 +23,11 @@ describe("api", function () {
         } else {
           done(new Error("unconformant"));
         }
-      })
+      });
   });
 
   this.afterAll((done) => {
     server.close(done);
-  })
+  });
 
-})
+});
