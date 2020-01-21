@@ -8,4 +8,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>E:\MVS\Projects\vote\ServerApp\bin\Release\net461\publish\</_PublishTargetUrl>
   </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="VoteConnection">
+      <Value>Data Source=IMERE\SQLEXPRESS%3bInitial Catalog=vote%3bUser ID=vote%3bPassword=vote</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
 </Project>

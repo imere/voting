@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Session;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using vote.Data;
 
 namespace vote
 {
@@ -37,12 +40,14 @@ namespace vote
                 options.Cookie.IsEssential = true;
             });
 
+            ConfigureSqlServer(services);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = SourcePath + "dist";
+                configuration.RootPath = SourcePath + "/dist";
             });
         }
 
@@ -62,7 +67,7 @@ namespace vote
             app.UseSpaStaticFiles();
 
             app.UseSession();
-            //app.UseHttpContextItemsMiddleware();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
@@ -80,6 +85,18 @@ namespace vote
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:5000");
                 }
             });
+        }
+
+        private void ConfigureSqlServer(IServiceCollection services)
+        {
+            services.AddScoped<VoteService>();
+
+            var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("VoteConnection"));
+            IConfigurationSection voteCredentials =
+                Configuration.GetSection("VoteCredentials");
+            builder.UserID = voteCredentials["UserId"];
+            builder.Password = voteCredentials["Password"];
+            services.AddDbContext<VoteContext>(options => options.UseSqlServer(builder.ConnectionString));
         }
     }
 }
