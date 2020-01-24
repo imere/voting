@@ -11,7 +11,7 @@ namespace vote.Data
 {
     public class VoteContext : DbContext
     {
-        public DbSet<User> User { get; set; }
+        public DbSet<ApplicationUser> User { get; set; }
 
         public DbSet<Poll> Poll { get; set; }
 
@@ -25,13 +25,13 @@ namespace vote.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<User>()
+            builder.Entity<ApplicationUser>()
                 .Property(user => user.Username)
                 .IsRequired();
-            builder.Entity<User>()
+            builder.Entity<ApplicationUser>()
                 .HasIndex(user => user.Username)
                 .IsUnique();
-            builder.Entity<User>()
+            builder.Entity<ApplicationUser>()
                 .Property(user => user.Password)
                 .IsRequired();
         }

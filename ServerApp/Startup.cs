@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,7 +40,7 @@ namespace vote
 
             AddSqlServer(services);
 
-            // AddCookieAuth(services);
+            AddCookieAuth(services);
 
             // AddClaimAuth(services);
 
@@ -70,6 +71,10 @@ namespace vote
             app.UseSpaStaticFiles();
 
             //app.UseSession();
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+            });
             app.UseAuthentication();
             app.UseHttpContextItemsMiddleware();
 

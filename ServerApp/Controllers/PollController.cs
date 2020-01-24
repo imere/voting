@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using vote.Models;
 using vote.Data;
 using System.Security.Claims;
-using vote.Utils;
+using vote.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace vote.Controllers
 {
@@ -26,7 +27,7 @@ namespace vote.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResponseState>> GetAll()
+        public async Task<ActionResult> GetAll()
         {
             var polls = (await _service.GetAllPolls())
                 .Select(poll => new
@@ -36,17 +37,17 @@ namespace vote.Controllers
                     poll.Content
                 });
 
-            return new ResponseState(polls);
+            return Ok(new ResponseState(polls));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseState>> GetById(int id)
+        public async Task<ActionResult> GetById(int id)
         {
             try
             {
                 Poll result = await _service.GetPollById(id);
 
-                if (null == result) return new ResponseState(null);
+                if (null == result) return Ok(new ResponseState(null));
 
                 var poll = new
                 {
@@ -55,7 +56,7 @@ namespace vote.Controllers
                     result.Content
                 };
 
-                return new ResponseState(poll);
+                return Ok(new ResponseState(poll));
             }
             catch
             {
@@ -63,10 +64,11 @@ namespace vote.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
-        public async Task<ActionResult<ResponseState>> Add(Poll poll)
+        public async Task<ActionResult<ResponseState>> Add([FromBody] Poll poll)
         {
-            int userId = Util.ParseUserId(HttpContext, ClaimTypes.NameIdentifier);
+            int userId = UserHelperExtensions.ParseUserId(User);
 
             Poll result = await _service.AddPoll(userId, poll);
 
@@ -75,21 +77,23 @@ namespace vote.Controllers
             return CreatedAtAction(nameof(Add), result);
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<ResponseState>> Update(Poll poll)
+        public async Task<ActionResult> Update([FromBody] Poll poll)
         {
             Poll result = await _service.UpdatePoll(poll);
 
             if (null == result) return BadRequest();
 
-            return new ResponseState(result);
+            return Ok(new ResponseState(result));
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseState>> DeleteById(int id)
+        public async Task<ActionResult> DeleteById(int id)
         {
             Poll result = await _service.DeletePollById(new Poll { Id = id });
-            return new ResponseState(result);
+            return NoContent();
         }
     }
 }

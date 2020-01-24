@@ -9,7 +9,7 @@ namespace vote.Data
 {
     public partial class VoteService
     {
-        public async Task<User> AddUser(User user)
+        public async Task<ApplicationUser> AddUser(ApplicationUser user)
         {
             try
             {
@@ -23,7 +23,7 @@ namespace vote.Data
             }
         }
 
-        public async Task<User> RemoveUser(User user)
+        public async Task<ApplicationUser> RemoveUser(ApplicationUser user)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace vote.Data
             }
         }
 
-        public async Task<User> ValidateUser(User user)
+        public async Task<ApplicationUser> ValidateUser(ApplicationUser user)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace vote.Data
             }
         }
 
-        public async Task<List<User>> GetAllUsers()
+        public async Task<List<ApplicationUser>> GetAllUsers()
         {
             try
             {
@@ -82,7 +82,7 @@ namespace vote.Data
             }
         }
 
-        public async Task<User> GetUserById(int id)
+        public async Task<ApplicationUser> GetUserById(int id)
         {
             try
             {

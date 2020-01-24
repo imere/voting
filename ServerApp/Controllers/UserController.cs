@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using vote.Models;
 using vote.Data;
-using vote.Utils;
+using vote.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
@@ -29,7 +29,7 @@ namespace vote.UserController
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResponseState>> GetAllUsers()
+        public async Task<ActionResult> GetAllUsers()
         {
             var users = (
                     from o in await _service.GetAllUsers()
@@ -42,65 +42,61 @@ namespace vote.UserController
                 )
                 .ToList();
 
-            return new ResponseState(users);
+            return Ok(new ResponseState(User));
         }
 
-        [HttpGet("register/{username}/{password}")]
-        public async Task<ActionResult<ResponseState>> Register(string username, string password)
+        [HttpPost("register")]
+        public async Task<ActionResult> Register([FromBody] ApplicationUser user)
         {
-            User user = await _service.AddUser(new User()
-            {
-                Username = username,
-                Password = password
-            });
+            ApplicationUser result = await _service.AddUser(user);
 
-            if (null == user) return BadRequest();
+            if (null == result) return BadRequest();
 
-            return new ResponseState(user);
+            return Ok(new ResponseState(result));
         }
 
         [Authorize]
-        [HttpGet("unregister")]
-        public async Task<ActionResult<ResponseState>> UnRegister()
+        [HttpPost("unregister")]
+        public async Task<ActionResult> UnRegister()
         {
-            User result = await _service.RemoveUser(new User
+            ApplicationUser result = await _service.RemoveUser(new ApplicationUser
             {
-                Id = Util.ParseUserId(HttpContext, ClaimTypes.NameIdentifier)
+                Id = UserHelperExtensions.ParseUserId(User)
             });
 
             if (null == result) return BadRequest();
 
-            return new ResponseState(result);
+            return Ok(new ResponseState(result));
         }
 
-        [HttpGet("login")]
-        public async Task<ActionResult<ResponseState>> Login(User user)
+        [HttpPost("login")]
+        public async Task<ActionResult<ResponseState>> Login([FromBody] ApplicationUser user)
         {
-            User result = await SignIn(user);
+            ApplicationUser result = await SignIn(user);
 
-            if (null == result) return BadRequest();
+            if (null == result) return Unauthorized();
 
-            return new ResponseState(null);
+            return Ok(new ResponseState(null));
         }
 
         [Authorize]
-        [HttpGet("logout")]
+        [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await SignOut();
             return LocalRedirect("/");
         }
 
-        private async Task<User> SignIn(User user)
+        private async Task<ApplicationUser> SignIn(ApplicationUser user)
         {
-            User result = await _service.ValidateUser(user);
+            ApplicationUser result = await _service.ValidateUser(user);
 
             if (null == result) return null;
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                GetClaimsPrincipal(result),
-                GetAuthenticationProperties());
+                UserHelperExtensions.GetClaimsPrincipal(result),
+                UserHelperExtensions.GetAuthenticationProperties());
 
             return result;
         }
@@ -108,43 +104,6 @@ namespace vote.UserController
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
-
-        private List<Claim> GetClaims(User user) =>
-            new List<Claim> {
-                new Claim(ClaimTypes.NameIdentifier, $"{user.Id}"),
-                new Claim(ClaimTypes.Name, user.Username)
-            };
-
-        private ClaimsPrincipal GetClaimsPrincipal(User user) =>
-            new ClaimsPrincipal(
-                new ClaimsIdentity(
-                    GetClaims(user),
-                    CookieAuthenticationDefaults.AuthenticationScheme));
-
-        private AuthenticationProperties GetAuthenticationProperties(bool persist = false) =>
-            new AuthenticationProperties
-            {
-                AllowRefresh = false,
-                // Refreshing the authentication session should be allowed.
-
-                //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                // The time at which the authentication ticket expires. A 
-                // value set here overrides the ExpireTimeSpan option of 
-                // CookieAuthenticationOptions set with AddCookie.
-
-                IsPersistent = persist,
-                // Whether the authentication session is persisted across 
-                // multiple requests. When used with cookies, controls
-                // whether the cookie's lifetime is absolute (matching the
-                // lifetime of the authentication ticket) or session-based.
-
-                IssuedUtc = DateTimeOffset.UtcNow,
-                // The time at which the authentication ticket was issued.
-
-                //RedirectUri = <string>
-                // The full path or absolute URI to be used as an http 
-                // redirect response value.
-            };
     }
 
 }

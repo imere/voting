@@ -15,7 +15,7 @@ namespace vote.Data
         {
             try
             {
-                User user = await GetUserById(userId);
+                ApplicationUser user = await GetUserById(userId);
 
                 if (null == user) return null;
 
