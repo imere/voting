@@ -10,8 +10,8 @@ using vote.Data;
 namespace vote.Migrations
 {
     [DbContext(typeof(VoteContext))]
-    [Migration("20200121085933_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200123042438_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,7 +55,7 @@ namespace vote.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("ExpiresAt")
+                    b.Property<DateTime?>("ExpiresAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -80,6 +80,9 @@ namespace vote.Migrations
                         .HasMaxLength(25);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });

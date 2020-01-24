@@ -9,9 +9,10 @@ namespace vote.Models
 {
     public class PollProps
     {
+        [Key]
         public int Id { get; set; }
 
         [Column(TypeName = "datetime2")]
-        public DateTime ExpiresAt { get; set; }
+        public DateTime? ExpiresAt { get; set; }
     }
 }

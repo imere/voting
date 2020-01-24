@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using vote.Models;
 using vote.Data;
+using System.Security.Claims;
+using vote.Utils;
 
 namespace vote.Controllers
 {
@@ -14,59 +17,44 @@ namespace vote.Controllers
     {
         private readonly VoteService _service;
 
-        public PollController(VoteService service)
+        private readonly ILogger<PollController> _logger;
+
+        public PollController(VoteService service, ILogger<PollController> logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResponseState>> Get()
+        public async Task<ActionResult<ResponseState>> GetAll()
         {
-            {
-                // Debug
-                //User user = null;
-                //user = await _service.SeedUser(new User()
-                //{
-                //    Username = "username",
-                //    Password = "password"
-                //});
-                //user = await _service.GetUserById(1);
-                //await _service.SeedPoll(new Poll()
-                //{
-                //    Title = "title",
-                //    Content = "content",
-                //    UserId = user.Id,
-                //});
-                //await _service.SeedPoll(new Poll()
-                //{
-                //    Title = "title2",
-                //    Content = "content2",
-                //    UserId = user.Id
-                //});
-            }
-            var polls = (from o in await _service.GetAllPolls()
-                         select new
-                         {
-                             o.Id,
-                             o.Title,
-                             o.Content
-                         })
-                         .ToList();
+            var polls = (await _service.GetAllPolls())
+                .Select(poll => new
+                {
+                    poll.Id,
+                    poll.Title,
+                    poll.Content
+                });
+
             return new ResponseState(polls);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseState>> Get(int id)
+        public async Task<ActionResult<ResponseState>> GetById(int id)
         {
             try
             {
-                var result = await _service.GetPollById(id);
+                Poll result = await _service.GetPollById(id);
+
+                if (null == result) return new ResponseState(null);
+
                 var poll = new
                 {
                     result.Id,
                     result.Title,
                     result.Content
                 };
+
                 return new ResponseState(poll);
             }
             catch
@@ -75,22 +63,33 @@ namespace vote.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult<ResponseState> Post([FromBody] string value)
+        [HttpPut]
+        public async Task<ActionResult<ResponseState>> Add(Poll poll)
         {
-            return new ResponseState(new { });
+            int userId = Util.ParseUserId(HttpContext, ClaimTypes.NameIdentifier);
+
+            Poll result = await _service.AddPoll(userId, poll);
+
+            if (null == result) return BadRequest();
+
+            return CreatedAtAction(nameof(Add), result);
         }
 
-        [HttpPut("{id}")]
-        public ActionResult<ResponseState> Put(int id, [FromBody] string value)
+        [HttpPost]
+        public async Task<ActionResult<ResponseState>> Update(Poll poll)
         {
-            return NoContent();
+            Poll result = await _service.UpdatePoll(poll);
+
+            if (null == result) return BadRequest();
+
+            return new ResponseState(result);
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<ResponseState> Delete(int id)
+        public async Task<ActionResult<ResponseState>> DeleteById(int id)
         {
-            return NoContent();
+            Poll result = await _service.DeletePollById(new Poll { Id = id });
+            return new ResponseState(result);
         }
     }
 }
