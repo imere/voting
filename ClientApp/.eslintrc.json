@@ -71,6 +71,7 @@
       2
     ],
     "jsx-quotes": "error",
+    "keyword-spacing":"error",
     "new-parens": "error",
     "no-dupe-args": "error",
     "no-dupe-class-members": "error",
@@ -83,9 +84,11 @@
       "always"
     ],
     "quote-props": [
-      "error",
-      "always"
+      "off",
+      "as-needed"
     ],
+    "space-before-blocks":"error",
+    "space-unary-ops":"error",
     "unicode-bom": "error",
     "semi": "error"
   }
