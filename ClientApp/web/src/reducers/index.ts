@@ -1,7 +1,7 @@
-import { log, LogState } from "./log";
+import { log, AuthState } from "./auth";
 
 export type ApplicationState = {
-  log: LogState;
+  log: AuthState;
 }
 
 export default {

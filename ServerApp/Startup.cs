@@ -6,27 +6,35 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using vote.Data;
-using vote.Middleware;
 using System.Security.Claims;
+using IdentityServer;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
+using vote.Models;
+using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using IdentityServer4.Configuration;
 
 namespace vote
 {
     public class Startup
     {
+        public IHostingEnvironment Environment { get; }
+
         public const string SourcePath = "../ClientApp/";
-        public Startup(IConfiguration configuration)
+
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
@@ -36,15 +44,18 @@ namespace vote
         {
             services.AddLogging();
 
-            // AddSession(services);
+            services.AddAntiforgery(options => options.Cookie.Name = "X-CSRF-TOKEN");
 
-            AddSqlServer(services);
+            // AddSession(services);
 
             AddCookieAuth(services);
 
-            // AddClaimAuth(services);
+            AddSqlServer(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            AddIdentityServer(services);
+            AddIdentityServerAuth(services);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -54,11 +65,11 @@ namespace vote
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IAntiforgery antiforgery, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddFile(@"C:\Users\83891\Desktop\asplog.txt");
 
-            if (env.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -67,8 +78,12 @@ namespace vote
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseCors("default");
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseIdentityServer();
 
             //app.UseSession();
             app.UseCookiePolicy(new CookiePolicyOptions
@@ -76,20 +91,22 @@ namespace vote
                 MinimumSameSitePolicy = SameSiteMode.Strict,
             });
             app.UseAuthentication();
-            app.UseHttpContextItemsMiddleware();
+
+            AddAntiForgery(app, antiforgery);
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
+                routes.MapRoute("auth-callback", "auth-callback", new { controller = "auth-callback", action = "Index" });
             });
 
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = SourcePath;
 
-                if (env.IsDevelopment())
+                if (Environment.IsDevelopment())
                 {
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:5000");
                 }
@@ -121,22 +138,103 @@ namespace vote
             });
         }
 
-        private void AddClaimAuth(IServiceCollection services)
-        {
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Named", policy =>
-                   policy.RequireAssertion(context =>
-                       context.User.HasClaim(c =>
-                           c.Type == ClaimTypes.NameIdentifier)));
-            });
-        }
-
         private void AddCookieAuth(IServiceCollection services)
         {
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+                .AddCookie();
+        }
+
+        private void AddIdentityServer(IServiceCollection services)
+        {
+            var builder = services.AddIdentityServer(options =>
+            {
+                options.UserInteraction = new UserInteractionOptions()
+                {
+                    LogoutUrl = "http://localhost:5000",
+                    LoginUrl = "http://localhost:5000",
+                    LoginReturnUrlParameter = "/"
+                };
+            })
+               .AddInMemoryIdentityResources(Config.GetIdentityResources())
+               .AddInMemoryApiResources(Config.GetApis())
+               .AddInMemoryClients(Config.GetClients());
+
+            if (Environment.IsDevelopment())
+            {
+                builder.AddDeveloperSigningCredential();
+            }
+            else
+            {
+                builder.AddDeveloperSigningCredential();
+                //throw new Exception("need to configure key material");
+            }
+
+            services.AddLocalApiAuthentication();
+        }
+
+
+        private void AddIdentityServerAuth(IServiceCollection services)
+        {
+            services.AddMvcCore()
+                .AddAuthorization()
+                .AddJsonFormatters();
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = "oidc";
+            })
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:61598";
+                    options.RequireHttpsMetadata = false;
+
+                    options.ApiName = "api1";
+                });
+
+            services.AddCors(options =>
+            {
+                // this defines a CORS policy called "default"
+                options.AddPolicy("default", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+                options.AddPolicy("everyone", policy =>
+                {
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+        }
+
+        private void AddAntiForgery(IApplicationBuilder app, IAntiforgery antiforgery)
+        {
+            app.Use(next => context =>
+            {
+                string path = context.Request.Path.Value;
+
+                if (
+                    string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase))
+                {
+                    // The request token can be sent as a JavaScript-readable cookie,
+                    // and Angular uses it by default.
+                    var tokens = antiforgery.GetAndStoreTokens(context);
+                    context.Response.Cookies.Append("RequestVerificationToken", tokens.RequestToken,
+                        new CookieOptions() { HttpOnly = false });
+                    context.Response.Cookies.Append("X-XSRF-TOKEN", tokens.RequestToken,
+                        new CookieOptions() { HttpOnly = true });
+                }
+
+                return next(context);
+            });
         }
     }
 }

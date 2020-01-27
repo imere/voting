@@ -7,35 +7,16 @@ using System.Security.Claims;
 using vote.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using IdentityModel;
 
 namespace vote.Extensions
 {
-    public static class UserHelperExtensions
+    public static partial class UserHelperExtensions
     {
-        public static readonly string userIdentityType = ClaimTypes.NameIdentifier;
-
         private static string UserFirstClaimValue(ClaimsPrincipal user, string claimType)
         {
             return user.FindFirstValue(claimType);
         }
-
-        public static int ParseUserId(ClaimsPrincipal user)
-        {
-            return int.Parse(UserFirstClaimValue(user, userIdentityType));
-        }
-
-        private static List<Claim> GetNormalClaims(ApplicationUser user) =>
-            new List<Claim> {
-                new Claim(userIdentityType, $"{user.Id}"),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, "Normal")
-            };
-
-        public static ClaimsPrincipal GetClaimsPrincipal(ApplicationUser user) =>
-            new ClaimsPrincipal(
-                new ClaimsIdentity(
-                    GetNormalClaims(user),
-                    CookieAuthenticationDefaults.AuthenticationScheme));
 
         public static AuthenticationProperties GetAuthenticationProperties(bool persist = false) =>
             new AuthenticationProperties

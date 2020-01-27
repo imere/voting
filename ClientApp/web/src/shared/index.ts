@@ -1,11 +1,7 @@
-import { Http } from "./request";
+import request from "./request";
 
-const { "get": Get, "post": Post, "put": Put, "del": Delete } = Http;
+export { request as Http };
 
-export {
-  Http,
-  Get,
-  Post,
-  Put,
-  Delete
-};
+import storage from "./storage";
+
+export { storage };

@@ -68,7 +68,7 @@ namespace vote.Controllers
         [HttpPut]
         public async Task<ActionResult<ResponseState>> Add([FromBody] Poll poll)
         {
-            int userId = UserHelperExtensions.ParseUserId(User);
+            int userId = UserHelperExtensions.ParseCookieUserId(User);
 
             Poll result = await _service.AddPoll(userId, poll);
 

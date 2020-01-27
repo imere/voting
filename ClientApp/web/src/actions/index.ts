@@ -1,4 +1,5 @@
+import iu from "./auth";
+
 export {
-  login,
-  logout,
-} from "./log";
+  iu,
+};
