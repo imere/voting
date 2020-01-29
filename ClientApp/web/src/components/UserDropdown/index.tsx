@@ -22,7 +22,7 @@ const UserDropdownComponent = (props: UserDropdownProps) => (
       <span>
         <Avatar icon={<Icon type="user" />} />
         {props.log.user && (
-          <span className="username">{props.log.user.profile.name}</span>
+          <span className="username">{props.log.user.profile.sub}</span>
         )}
       </span>
     </Dropdown>

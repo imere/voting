@@ -9,6 +9,7 @@ using vote.Data;
 using System.Security.Claims;
 using vote.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace vote.Controllers
 {
@@ -64,7 +65,7 @@ namespace vote.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut]
         public async Task<ActionResult<ResponseState>> Add([FromBody] Poll poll)
         {
@@ -77,7 +78,7 @@ namespace vote.Controllers
             return CreatedAtAction(nameof(Add), result);
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
         public async Task<ActionResult> Update([FromBody] Poll poll)
         {
@@ -88,7 +89,7 @@ namespace vote.Controllers
             return Ok(new ResponseState(result));
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteById(int id)
         {

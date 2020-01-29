@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using IdentityServer4;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace vote.UserController
 {
@@ -50,7 +51,7 @@ namespace vote.UserController
             _events = events;
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         //[Authorize(AuthenticationSchemes = IdentityServerConstants.LocalApi.AuthenticationScheme)]
         [HttpGet]
         public async Task<ActionResult> GetAllUsers()
@@ -74,7 +75,7 @@ namespace vote.UserController
             return CreatedAtAction(nameof(Register), new ResponseState(result));
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete]
         public async Task<ActionResult> UnRegister()
         {
@@ -98,7 +99,7 @@ namespace vote.UserController
             return Ok(new ResponseState(null));
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
@@ -116,9 +117,9 @@ namespace vote.UserController
                 return null;
             }
 
-            await _events.RaiseAsync(new UserLoginSuccessEvent(result.Username, $"{result.Id}", result.Username));
+            await _events.RaiseAsync(new UserLoginSuccessEvent(result.Username, result.Username, result.Username));
 
-            await HttpContext.SignInAsync($"{user.Id}", user.Username, UserHelperExtensions.GetAuthenticationProperties());
+            await HttpContext.SignInAsync(result.Username, user.Username, UserHelperExtensions.GetAuthenticationProperties());
 
             return result;
         }

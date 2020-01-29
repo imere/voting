@@ -22,6 +22,8 @@ using vote.Models;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using IdentityServer4.Configuration;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace vote
 {
@@ -165,8 +167,13 @@ namespace vote
             }
             else
             {
-                builder.AddDeveloperSigningCredential();
-                //throw new Exception("need to configure key material");
+                var subjectName = Configuration.GetValue<string>("SubjectName");
+
+                var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+                store.Open(OpenFlags.ReadOnly);
+
+                var certificates = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, true);
+                builder.AddSigningCredential(certificates[0]);
             }
 
             services.AddLocalApiAuthentication();
@@ -184,7 +191,7 @@ namespace vote
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = "oidc";
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
                 .AddIdentityServerAuthentication(options =>
                 {

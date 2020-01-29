@@ -11,6 +11,7 @@ import {
 } from "@/constants/AuthActions";
 import { AppThunkAction, None } from "@/types";
 import { Http } from "@/shared";
+import { API_USER, API_ORIGIN } from "@/shared/request";
 
 export interface UserAuthentication {
   username: string;
@@ -32,7 +33,7 @@ export type AuthAction = RequestLoginAction | RequestLoginCompleteAction | Reque
 class IdentityService {
   private _manager: UserManager;
   private CLIENT_SETTINGS: UserManagerSettings = {
-    "authority": "http://localhost:61598",
+    "authority": `${API_ORIGIN}`,
     "client_id": "js",
     "redirect_uri": "http://localhost:5000/auth-callback",
     "post_logout_redirect_uri": "http://localhost:5000",
@@ -42,6 +43,7 @@ class IdentityService {
 
   constructor() {
     this._manager = new UserManager(this.CLIENT_SETTINGS);
+    this._manager.clearStaleState();
   }
 
   requestLogin = (): RequestLoginAction => ({
@@ -60,13 +62,11 @@ class IdentityService {
   login = (user: UserAuthentication): AppThunkAction<AuthAction> => async (dispatch) => {
     dispatch(this.requestLogin());
     try {
-      await Http("http://localhost:61598/api/user/login", {
+      await Http(`${API_USER}/login`, {
         "method": "POST",
         "headers": {
           "Content-Type": "application/json",
         },
-        "mode": "cors",
-        "credentials": "include",
         "body": JSON.stringify(user),
       });
       const result = await this._manager.getUser();
