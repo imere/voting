@@ -1,9 +1,9 @@
-import { log, AuthState } from "./auth";
+import { auth, AuthState } from "./auth";
 
 export type ApplicationState = {
-  log: AuthState;
+  auth: AuthState;
 }
 
 export default {
-  log
+  auth
 };

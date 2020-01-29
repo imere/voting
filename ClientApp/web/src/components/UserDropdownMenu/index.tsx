@@ -4,7 +4,7 @@ import { ClickParam } from "antd/lib/menu";
 import { connect } from "react-redux";
 import { ApplicationState } from "@reducers/index";
 import { iu } from "@actions/index";
-import { AuthAction, UserAuthentication } from "@actions/auth";
+import { AuthAction } from "@actions/auth";
 import { User } from "oidc-client";
 
 import { Disp, None } from "@/types";
@@ -15,7 +15,6 @@ interface UserDropdownMenuReceivedProps {
   user: User | None;
 }
 interface UserDropdownMenuOwnDispatchProps {
-  login: (user: UserAuthentication) => void;
   logout: () => void;
 }
 type UserDropdownMenuProps = UserDropdownMenuOwnDispatchProps &
@@ -30,12 +29,7 @@ type UserDropdownMenuItem =
   | undefined;
 
 const UserDropdownMenuComponent = (props: UserDropdownMenuProps) => {
-  const normalItems: UserDropdownMenuItem[] = [
-    {
-      "content": "登录",
-      "onClick": () => props.login({ "username": "ausername", "password": "apassword" }),
-    },
-  ];
+  const normalItems: UserDropdownMenuItem[] = [];
   const loggedItems: UserDropdownMenuItem[] = [
     {
       "content": "用户中心",
@@ -67,7 +61,6 @@ const UserDropdownMenuComponent = (props: UserDropdownMenuProps) => {
 const mapDispatchToProps = (
   dispatch: UserDropdownMenuDispatch
 ): UserDropdownMenuOwnDispatchProps => ({
-  "login": (user: UserAuthentication) => dispatch(iu.login(user)),
   "logout": () => dispatch(iu.logout()),
 });
 

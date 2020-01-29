@@ -11,7 +11,7 @@ export interface AuthState {
   token?: string;
 }
 
-export const log: Reducer<AuthState, AuthAction> = (state = {}, action): AuthState => {
+export const auth: Reducer<AuthState, AuthAction> = (state = {}, action): AuthState => {
   switch (action.type) {
   case AuthActions.LOGIN:
     return {

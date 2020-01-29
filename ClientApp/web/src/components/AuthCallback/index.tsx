@@ -16,7 +16,7 @@ interface CallbackOwnDispatchProps {
 }
 
 interface CallbackOwnStateProps {
-  "log": AuthState;
+  "auth": AuthState;
 }
 
 type CallbackProps = CallbackOwnStateProps &
@@ -31,11 +31,11 @@ class AuthCallback extends React.PureComponent<CallbackProps, CallbackOwnState> 
     this.props.completeAuthentication(() => setTimeout(() => location.href = "/"));
   }
 
-  render = () => <>正在验证</>;
+  render = () => <>正在验话</>;
 }
 
 const mapStateToProps = (state: ApplicationState): CallbackOwnStateProps => ({
-  "log": state.log
+  "auth": state.auth
 });
 
 const mapDispatchToProps = (

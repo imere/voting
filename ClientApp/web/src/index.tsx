@@ -20,7 +20,7 @@ iu.getUser().then((user) => {
     getAttribute("href") as string;
   const history = createBrowserHistory({ "basename": baseUrl });
 
-  initialState.log.user = user;
+  initialState.auth.user = user;
   const store = configureStore(history, initialState);
 
   ReactDOM.render(

@@ -5,32 +5,31 @@ import React from "react";
 import { Avatar, Dropdown, Icon } from "antd";
 import { connect } from "react-redux";
 import { ApplicationState } from "@reducers/index";
+
 import { AuthState } from "@/reducers/auth";
 
 interface UserDropdownOwnStateProps {
-  log: AuthState;
+  auth: AuthState;
 }
 
 type UserDropdownProps = UserDropdownOwnStateProps;
 
 const UserDropdownComponent = (props: UserDropdownProps) => (
-  <div className="user-dropdown">
-    <Dropdown
-      className="user-dropdown_dropdown"
-      overlay={<UserDropdownMenu user={props.log.user} />}
-    >
-      <span>
-        <Avatar icon={<Icon type="user" />} />
-        {props.log.user && (
-          <span className="username">{props.log.user.profile.sub}</span>
-        )}
-      </span>
-    </Dropdown>
-  </div>
+  <Dropdown
+    className="user-dropdown"
+    overlay={<UserDropdownMenu user={props.auth.user} />}
+  >
+    <span>
+      <Avatar icon={<Icon type="user" />} />
+      {props.auth.user && (
+        <span className="user-dropdown_username">{props.auth.user.profile.sub}</span>
+      )}
+    </span>
+  </Dropdown>
 );
 
 const mapStateToProps = (state: ApplicationState): UserDropdownOwnStateProps => ({
-  "log": state.log,
+  "auth": state.auth,
 });
 
 export default connect(mapStateToProps)(UserDropdownComponent);
