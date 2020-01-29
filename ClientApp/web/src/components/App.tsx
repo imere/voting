@@ -5,6 +5,7 @@ import ContentComponent from "./Content";
 import FooterComponent from "./Footer";
 import HeaderComponent from "./Header";
 import SiderComponent from "./Sider";
+import { Switch, Route } from "react-router";
 
 export default function App ()  {
   const [
@@ -20,7 +21,11 @@ export default function App ()  {
           collapsed={collapsed}
           toggleTrigger={() => toggleTrigger(!collapsed)}
         />
-        <ContentComponent />
+        <ContentComponent>
+          <Switch>
+            <Route></Route>
+          </Switch>
+        </ContentComponent>
         <FooterComponent />
       </Layout>
     </Layout>

@@ -64,11 +64,11 @@ const UserDropdownMenuComponent = (props: UserDropdownMenuProps) => {
   );
 };
 
-const mapDispatchToState = (
+const mapDispatchToProps = (
   dispatch: UserDropdownMenuDispatch
 ): UserDropdownMenuOwnDispatchProps => ({
   "login": (user: UserAuthentication) => dispatch(iu.login(user)),
   "logout": () => dispatch(iu.logout()),
 });
 
-export default connect(null, mapDispatchToState)(UserDropdownMenuComponent);
+export default connect(null, mapDispatchToProps)(UserDropdownMenuComponent);
