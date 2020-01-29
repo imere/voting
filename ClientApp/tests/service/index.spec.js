@@ -6,9 +6,9 @@ let server;
 
 const request = () => supertest(server = app.listen(3000));
 
-describe("api", function () {
+describe("koa", function () {
 
-  it("koa api success", function (done) {
+  it("api success", function (done) {
     request().
       get("/").
       set("Accept", "application/json").

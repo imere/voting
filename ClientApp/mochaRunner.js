@@ -3,7 +3,7 @@ const Mocha = require("mocha");
 const mocha = new Mocha({
   "reporter": "mochawesome",
   "reporterOptions": {
-    "reportDir": "docs/mochawesome"
+    "reportDir": "docs/coverage/mochawesome"
   }
 });
 
