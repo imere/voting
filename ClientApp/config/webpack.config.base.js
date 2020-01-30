@@ -71,7 +71,7 @@ const baseConfig = {
     },
   },
   "module": {
-    "noParse": /jquery|lodash|moment|immutable/,
+    // "noParse": /jquery|lodash|moment|immutable/,
     "rules": [
       EslintLoader(currentEnv),
       PugLoader(currentEnv),
