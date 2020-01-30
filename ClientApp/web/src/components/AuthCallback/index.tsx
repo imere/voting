@@ -1,5 +1,4 @@
 import React from "react";
-import { iu } from "@actions/index";
 import { connect } from "react-redux";
 
 import { ApplicationState } from "@/reducers";
@@ -31,7 +30,7 @@ class AuthCallback extends React.PureComponent<CallbackProps, CallbackOwnState> 
     this.props.completeAuthentication(() => setTimeout(() => location.href = "/"));
   }
 
-  render = () => <>正在验话</>;
+  render = () => <>正在验证</>;
 }
 
 const mapStateToProps = (state: ApplicationState): CallbackOwnStateProps => ({
@@ -41,7 +40,7 @@ const mapStateToProps = (state: ApplicationState): CallbackOwnStateProps => ({
 const mapDispatchToProps = (
   dispatch: CallbackDispatch
 ): CallbackOwnDispatchProps => ({
-  "completeAuthentication": (cb?: Function) => dispatch(iu.completeAuthentication(cb))
+  "completeAuthentication": (cb?: Function) => import("@actions/index").then(({ iu }) => dispatch(iu.completeAuthentication(cb)))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthCallback);

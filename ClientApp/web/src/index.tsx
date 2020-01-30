@@ -1,15 +1,15 @@
 import "./index.scss";
 
-import React from "react";
 import ReactDOM from "react-dom";
+import React, { Suspense } from "react";
 import { createBrowserHistory } from "history";
 import { Provider } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
+import { Spin } from "antd";
 
 import * as serviceWorker from "./serviceWorker";
-import App from "./components/App";
-import AuthCallback from "./components/AuthCallback";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { configureStore } from "./store";
 import { initialState } from "./reducers/initialState";
 import { iu } from "./actions";
@@ -23,15 +23,26 @@ iu.getUser().then((user) => {
   initialState.auth.user = user;
   const store = configureStore(history, initialState);
 
+  const fallback =
+    <div style={{ width: "100%", paddingTop: "100px", textAlign: "center" }}>
+      <Spin />
+    </div>;
+
   ReactDOM.render(
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <Switch>
-          <Route exact path="/auth-callback" render={() => <AuthCallback />} />
-          <Route path="/" render={() => <App />} />
-        </Switch>
-      </ConnectedRouter>
-    </Provider>,
+    <ErrorBoundary>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <Suspense fallback={fallback}>
+            <BrowserRouter>
+              <Switch>
+                <Route exact path="/auth-callback" component={React.lazy(() => import("./components/AuthCallback"))} />
+                <Route path="/" component={React.lazy(() => import("./components/App"))} />
+              </Switch>
+            </BrowserRouter>
+          </Suspense>
+        </ConnectedRouter>
+      </Provider>
+    </ErrorBoundary>,
     document.getElementById("root")
   );
 

@@ -10,8 +10,7 @@ import {
   ActionLogoutComplete,
 } from "@/constants/AuthActions";
 import { AppThunkAction, None } from "@/types";
-import { Http } from "@/shared";
-import { API_USER, API_ORIGIN } from "@/shared/request";
+import { API_ORIGIN, API_USER, Http } from "@/shared";
 
 export interface UserAuthentication {
   username: string;
