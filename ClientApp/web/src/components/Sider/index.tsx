@@ -1,5 +1,6 @@
 import "./Sider.scss";
 
+import logo from "@components/logo.svg";
 import React from "react";
 import { Icon, Layout, Menu } from "antd";
 
@@ -11,8 +12,11 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 const SiderComponent: React.FC<SiderReceivedProps> = (props: SiderReceivedProps) => (
-  <Sider trigger={null} collapsible collapsed={props.collapsed}>
-    <div className="logo" />
+  <Sider className="sider" trigger={null} collapsible collapsed={props.collapsed}>
+    <div className="sider_logo">
+      <img alt="logo" src={logo} className="sider_logo_image"></img>
+      <span className="sider_logo_text">问卷系统</span>
+    </div>
     <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
       <Menu.Item key="1">
         <Icon type="pie-chart" />
