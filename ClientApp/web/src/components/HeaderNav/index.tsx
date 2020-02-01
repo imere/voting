@@ -1,7 +1,8 @@
-import "./HeaderNav.scss";
-
-import UserDropdown from "@components/UserDropdown";
 import React from "react";
+
+import UserDropdown from "@/components/HeaderUserDisplay";
+
+import("./HeaderNav.scss");
 
 interface HeaderNavProps {}
 

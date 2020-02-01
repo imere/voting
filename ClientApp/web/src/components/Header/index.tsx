@@ -1,8 +1,8 @@
-import "./Header.scss";
-
 import HeaderNav from "@components/HeaderNav";
 import React from "react";
 import { Icon, Layout } from "antd";
+
+import("./Header.scss");
 
 const { Header } = Layout;
 

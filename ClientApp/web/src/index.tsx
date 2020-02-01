@@ -1,18 +1,18 @@
-import "./index.scss";
-
 import ReactDOM from "react-dom";
 import React, { Suspense } from "react";
 import { createBrowserHistory } from "history";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
-import { Spin } from "antd";
 
 import * as serviceWorker from "./serviceWorker";
 import ErrorBoundary from "./components/ErrorBoundary";
+import Fallback from "./components/Fallback";
 import { configureStore } from "./store";
 import { initialState } from "./reducers/initialState";
 import { iu } from "./actions";
+
+import("./index.scss");
 
 iu.getUser().then((user) => {
   const baseUrl = document.
@@ -23,16 +23,11 @@ iu.getUser().then((user) => {
   initialState.auth.user = user;
   const store = configureStore(history, initialState);
 
-  const fallback =
-    <div style={{ width: "100%", paddingTop: "100px", textAlign: "center" }}>
-      <Spin />
-    </div>;
-
   ReactDOM.render(
     <ErrorBoundary>
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <Suspense fallback={fallback}>
+          <Suspense fallback={<Fallback />}>
             <BrowserRouter>
               <Switch>
                 <Route exact path="/auth-callback" component={React.lazy(() => import("./components/AuthCallback"))} />

@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-class AccountSettings extends React.PureComponent{
+class AccountSettings extends React.PureComponent {
   render = () => <>AccountSettings</>
 }
 

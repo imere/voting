@@ -9,6 +9,9 @@
   margin: 16px;
   text-align: center;
   overflow: hidden;
+  &:hover {
+    cursor: pointer;
+  }
   &:after {
     content: "";
     display: inline-block;

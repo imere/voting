@@ -1,25 +1,29 @@
 import React, { Suspense, useState } from "react";
-import { Layout, Spin } from "antd";
+import { Layout } from "antd";
 import { Route, Switch } from "react-router";
-import { BrowserRouter } from "react-router-dom";
 
+import { Routes } from "@/constants";
+
+import Fallback from "./Fallback";
 import FooterComponent from "./Footer";
 import HeaderComponent from "./Header";
 
-const SiderComponentLazy = React.lazy(() => import("./Sider"));
+const SiderLazy = React.lazy(() => import("./Sider"));
 
-const ContentComponentLazy = React.lazy(() => import("./Content"));
+const ContentLazy = React.lazy(() => import("./Content"));
+
+const AccountSettingsLazy = React.lazy(() => import("./AccountSettings"));
 
 export default function App() {
   const [
     collapsed,
     toggleTrigger
-  ] = useState(false);
+  ] = useState(true);
 
   return (
-    <Suspense fallback>
+    <Suspense fallback={<Fallback />}>
       <Layout style={{ "minHeight": "100vh" }}>
-        <SiderComponentLazy collapsed={collapsed} />
+        <SiderLazy collapsed={collapsed} />
 
         <Layout>
           <HeaderComponent
@@ -27,15 +31,11 @@ export default function App() {
             toggleTrigger={() => toggleTrigger(!collapsed)}
           />
 
-          <ContentComponentLazy>
-            <Suspense fallback={<Spin />}>
-              <BrowserRouter>
-                <Switch>
-                  <Route></Route>
-                </Switch>
-              </BrowserRouter>
-            </Suspense>
-          </ContentComponentLazy>
+          <ContentLazy>
+            <Switch>
+              <Route path={Routes.ACCOUNT_SETTINGS} component={AccountSettingsLazy}></Route>
+            </Switch>
+          </ContentLazy>
 
           <FooterComponent />
 

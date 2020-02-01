@@ -154,6 +154,7 @@ const baseConfig = {
       "template": "./web/public/index.html",
       "inject": true,
       PUBLIC_PATH,
+      isProd,
       "favicon": "./web/public/favicon.ico",
       "minify": {
         "removeComments": isProd,
@@ -174,6 +175,8 @@ const baseConfig = {
         ? CssDist("[name].[contenthash:5].css")
         : CssDist("[name].css"),
       "ignoreOrder": false,
+      "url": false,
+      "modules": true,
     }),
     new WorkboxPlugin.GenerateSW({
       // these options encourage the ServiceWorkers to get in there fast
