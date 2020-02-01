@@ -7,32 +7,22 @@ using System.Threading.Tasks;
 
 namespace vote.Models
 {
-    public class Poll
+    public class PollAnswer
     {
         [Key]
         public long Id { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(128)")]
-        public string Title { get; set; }
-
-        [Column(TypeName = "varchar(512)")]
-        public string Description { get; set; }
+        [DataType(DataType.Text)]
+        public string Answer { get; set; }
 
         [Required]
         [Column(TypeName = "datetime2")]
         public DateTime CreatedAt { get; set; }
 
-        [ForeignKey("PollPropId")]
-        public PollProp PollProp { get; set; }
-
-        public long? PollPropId { get; set; }
-
-        public ICollection<PollData> PollDatas { get; set; }
-
-        public ICollection<PollAnswer> PollAnswers { get; set; }
-
         [Required]
+        public Poll Poll { get; set; }
+
         public ApplicationUser User { get; set; }
     }
 }

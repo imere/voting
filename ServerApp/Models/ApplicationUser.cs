@@ -11,7 +11,7 @@ namespace vote.Models
     public class ApplicationUser
     {
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required]
         [StringLength(25, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
@@ -23,7 +23,20 @@ namespace vote.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [ForeignKey("UserId")]
+        [Required]
+        [StringLength(10, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+        [Column(TypeName = "varchar(128)")]
+        public string Displayname { get; set; }
+
+        [Required]
+        [Column(TypeName = "datetime2")]
+        public DateTime CreatedAt { get; set; }
+
+        [Column(TypeName = "datetime2")]
+        public DateTime? LastLogin { get; set; }
+
         public ICollection<Poll> Polls { get; set; }
+
+        public ICollection<PollAnswer> PollAnswers { get; set; }
     }
 }

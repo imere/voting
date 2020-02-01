@@ -54,11 +54,7 @@ namespace vote.Data
                         where o.Username == user.Username && o.Password == user.Password
                         select o
                     )
-                    .SingleAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return null;
+                    .SingleOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -82,7 +78,7 @@ namespace vote.Data
             }
         }
 
-        public async Task<ApplicationUser> GetUserById(int id)
+        public async Task<ApplicationUser> GetUserById(long id)
         {
             try
             {
@@ -91,11 +87,7 @@ namespace vote.Data
                          where o.Id == id
                          select o
                     )
-                    .SingleAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return null;
+                    .SingleOrDefaultAsync();
             }
             catch (Exception ex)
             {

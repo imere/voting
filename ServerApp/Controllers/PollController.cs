@@ -30,12 +30,14 @@ namespace vote.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-            var polls = (await _service.GetAllPolls())
+            var polls = (await _service.GetAllPublicPolls())
                 .Select(poll => new
                 {
                     poll.Id,
                     poll.Title,
-                    poll.Content
+                    poll.Description,
+                    poll.CreatedAt,
+                    poll.User.Displayname,
                 });
 
             return Ok(new ResponseState(polls));
@@ -46,7 +48,7 @@ namespace vote.Controllers
         {
             try
             {
-                Poll result = await _service.GetPollById(id);
+                Poll result = await _service.GetPublicPollById(id);
 
                 if (null == result) return Ok(new ResponseState(null));
 
@@ -54,7 +56,6 @@ namespace vote.Controllers
                 {
                     result.Id,
                     result.Title,
-                    result.Content
                 };
 
                 return Ok(new ResponseState(poll));
@@ -69,9 +70,7 @@ namespace vote.Controllers
         [HttpPut]
         public async Task<ActionResult<ResponseState>> Add([FromBody] Poll poll)
         {
-            int userId = UserHelperExtensions.ParseCookieUserId(User);
-
-            Poll result = await _service.AddPoll(userId, poll);
+            Poll result = await _service.AddPollByUserId(UserHelperExtensions.ParseCookieUserId(User), poll);
 
             if (null == result) return BadRequest();
 
@@ -82,7 +81,7 @@ namespace vote.Controllers
         [HttpPost]
         public async Task<ActionResult> Update([FromBody] Poll poll)
         {
-            Poll result = await _service.UpdatePoll(poll);
+            Poll result = await _service.UpdatePollByUserId(UserHelperExtensions.ParseCookieUserId(User), poll);
 
             if (null == result) return BadRequest();
 
@@ -93,7 +92,7 @@ namespace vote.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteById(int id)
         {
-            Poll result = await _service.DeletePollById(new Poll { Id = id });
+            await _service.DeletePollByUserId(UserHelperExtensions.ParseCookieUserId(User), new Poll { Id = id });
             return NoContent();
         }
     }

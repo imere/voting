@@ -15,7 +15,11 @@ namespace vote.Data
 
         public DbSet<Poll> Poll { get; set; }
 
-        public DbSet<PollProps> PollProps { get; set; }
+        public DbSet<PollProp> PollProp { get; set; }
+
+        public DbSet<PollData> PollData { get; set; }
+
+        public DbSet<PollAnswer> PollAnswer { get; set; }
 
         public VoteContext(DbContextOptions<VoteContext> options)
             : base(options)
@@ -26,14 +30,23 @@ namespace vote.Data
             base.OnModelCreating(builder);
 
             builder.Entity<ApplicationUser>()
-                .Property(user => user.Username)
-                .IsRequired();
-            builder.Entity<ApplicationUser>()
                 .HasIndex(user => user.Username)
                 .IsUnique();
             builder.Entity<ApplicationUser>()
-                .Property(user => user.Password)
-                .IsRequired();
+                .HasIndex(user => user.Displayname)
+                .IsUnique();
+
+            builder.Entity<PollProp>()
+                .Property(props => props.Public)
+                .HasDefaultValue(true);
+
+            builder.Entity<PollData>()
+                .Property(data => data.Required)
+                .HasDefaultValue(true);
+            var pd = new PollData();
+            builder.Entity<PollData>()
+                .HasIndex(nameof(pd.Order), $"{nameof(pd.Poll)}{nameof(pd.Poll.Id)}")
+                .IsUnique();
         }
     }
 }
