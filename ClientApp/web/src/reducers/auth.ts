@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
-import { AuthActions } from "@constants/index";
 import { User } from "oidc-client";
 
+import { AuthActions } from "@/constants/index";
 import { AuthAction } from "@/actions/auth";
 import { None } from "@/types";
 

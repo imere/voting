@@ -1,7 +1,7 @@
-const opts = require("./tsconfig.json").compilerOptions;
+const { compilerOptions } = require("./tsconfig.json");
 const alias = {};
-if (opts) {
-  const { paths } = opts;
+if (compilerOptions) {
+  const { paths } = compilerOptions;
   if (paths) {
     Object.keys(paths).forEach((k) => alias[k] = paths[k][0]);
   }

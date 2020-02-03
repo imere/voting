@@ -2,12 +2,12 @@ import React from "react";
 import { Dropdown, Menu } from "antd";
 import { ClickParam } from "antd/lib/menu";
 import { connect } from "react-redux";
-import { ApplicationState } from "@reducers/index";
-import { iu } from "@actions/index";
-import { AuthAction } from "@actions/auth";
 import { User } from "oidc-client";
 import { Link } from "react-router-dom";
 
+import { ApplicationState } from "@/reducers/index";
+import { iu } from "@/actions/index";
+import { AuthAction } from "@/actions/auth";
 import { Disp, None } from "@/types";
 import { Routes } from "@/constants";
 

@@ -40,7 +40,7 @@ const mapStateToProps = (state: ApplicationState): CallbackOwnStateProps => ({
 const mapDispatchToProps = (
   dispatch: CallbackDispatch
 ): CallbackOwnDispatchProps => ({
-  "completeAuthentication": (cb?: Function) => import("@actions/index").then(({ iu }) => dispatch(iu.completeAuthentication(cb)))
+  "completeAuthentication": (cb?: Function) => import("@/actions").then(({ iu }) => dispatch(iu.completeAuthentication(cb)))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthCallback);

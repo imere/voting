@@ -10,18 +10,6 @@
     "paths": {
       "@/*": [
         "web/src/*"
-      ],
-      "@components/*": [
-        "web/src/components/*"
-      ],
-      "@actions/*": [
-        "web/src/actions/*"
-      ],
-      "@reducers/*": [
-        "web/src/reducers/*"
-      ],
-      "@constants/*": [
-        "web/src/constants/*"
       ]
     },
     "typeRoots": [

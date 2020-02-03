@@ -1,7 +1,7 @@
 import { Action } from "redux";
 import { User, UserManager, UserManagerSettings } from "oidc-client";
-import { AuthActions } from "@constants/index";
 
+import { AuthActions } from "@/constants";
 import {
   ActionLogin,
   ActionLoginErr,

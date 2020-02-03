@@ -1,9 +1,9 @@
 import React from "react";
 import { Avatar, Icon } from "antd";
 import { connect } from "react-redux";
-import { ApplicationState } from "@reducers/index";
 
 import UserDropdownMenu from "@/components/HeaderUserDropdown";
+import { ApplicationState } from "@/reducers/index";
 import { AuthState } from "@/reducers/auth";
 
 import("./HeaderUserDisplay.scss");

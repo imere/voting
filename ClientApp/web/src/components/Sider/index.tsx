@@ -1,7 +1,8 @@
-import logo from "@components/logo.svg";
 import React from "react";
 import { Icon, Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
+
+import logo from "@/components/logo.svg";
 
 import("./Sider.scss");
 
