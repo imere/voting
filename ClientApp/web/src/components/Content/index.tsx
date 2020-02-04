@@ -1,6 +1,5 @@
 import React from "react";
-import { Breadcrumb, Layout } from "antd";
-import { useRouteMatch } from "react-router";
+import { Layout } from "antd";
 
 const { Content } = Layout;
 
@@ -9,16 +8,7 @@ interface ContentReceivedProps {
 }
 
 const ContentComponent: React.FC<ContentReceivedProps> = (props: ContentReceivedProps) => (
-  <Content style={{ "margin": "0 16px" }}>
-    <Breadcrumb style={{ "margin": "16px 0" }}>
-      {
-        useRouteMatch().path.
-          split("/").filter((p) => p !== "").
-          map((name) => (
-            <Breadcrumb.Item key={name}>{name}</Breadcrumb.Item>
-          ))
-      }
-    </Breadcrumb>
+  <Content style={{ "margin": "40px 25px 0 25px" }}>
     {props.children}
   </Content>
 );

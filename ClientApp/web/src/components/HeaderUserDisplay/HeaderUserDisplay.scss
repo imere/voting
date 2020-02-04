@@ -1,3 +1,15 @@
+@import "@/shared/shared.scss";
+
+.user-dropdown {
+  display: block;
+  padding: $header-item-padding;
+  transition: all 0.1s linear;
+  &:hover {
+    background-color: $header-color-hover;
+    cursor: pointer;
+  }
+}
+
 .user-display_username {
   display: inline-block;
   padding: 0 5px;

@@ -1,5 +1,8 @@
 import { ApplicationState } from ".";
 
 export const initialState: ApplicationState = {
-  "auth": {}
+  "auth": {
+    user: null,
+    pending: false,
+  }
 };

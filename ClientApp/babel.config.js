@@ -60,6 +60,20 @@ module.exports = {
         "libraryDirectory": "es",
         "style": true
       }
+    ],
+    [
+      "react-css-modules",
+      {
+        "generateScopedName": "[name]__[local]--[hash:base64:5]",
+        "filetypes": {
+          ".scss": {
+            "syntax": "postcss-scss",
+          },
+          ".less": {
+            "syntax": "postcss-less",
+          },
+        }
+      }
     ]
   ],
   "env": {

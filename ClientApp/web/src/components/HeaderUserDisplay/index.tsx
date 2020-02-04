@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Icon } from "antd";
+import { Avatar, Icon, Spin } from "antd";
 import { connect } from "react-redux";
 
 import UserDropdownMenu from "@/components/HeaderUserDropdown";
@@ -8,24 +8,26 @@ import { AuthState } from "@/reducers/auth";
 
 import("./HeaderUserDisplay.scss");
 
-interface UserDropdownOwnStateProps {
+interface HeaderUserDisplayOwnStateProps {
   auth: AuthState;
 }
 
-type UserDropdownProps = UserDropdownOwnStateProps;
+type HeaderUserDisplayProps = HeaderUserDisplayOwnStateProps;
 
-const HeaderUserDisplay = (props: UserDropdownProps) => (
-  <UserDropdownMenu user={props.auth.user}>
-    <span>
-      <Avatar icon={<Icon type="user" />} />
-      {props.auth.user && (
-        <span className="user-display_username">{props.auth.user.profile.sub}</span>
-      )}
-    </span>
-  </UserDropdownMenu>
+const HeaderUserDisplay = (props: HeaderUserDisplayProps) => (
+  <div className="user-dropdown">
+    <UserDropdownMenu user={props.auth.user}>
+      <Spin spinning={props.auth.pending}>
+        <Avatar icon={<Icon type="user" />} />
+        {props.auth.user && (
+          <span className="user-display_username">{props.auth.user.profile.sub}</span>
+        )}
+      </Spin>
+    </UserDropdownMenu>
+  </div>
 );
 
-const mapStateToProps = (state: ApplicationState): UserDropdownOwnStateProps => ({
+const mapStateToProps = (state: ApplicationState): HeaderUserDisplayOwnStateProps => ({
   "auth": state.auth,
 });
 

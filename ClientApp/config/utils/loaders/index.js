@@ -7,6 +7,7 @@ module.exports = {
   "PugLoader": require("./PugLoader").createPugLoader,
   "SassLoader": require("./SassLoader").createSassLoader,
   "ScssLoader": require("./ScssLoader").createScssLoader,
+  "ScssModuleLoader": require("./ScssModuleLoader").createScssLoader,
   "LessLoader": require("./LessLoader").createLessLoader,
   "BabelLoader": require("./BabelLoader").createBabelLoader,
   "TsxLoader": require("./TsxLoader").createTsxLoader,

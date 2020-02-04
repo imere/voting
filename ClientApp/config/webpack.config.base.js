@@ -9,7 +9,7 @@ const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const ForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
-// const HardSourcePlugin = require('hard-source-webpack-plugin');
+// const HardSourcePlugin = require("hard-source-webpack-plugin");
 
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const WebpackMerge = require("webpack-merge");
@@ -27,6 +27,7 @@ const {
   CssLoader,
   LessLoader,
   ScssLoader,
+  ScssModuleLoader,
   SassLoader,
   BabelLoader,
   ImageLoader,
@@ -78,6 +79,7 @@ const baseConfig = {
       CssLoader(currentEnv),
       LessLoader(currentEnv),
       ScssLoader(currentEnv),
+      ScssModuleLoader(currentEnv),
       SassLoader(currentEnv),
       BabelLoader(currentEnv),
       ImageLoader(currentEnv),
@@ -119,30 +121,33 @@ const baseConfig = {
     ]),
     // new HardSourcePlugin({
     //   // Either an absolute path or relative to webpack's options.context.
-    //   cacheDirectory: './node_modules/.cache/hard-source/[confighash]',
+    //   cacheDirectory: require("path").resolve(__dirname, "../node_modules/.cache/hard-source/[confighash]"),
     //   // Either a string of object hash function given a webpack config.
     //   configHash: function (webpackConfig) {
     //     // node-object-hash on npm can be used to build this.
-    //     return require('node-object-hash')({ sort: false }).hash(webpackConfig);
+    //     return require("node-object-hash")({ sort: false }).hash(webpackConfig);
     //   },
     //   // Either false, a string, an object, or a project hashing function.
     //   environmentHash: {
     //     root: process.cwd(),
     //     directories: [],
-    //     files: ['package-lock.json', 'yarn.lock'],
+    //     files: [
+    //       "package-lock.json",
+    //       "yarn.lock"
+    //     ],
     //   },
     //   // An object.
     //   info: {
     //     // 'none' or 'test'.
-    //     mode: 'none',
+    //     mode: "none",
     //     // 'debug', 'log', 'info', 'warn', or 'error'.
-    //     level: 'error',
+    //     level: "error",
     //   },
     //   // Clean up large, old caches automatically.
     //   cachePrune: {
     //     // Caches younger than `maxAge` are not considered for deletion. They must
     //     // be at least this (default: 2 days) old in milliseconds.
-    //     maxAge: 2 * 24 * 60 * 60 * 1000,
+    //     maxAge: 5 * 60 * 1000,
     //     // All caches together must be larger than `sizeThreshold` before any
     //     // caches will be deleted. Together they must be at least this
     //     // (default: 50 MB) big in bytes.
@@ -175,8 +180,6 @@ const baseConfig = {
         ? CssDist("[name].[contenthash:5].css")
         : CssDist("[name].css"),
       "ignoreOrder": false,
-      "url": false,
-      "modules": true,
     }),
     new WorkboxPlugin.GenerateSW({
       // these options encourage the ServiceWorkers to get in there fast

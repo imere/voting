@@ -5,7 +5,7 @@ import { Spin } from "antd";
 
 const Fallback: React.FC = () =>
   <div className="fallback">
-    <Spin />
+    <Spin size="large" />
   </div>;
 
 export default Fallback;

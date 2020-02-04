@@ -35,7 +35,7 @@ const request: FetchType = async (input, init = {}) => {
     return ALLOWED_ORIGINS.some((origin) => url.startsWith(origin));
   }
 
-  function addCredentials(url: string) {
+  function addCredentials(url: string, init: RequestInit) {
     if (ALLOWED_ORIGINS.some((origin) => url.startsWith(origin))) {
       init.credentials = "include";
     } else {
@@ -58,12 +58,11 @@ const request: FetchType = async (input, init = {}) => {
   }
 
   if (shouldAddCredentials(url)) {
-    addCredentials(url);
+    addCredentials(url, init);
   }
 
   if (shouldAddAuthorization()) {
     await addAuthorization(init);
-    return await fetch(input, init);
   }
 
   return await fetch(input, init);

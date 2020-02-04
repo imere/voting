@@ -1,6 +1,6 @@
 import React from "react";
 
-import UserDropdown from "@/components/HeaderUserDisplay";
+import UserDisplay from "@/components/HeaderUserDisplay";
 
 import("./HeaderNav.scss");
 
@@ -14,8 +14,9 @@ class HeaderNavComponent extends React.Component<
 > {
   render = () => (
     <div className="header-nav">
-      <UserDropdown />
+      <UserDisplay />
     </div>
   );
 }
+
 export default HeaderNavComponent;

@@ -1,8 +1,9 @@
 // @ts-nocheck
 const MiniCSSExtractWebpackPlugin = require("mini-css-extract-plugin");
 
-exports.createSassLoader = (env) => ({
-  "test": /\.sass$/,
+exports.createScssLoader = (env) => ({
+  "test": /\.scss$/,
+  "resourceQuery": "module",
   "use": (env === "production"
     ? [
       {
@@ -10,34 +11,22 @@ exports.createSassLoader = (env) => ({
       },
     ]
     : [
-      // {
-      //   loader: "thread-loader",
-      //   options: {
-      //        // node-sass has a bug which blocks threads from the Node.js thread pool.
-      //     workerParallelJobs: 2,
-      //     name: "css"
-      //   }
-      // },
       {
         "loader": "style-loader",
       },
     ]
   ).concat([
-    // {
-    //   "loader": "cache-loader",
-    //   "options": {
-    //     "cacheDirectory": require("../../config").CacheDir,
-    //   }
-    // },
     {
       "loader": "css-loader",
       "options": {
         "importLoaders": 2,
         "modules": {
           "mode": "local",
-          "localIdentName": "[path][name]__[local]--[hash:base64:5]",
+          "localIdentName":
+            env === "production"
+              ? "[hash:base64:5]"
+              : "[path][name]__[local]",
           "context": require("path").resolve(__dirname, "../../../web/src"),
-          "hashPrefix": "custom-hash",
         },
       }
     },
@@ -46,7 +35,6 @@ exports.createSassLoader = (env) => ({
       "loader": "sass-loader",
       "options": {
         "implementation": require("sass"),
-        "indentedSyntax": true,
       },
     },
   ]),
