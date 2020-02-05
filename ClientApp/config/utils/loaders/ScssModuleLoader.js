@@ -1,9 +1,8 @@
 // @ts-nocheck
 const MiniCSSExtractWebpackPlugin = require("mini-css-extract-plugin");
 
-exports.createScssLoader = (env) => ({
-  "test": /\.scss$/,
-  "resourceQuery": "module",
+exports.createScssModuleLoader = (env) => ({
+  "test": /\.module\.scss$/,
   "use": (env === "production"
     ? [
       {

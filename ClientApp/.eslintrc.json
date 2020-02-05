@@ -60,7 +60,7 @@
     "computed-property-spacing": "error",
     "consistent-this": "error",
     "constructor-super": "error",
-    "curly": "error",
+    "curly": "warn",
     "default-case": "error",
     "dot-location": "warn",
     "dot-notation": "warn",

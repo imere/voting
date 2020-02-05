@@ -1,7 +1,5 @@
 import React from "react";
 
-import { storage } from "@/shared";
-
 interface ErrorBoundaryReceivedProps {
   children?: React.ReactNode
 }
@@ -28,8 +26,6 @@ class ErrorBoundary extends React.PureComponent<ErrorBoundaryReceivedProps, Erro
 
   render() {
     if (this.state.hasError) {
-      storage.lclear();
-      storage.sclear();
       return <h1>出错了/(ㄒoㄒ)/~~</h1>;
     }
 

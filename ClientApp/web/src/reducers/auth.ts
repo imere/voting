@@ -8,7 +8,7 @@ import { None } from "@/types";
 export interface AuthState {
   pending?: boolean;
   user?: User | None;
-  token?: string;
+  username?: string;
 }
 
 export const auth: Reducer<AuthState, AuthAction> = (state = {}, action): AuthState => {
@@ -36,7 +36,7 @@ export const auth: Reducer<AuthState, AuthAction> = (state = {}, action): AuthSt
   case AuthActions.LOGOUT:
     return {
       ...state,
-      "pending": false,
+      "pending": true,
       "user": undefined
     };
 

@@ -1,20 +1,13 @@
+import useFetch, { UseFetch } from "use-http";
+
 import { iu } from "@/actions";
+import { ALLOWED_ORIGINS, API_ORIGIN } from "@/shared";
 
-export const API_ORIGIN = "http://localhost:61598";
-export const API_USER = `${API_ORIGIN}/api/user`;
-export const API_POLL = `${API_ORIGIN}/api/v1/poll`;
+type CustomFetchType = (input: string, init?: RequestInit | undefined) => UseFetch<any>;
 
-export const ALLOWED_ORIGINS = [API_ORIGIN];
-
-type FetchType = (input: RequestInfo, init?: RequestInit | undefined) => Promise<Response>;
-
-const request: FetchType = async (input, init = {}) => {
+const useHttp: CustomFetchType = (input, init = {}) => {
   function shouldCORS() {
-    if ("string" === typeof input) {
-      return !input.startsWith("/") && !input.startsWith(window.location.origin);
-    } else {
-      return true;
-    }
+    return !input.startsWith("/") && !input.startsWith(window.location.origin);
   }
 
   function shouldAddAuthorization() {
@@ -43,29 +36,21 @@ const request: FetchType = async (input, init = {}) => {
     }
   }
 
-  const { method = "GET" } = init;
-  init.method = method;
-
-  let url: string;
-  if ("string" === typeof input) {
-    url = input;
-  } else {
-    url = input.url;
-  }
-
   if (shouldCORS()) {
     init.mode = "cors";
+  } else {
+    init.mode = "no-cors";
   }
 
-  if (shouldAddCredentials(url)) {
-    addCredentials(url, init);
+  if (shouldAddCredentials(input)) {
+    addCredentials(input, init);
   }
 
   if (shouldAddAuthorization()) {
-    await addAuthorization(init);
+    addAuthorization(init);
   }
 
-  return await fetch(input, init);
+  return useFetch(input, init);
 };
 
-export default request;
+export { useHttp };

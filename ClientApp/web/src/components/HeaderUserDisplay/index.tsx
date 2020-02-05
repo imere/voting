@@ -3,10 +3,10 @@ import { Avatar, Icon, Spin } from "antd";
 import { connect } from "react-redux";
 
 import UserDropdownMenu from "@/components/HeaderUserDropdown";
-import { ApplicationState } from "@/reducers/index";
+import { ApplicationState } from "@/reducers";
 import { AuthState } from "@/reducers/auth";
 
-import("./HeaderUserDisplay.scss");
+import styles from "./HeaderUserDisplay.module.scss";
 
 interface HeaderUserDisplayOwnStateProps {
   auth: AuthState;
@@ -14,13 +14,13 @@ interface HeaderUserDisplayOwnStateProps {
 
 type HeaderUserDisplayProps = HeaderUserDisplayOwnStateProps;
 
-const HeaderUserDisplay = (props: HeaderUserDisplayProps) => (
-  <div className="user-dropdown">
-    <UserDropdownMenu user={props.auth.user}>
-      <Spin spinning={props.auth.pending}>
+const HeaderUserDisplay = ({ auth }: HeaderUserDisplayProps) => (
+  <div className={Reflect.get(styles, "user-dropdown-light")}>
+    <UserDropdownMenu user={auth.user}>
+      <Spin spinning={auth.pending}>
         <Avatar icon={<Icon type="user" />} />
-        {props.auth.user && (
-          <span className="user-display_username">{props.auth.user.profile.sub}</span>
+        {auth.user && (
+          <span className={styles["user-display_username"]}>{auth.user.profile.sub}</span>
         )}
       </Spin>
     </UserDropdownMenu>

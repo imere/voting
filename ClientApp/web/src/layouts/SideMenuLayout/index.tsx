@@ -3,34 +3,34 @@ import { Layout } from "antd";
 
 import Content from "@/components/Content";
 import HeaderComponent from "@/components/Header";
+import TopOrSideMenu from "@/components/TopOrSideMenu";
 import FooterComponent from "@/layouts/Footer";
-import TopOrSideMenu from "@/layouts/TopOrSideMenu";
 
-interface SiderLeftLayoutReceivedProps {
+interface SideMenuLayoutReceivedProps {
   collapsed: boolean;
   header: React.ReactNode;
   content: React.ReactNode;
 }
 
-type SideMenuLayoutProps = SiderLeftLayoutReceivedProps;
+type SideMenuLayoutProps = SideMenuLayoutReceivedProps;
 
 const SiderLazy = React.lazy(() => import("@/components/Sider"));
 
-const SideMenuLayout: React.FC<SideMenuLayoutProps> = (props: SideMenuLayoutProps) => (
+const SideMenuLayout: React.FC<SideMenuLayoutProps> = ({ collapsed, header, content }: SideMenuLayoutProps) => (
   <Layout style={{ "minHeight": "100vh" }}>
     
-    <SiderLazy theme="dark" collapsed={props.collapsed}>
-      <TopOrSideMenu theme="dark" mode="inline" />
+    <SiderLazy collapsed={collapsed}>
+      <TopOrSideMenu mode="inline" />
     </SiderLazy>
 
     <Layout>
 
-      <HeaderComponent>
-        {props.header}
+      <HeaderComponent mode="inline">
+        {header}
       </HeaderComponent>
       
       <Content>
-        {props.content}
+        {content}
       </Content>
 
       <FooterComponent />

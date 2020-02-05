@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import { User } from "oidc-client";
 import { Link } from "react-router-dom";
 
-import { ApplicationState } from "@/reducers/index";
-import { iu } from "@/actions/index";
+import { ApplicationState } from "@/reducers";
+import { iu } from "@/actions";
 import { AuthAction } from "@/actions/auth";
 import { Disp, None } from "@/types";
 
@@ -20,7 +20,8 @@ interface HeaderUserDropdownReceivedProps {
 interface HeaderUserDropdownOwnDispatchProps {
   logout: () => void;
 }
-export type HeaderUserDropdownProps = HeaderUserDropdownOwnDispatchProps &
+export type HeaderUserDropdownProps =
+  HeaderUserDropdownOwnDispatchProps &
   HeaderUserDropdownReceivedProps;
 
 const HeaderUserDropdownComponent = (props: HeaderUserDropdownProps) => (

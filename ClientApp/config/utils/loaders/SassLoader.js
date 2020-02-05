@@ -33,12 +33,6 @@ exports.createSassLoader = (env) => ({
       "loader": "css-loader",
       "options": {
         "importLoaders": 2,
-        "modules": {
-          "mode": "local",
-          "localIdentName": "[path][name]__[local]--[hash:base64:5]",
-          "context": require("path").resolve(__dirname, "../../../web/src"),
-          "hashPrefix": "custom-hash",
-        },
       }
     },
     "postcss-loader",

@@ -8,9 +8,9 @@ interface ContextAuthConsumerReceivedProps {
 
 type ContextAuthConsumerProps = ContextAuthConsumerReceivedProps;
 
-const ContextAuthConsumer: React.FC<ContextAuthConsumerProps> = (props: ContextAuthConsumerProps) => (
+const ContextAuthConsumer: React.FC<ContextAuthConsumerProps> = ({ children }: ContextAuthConsumerProps) => (
   <Consumer>
-    {props.children}
+    {children}
   </Consumer>
 );
 

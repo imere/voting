@@ -1,7 +1,11 @@
 import * as AuthActions from "./AuthActions";
 
 export { AuthActions };
+  
+import * as ThemeActions from "./ThemeActions";
 
-import * as Routes from "./routes";
+export { ThemeActions };
+
+import * as Routes from "./Routes";
 
 export { Routes };

@@ -5,7 +5,6 @@ import { AuthContextType, Provider } from "@/contexts/auth";
 import { Disp } from "@/types";
 import { ApplicationState } from "@/reducers";
 import { AuthAction } from "@/actions/auth";
-import { iu } from "@/actions";
 
 type ContextAuthProviderDispatch = Disp<ApplicationState, null, AuthAction>
 
@@ -13,21 +12,21 @@ interface ContextAuthProviderReceivedProps {
   children: React.ReactNode
 }
 
-interface ContextAuthProviderOwnDispatchProps extends AuthContextType{}
+interface ContextAuthProviderOwnDispatchProps extends AuthContextType {}
 
 type ContextAuthProviderProps =
   ContextAuthProviderOwnDispatchProps
   & ContextAuthProviderReceivedProps;
 
-const ContextAuthProvider: React.FC<ContextAuthProviderProps> = (props: ContextAuthProviderProps) => (
-  <Provider value={{ login: props.login, logout: props.logout }}>
-    {props.children}
+const ContextAuthProvider: React.FC<ContextAuthProviderProps> = ({ children, login, logout }: ContextAuthProviderProps) => (
+  <Provider value={{ login: login, logout: logout }}>
+    {children}
   </Provider>
 );
 
 const mapDispatchToProps = (dispatch: ContextAuthProviderDispatch): ContextAuthProviderOwnDispatchProps => ({
-  login: (user) => dispatch(iu.login(user)),
-  logout: () => dispatch(iu.logout()),
+  login: (user) => import("@/actions").then(({ iu }) => dispatch(iu.login(user))),
+  logout: () => import("@/actions").then(({ iu }) => dispatch(iu.logout())),
 });
 
 export default connect(null, mapDispatchToProps)(ContextAuthProvider);

@@ -8,8 +8,6 @@ import { AuthAction } from "@/actions/auth";
 
 type CallbackDispatch = Disp<ApplicationState, undefined, AuthAction>;
 
-interface CallbackReceivedProps {}
-
 interface CallbackOwnDispatchProps {
   completeAuthentication: (callback?: Function) => void;
 }
@@ -19,8 +17,7 @@ interface CallbackOwnStateProps {
 }
 
 type CallbackProps = CallbackOwnStateProps &
-  CallbackOwnDispatchProps &
-  CallbackReceivedProps;
+  CallbackOwnDispatchProps;
 
 interface CallbackOwnState {}
 

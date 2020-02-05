@@ -2,9 +2,26 @@ import { useState } from "react";
 
 import storage from "@/shared/storage";
 
-export default function (key: string, value?: string) {
-  const { sget, sset } = storage;
-  const inital = JSON.parse(sget(key) as string);
+const keySet = new Set();
+
+function useSessionState (key: string, value: any) {
+  const { sget, sset, sremove } = storage;
+  let inital;
+  try {
+    inital = JSON.parse(sget(key) as string);
+    
+    if (null !== inital && typeof inital !== typeof value) {
+      if (keySet.has(key)) {
+        console.error(`Inconsistent session: ${key}`);
+      } else {
+        keySet.add(key); 
+      } 
+    }
+
+  } catch {
+    sremove(key);
+  }
+
   const [
     state,
     setState
@@ -13,6 +30,7 @@ export default function (key: string, value?: string) {
       ? inital
       : value
   );
+  
   const set = function (value: string) {
     sset(key, JSON.stringify(value));
     setState(value);
@@ -23,3 +41,5 @@ export default function (key: string, value?: string) {
     set,
   ];
 }
+
+export { useSessionState };

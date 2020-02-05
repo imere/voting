@@ -1,10 +1,10 @@
-import "./Fallback.scss";
-
 import React from "react";
 import { Spin } from "antd";
 
+import styles from "./Fallback.module.scss";
+
 const Fallback: React.FC = () =>
-  <div className="fallback">
+  <div className={styles.fallback}>
     <Spin size="large" />
   </div>;
 

@@ -11,6 +11,7 @@ import Fallback from "./components/Fallback";
 import { configureStore } from "./store";
 import { initialState } from "./reducers/initialState";
 import { iu } from "./actions";
+import { Routes } from "./constants";
 
 import("./index.scss");
 
@@ -30,7 +31,7 @@ iu.getUser().then((user) => {
           <Suspense fallback={<Fallback />}>
             <BrowserRouter>
               <Switch>
-                <Route exact path="/auth-callback" component={React.lazy(() => import("./components/AuthCallback"))} />
+                <Route exact path={Routes.AUTH_CALLBACK} component={React.lazy(() => import("./components/AuthCallback"))} />
                 <Route path="/" component={React.lazy(() => import("./components/App"))} />
               </Switch>
             </BrowserRouter>
