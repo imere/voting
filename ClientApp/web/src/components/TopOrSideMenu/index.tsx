@@ -3,17 +3,15 @@ import { Icon, Menu } from "antd";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { MenuTheme } from "antd/lib/menu/MenuContext";
 import { connect } from "react-redux";
+import { MenuMode } from "antd/lib/menu";
+import { User } from "oidc-client";
 
-import logo from "@/components/logo.svg";
+import Logo from "@/layouts/Logo";
 import { Routes } from "@/constants";
 import { ApplicationState } from "@/reducers";
-import { AuthState } from "@/reducers/auth";
-
-import styles from "./Common.module.scss";
+import { None } from "@/types";
 
 const { SubMenu } = Menu;
-
-type MenuMode = "vertical" | "vertical-left" | "vertical-right" | "horizontal" | "inline";
 
 interface TopOrSideMenuReceivedProps {
   mode: MenuMode;
@@ -21,7 +19,7 @@ interface TopOrSideMenuReceivedProps {
 
 interface TopOrSideMenuOwnStateProps {
   theme: MenuTheme
-  auth: AuthState
+  user?: User | None
 }
 
 type TopOrSideMenuProps =
@@ -29,20 +27,13 @@ type TopOrSideMenuProps =
   & TopOrSideMenuOwnStateProps
   & TopOrSideMenuReceivedProps;
 
-const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, auth }: TopOrSideMenuProps) => {
-  mode = mode.startsWith("vertical")
-    ? "inline"
-    : mode;
+const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, user }: TopOrSideMenuProps) => {
+  mode = mode.startsWith("vertical") ? "inline" : mode;
   import(`./${mode}.scss`);
 
   return (
     <>
-      <div className={`sider_logo-${mode}`}>
-        <Link to="/">
-          <img alt="logo" src={logo} className={styles.sider_logo_image}></img>
-          <span className={styles.sider_logo_text}>问卷系统</span>
-        </Link>
-      </div>
+      <Logo mode={mode} theme={theme} />
       <Menu theme={theme} defaultSelectedKeys={[location.pathname]} selectedKeys={[location.pathname]} mode={mode}>
         <Menu.Item key={Routes.POLL_LIST}>
           <Link to={Routes.POLL_LIST}>
@@ -51,7 +42,7 @@ const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, au
           </Link>
         </Menu.Item>
         {
-          auth.user
+          user
             ? (
               <SubMenu
                 key="sub1"
@@ -78,12 +69,12 @@ const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, au
         }
       </Menu>
     </>
-  ); 
+  );
 };
 
 const mapStateToProps = (state: ApplicationState): TopOrSideMenuOwnStateProps => ({
   theme: state.context.theme,
-  auth: state.auth,
+  user: state.auth.user,
 });
 
 export default withRouter(connect(mapStateToProps)(TopOrSideMenu));

@@ -1,6 +1,11 @@
 import React from "react";
 import { Layout } from "antd";
 import { MenuMode } from "antd/lib/menu";
+import { SiderTheme } from "antd/lib/layout/Sider";
+import { connect } from "react-redux";
+
+import { ApplicationState } from "@/reducers";
+import { classnames } from "@/shared/classnames";
 
 import styles from "./Header.module.scss";
 
@@ -11,10 +16,25 @@ interface HeaderReceivedProps {
   mode: MenuMode
 }
 
-const HeaderComponent: React.FC<HeaderReceivedProps> = ({ children, mode }: HeaderReceivedProps) => (
-  <Header className={Reflect.get(styles, `header-${mode.startsWith("vertical") ? "inline" : mode}`)}>
+interface HeaderOwnStateProps {
+  theme: SiderTheme
+}
+
+type HeaderProps =
+  HeaderOwnStateProps
+  & HeaderReceivedProps;
+
+const HeaderComponent: React.FC<HeaderProps> = ({ children, mode, theme }: HeaderProps) => (
+  <Header className={classnames(
+    Reflect.get(styles, `header-${mode.startsWith("vertical") ? "inline" : mode}`),
+    Reflect.get(styles, `header-${theme}`),
+  )}>
     {children}
   </Header>
 );
 
-export default HeaderComponent;
+const mapStateToProps = (state: ApplicationState): HeaderOwnStateProps => ({
+  theme: state.context.theme
+});
+
+export default connect(mapStateToProps)(HeaderComponent);

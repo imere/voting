@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Data.SqlClient;
+using System.Security.Claims;
 
 namespace vote.UserController
 {
@@ -51,7 +53,7 @@ namespace vote.UserController
             _events = events;
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         //[Authorize(AuthenticationSchemes = IdentityServerConstants.LocalApi.AuthenticationScheme)]
         [HttpGet]
         public async Task<ActionResult> GetAllUsers()
@@ -66,11 +68,15 @@ namespace vote.UserController
         }
 
         [HttpPut]
-        public async Task<ActionResult> Register([FromBody] ApplicationUser user)
+        public async Task<ActionResult> Register(ApplicationUser user)
         {
+            user.Displayname = null;
+            user.CreatedAt = DateTime.UtcNow;
+            user.LastLogin = null;
+
             ApplicationUser result = await _service.AddUser(user);
 
-            if (null == result) return BadRequest();
+            if (null == result) return BadRequest(new ResponseState(new { Username = "用户名已存在" }, code: 400, text: "error"));
 
             return CreatedAtAction(nameof(Register), new ResponseState(result));
         }
@@ -81,7 +87,7 @@ namespace vote.UserController
         {
             ApplicationUser result = await _service.RemoveUser(new ApplicationUser
             {
-                Id = UserHelperExtensions.ParseCookieUserId(User)
+                Id = long.Parse(User.GetSubjectId())
             });
 
             if (null == result) return BadRequest();
@@ -90,11 +96,11 @@ namespace vote.UserController
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<ResponseState>> Login([FromBody] ApplicationUser user)
+        public async Task<ActionResult<ResponseState>> Login(ApplicationUser user)
         {
             ApplicationUser result = await SignInAsync(user);
 
-            if (null == result) return Redirect("/");
+            if (null == result) return BadRequest(new ResponseState(new { Username = "用户或密码不正确" }, code: 400, text: "error"));
 
             return Ok(new ResponseState(null));
         }
@@ -111,15 +117,15 @@ namespace vote.UserController
         {
             ApplicationUser result = await _service.ValidateUser(user);
 
-            if (null == result)
-            {
-                await _events.RaiseAsync(new UserLoginFailureEvent(user.Username, "invalid credentials"));
-                return null;
-            }
+            if (null == result) return null;
 
-            await _events.RaiseAsync(new UserLoginSuccessEvent(result.Username, result.Username, result.Username));
+            result.LastLogin = DateTime.UtcNow;
 
-            await HttpContext.SignInAsync(result.Username, user.Username, UserHelperExtensions.GetAuthenticationProperties());
+            await _service.UpdateUser(result);
+
+            await _events.RaiseAsync(new UserLoginSuccessEvent(result.Username, $"{result.Id}", result.Username));
+
+            await JwtSignInAsync(result, user.Persist);
 
             return result;
         }
@@ -146,7 +152,13 @@ namespace vote.UserController
 
         private async Task JwtSignInAsync(ApplicationUser user, bool persist = false)
         {
-            await HttpContext.SignInAsync($"{user.Id}", user.Username, UserHelperExtensions.GetAuthenticationProperties(persist));
+            await HttpContext.SignInAsync(
+                $"{user.Id}",
+                user.Username,
+                UserHelperExtensions.GetAuthenticationProperties(persist),
+                new Claim(JwtClaimTypes.Id, $"{user.Id}"),
+                new Claim(JwtClaimTypes.NickName, user.Displayname ?? user.Username),
+                new Claim(JwtClaimTypes.Name, user.Displayname ?? user.Username));
         }
 
         private async Task JwtSignOutAsync()
@@ -154,5 +166,4 @@ namespace vote.UserController
             await HttpContext.SignOutAsync(UserHelperExtensions.JwtAuthScheme);
         }
     }
-
 }

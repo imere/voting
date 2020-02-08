@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using vote.Models;
@@ -16,6 +17,11 @@ namespace vote.Data
                 var result = await _context.User.AddAsync(user);
                 await _context.SaveChangesAsync();
                 return result.Entity;
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException.Message.Contains("duplicate")) return null;
+                else throw ex;
             }
             catch (Exception ex)
             {
@@ -35,14 +41,17 @@ namespace vote.Data
 
                 return result.Entity;
             }
-            catch (InvalidOperationException)
+            catch (Exception)
             {
                 return null;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+        }
+
+        public async Task<ApplicationUser> UpdateUser(ApplicationUser user)
+        {
+            var result = _context.User.Update(user);
+            await _context.SaveChangesAsync();
+            return result.Entity;
         }
 
         public async Task<ApplicationUser> ValidateUser(ApplicationUser user)

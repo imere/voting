@@ -29,9 +29,8 @@ namespace vote.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Displayname")
-                        .IsRequired()
                         .HasColumnType("varchar(128)")
-                        .HasMaxLength(10);
+                        .HasMaxLength(25);
 
                     b.Property<DateTime?>("LastLogin")
                         .HasColumnType("datetime2");
@@ -47,7 +46,8 @@ namespace vote.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Displayname")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Displayname] IS NOT NULL");
 
                     b.HasIndex("Username")
                         .IsUnique();

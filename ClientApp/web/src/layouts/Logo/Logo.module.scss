@@ -1,0 +1,41 @@
+.sider-logo-horizontal {
+  width: 120px;
+  height: 31px;
+  line-height: 31px;
+  margin: 16px 20px;
+  float: left;
+  overflow: hidden;
+  &:after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+}
+
+.sider-logo-inline {
+  height: 32px;
+  margin: 16px;
+  text-align: center;
+  overflow: hidden;
+}
+
+img.sider-logo-image {
+  display: inline-block;
+  width: 40px;
+  height: 100%;
+}
+
+.sider-logo-text {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.sider-logo-text-light {
+  font-weight: bold;
+  color: black;
+}
+
+.sider-logo-text-dark {
+  color: whitesmoke;
+}

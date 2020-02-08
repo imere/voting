@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using IdentityServer4.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Newtonsoft.Json.Serialization;
 
 namespace vote
 {
@@ -54,7 +55,9 @@ namespace vote
 
             AddSqlServer(services);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
             AddIdentityServer(services);
             AddIdentityServerAuth(services);
@@ -167,13 +170,14 @@ namespace vote
             }
             else
             {
-                var subjectName = Configuration.GetValue<string>("SubjectName");
+                builder.AddDeveloperSigningCredential();
+                //var subjectName = Configuration.GetValue<string>("SubjectName");
 
-                var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-                store.Open(OpenFlags.ReadOnly);
+                //var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+                //store.Open(OpenFlags.ReadOnly);
 
-                var certificates = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, true);
-                builder.AddSigningCredential(certificates[0]);
+                //var certificates = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, true);
+                //builder.AddSigningCredential(certificates[0]);
             }
 
             services.AddLocalApiAuthentication();

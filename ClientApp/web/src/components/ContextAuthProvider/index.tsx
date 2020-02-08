@@ -12,19 +12,20 @@ interface ContextAuthProviderReceivedProps {
   children: React.ReactNode
 }
 
-interface ContextAuthProviderOwnDispatchProps extends AuthContextType {}
+interface ContextAuthProviderOwnDispatchProps extends AuthContextType { }
 
 type ContextAuthProviderProps =
   ContextAuthProviderOwnDispatchProps
   & ContextAuthProviderReceivedProps;
 
-const ContextAuthProvider: React.FC<ContextAuthProviderProps> = ({ children, login, logout }: ContextAuthProviderProps) => (
-  <Provider value={{ login: login, logout: logout }}>
+const ContextAuthProvider: React.FC<ContextAuthProviderProps> = ({ children, register, login, logout }: ContextAuthProviderProps) => (
+  <Provider value={{ register: register, login: login, logout: logout }}>
     {children}
   </Provider>
 );
 
 const mapDispatchToProps = (dispatch: ContextAuthProviderDispatch): ContextAuthProviderOwnDispatchProps => ({
+  register: (user) => import("@/actions").then(({ iu }) => dispatch(iu.register(user))),
   login: (user) => import("@/actions").then(({ iu }) => dispatch(iu.login(user))),
   logout: () => import("@/actions").then(({ iu }) => dispatch(iu.logout())),
 });

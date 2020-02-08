@@ -3,9 +3,8 @@ exports.createImageLoader = (env) => ({
   "loader": "file-loader",
   "options": {
     "limit": 4000,
-    "name":
-      env === "production"
-        ? "img/[name].[contenthash:5].[ext]"
-        : "img/[name].[ext]",
+    "name": env === "production"
+      ? "img/[name].[contenthash:5].[ext]"
+      : "img/[name].[ext]",
   },
 });

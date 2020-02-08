@@ -70,7 +70,7 @@ namespace vote.Controllers
         [HttpPut]
         public async Task<ActionResult<ResponseState>> Add([FromBody] Poll poll)
         {
-            Poll result = await _service.AddPollByUserId(UserHelperExtensions.ParseCookieUserId(User), poll);
+            Poll result = await _service.AddPollByUserId(UserHelperExtensions.ParseCookieUserIdLegacy(User), poll);
 
             if (null == result) return BadRequest();
 
@@ -81,7 +81,7 @@ namespace vote.Controllers
         [HttpPost]
         public async Task<ActionResult> Update([FromBody] Poll poll)
         {
-            Poll result = await _service.UpdatePollByUserId(UserHelperExtensions.ParseCookieUserId(User), poll);
+            Poll result = await _service.UpdatePollByUserId(UserHelperExtensions.ParseCookieUserIdLegacy(User), poll);
 
             if (null == result) return BadRequest();
 
@@ -92,7 +92,7 @@ namespace vote.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteById(int id)
         {
-            await _service.DeletePollByUserId(UserHelperExtensions.ParseCookieUserId(User), new Poll { Id = id });
+            await _service.DeletePollByUserId(UserHelperExtensions.ParseCookieUserIdLegacy(User), new Poll { Id = id });
             return NoContent();
         }
     }

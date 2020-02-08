@@ -4,18 +4,18 @@ import storage from "@/shared/storage";
 
 const keySet = new Set();
 
-function useSessionState (key: string, value: any) {
+function useSessionState(key: string, value: any) {
   const { sget, sset, sremove } = storage;
-  let inital;
+  let initial;
   try {
-    inital = JSON.parse(sget(key) as string);
-    
-    if (null !== inital && typeof inital !== typeof value) {
+    initial = JSON.parse(sget(key) as string);
+
+    if (null !== initial && typeof initial !== typeof value) {
       if (keySet.has(key)) {
-        console.error(`Inconsistent session: ${key}`);
+        console.error(`Inconsistent session: ${key} (from ${typeof initial} to ${typeof value})`);
       } else {
-        keySet.add(key); 
-      } 
+        keySet.add(key);
+      }
     }
 
   } catch {
@@ -26,11 +26,11 @@ function useSessionState (key: string, value: any) {
     state,
     setState
   ] = useState(
-    null !== inital
-      ? inital
+    null !== initial
+      ? initial
       : value
   );
-  
+
   const set = function (value: string) {
     sset(key, JSON.stringify(value));
     setState(value);

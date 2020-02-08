@@ -13,6 +13,24 @@ export interface AuthState {
 
 export const auth: Reducer<AuthState, AuthAction> = (state = {}, action): AuthState => {
   switch (action.type) {
+  case AuthActions.REGISTER:
+    return {
+      ...state,
+      "pending": true,
+    };
+
+  case AuthActions.REGISTER_SUC:
+    return {
+      ...state,
+      "pending": false,
+    };
+
+  case AuthActions.REGISTER_ERR:
+    return {
+      ...state,
+      "pending": false,
+    };
+
   case AuthActions.LOGIN:
     return {
       ...state,
@@ -30,7 +48,6 @@ export const auth: Reducer<AuthState, AuthAction> = (state = {}, action): AuthSt
     return {
       ...state,
       "pending": false,
-      "user": undefined,
     };
 
   case AuthActions.LOGOUT:

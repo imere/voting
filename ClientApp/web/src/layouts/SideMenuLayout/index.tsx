@@ -18,7 +18,7 @@ const SiderLazy = React.lazy(() => import("@/components/Sider"));
 
 const SideMenuLayout: React.FC<SideMenuLayoutProps> = ({ collapsed, header, content }: SideMenuLayoutProps) => (
   <Layout style={{ "minHeight": "100vh" }}>
-    
+
     <SiderLazy collapsed={collapsed}>
       <TopOrSideMenu mode="inline" />
     </SiderLazy>
@@ -28,7 +28,7 @@ const SideMenuLayout: React.FC<SideMenuLayoutProps> = ({ collapsed, header, cont
       <HeaderComponent mode="inline">
         {header}
       </HeaderComponent>
-      
+
       <Content>
         {content}
       </Content>

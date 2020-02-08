@@ -1,4 +1,3 @@
-// @ts-nocheck
 const MiniCSSExtractWebpackPlugin = require("mini-css-extract-plugin");
 
 exports.createScssLoader = (env) => ({

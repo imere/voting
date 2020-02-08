@@ -1,4 +1,3 @@
-// @ts-nocheck
 const MiniCSSExtractWebpackPlugin = require("mini-css-extract-plugin");
 
 exports.createCssLoader = (env) => ({
@@ -16,12 +15,12 @@ exports.createCssLoader = (env) => ({
     ]
   ).concat(
     [
-      // {
-      //   "loader": "cache-loader",
-      //   "options": {
-      //     "cacheDirectory": require("../../config").CacheDir,
-      //   }
-      // },
+      {
+        "loader": "cache-loader",
+        "options": {
+          "cacheDirectory": require("../../config").CacheDir,
+        }
+      },
       {
         "loader": "css-loader",
         "options": {

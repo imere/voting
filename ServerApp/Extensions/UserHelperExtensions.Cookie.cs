@@ -16,12 +16,12 @@ namespace vote.Extensions
             get => CookieAuthenticationDefaults.AuthenticationScheme;
         }
 
-        public static int ParseCookieUserId(ClaimsPrincipal user)
+        public static int ParseCookieUserIdLegacy(ClaimsPrincipal user)
         {
             return int.Parse(UserFirstClaimValue(user, ClaimTypes.NameIdentifier));
         }
 
-        private static List<Claim> GetCookieClaims(ApplicationUser user) =>
+        public static List<Claim> GetCookieClaims(ApplicationUser user) =>
             new List<Claim> {
                 new Claim(ClaimTypes.NameIdentifier, $"{user.Id}"),
                 new Claim(JwtClaimTypes.Subject, $"{user.Id}"),

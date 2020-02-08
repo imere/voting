@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace vote.Models
 {
@@ -23,8 +25,7 @@ namespace vote.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
-        [StringLength(10, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+        [StringLength(10, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
         [Column(TypeName = "varchar(128)")]
         public string Displayname { get; set; }
 
@@ -38,5 +39,9 @@ namespace vote.Models
         public ICollection<Poll> Polls { get; set; }
 
         public ICollection<PollAnswer> PollAnswers { get; set; }
+
+        [NotMapped]
+        [DefaultValue(false)]
+        public bool Persist { get; set; } = false;
     }
 }

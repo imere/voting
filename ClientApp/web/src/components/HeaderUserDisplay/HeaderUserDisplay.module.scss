@@ -1,5 +1,4 @@
-.user-dropdown-light,
-.user-dropdown-dark {
+.user-dropdown {
   display: block;
   padding: 0 10px;
   transition: all 0.1s linear;
@@ -8,12 +7,16 @@
   }
 }
 
-.user-dropdown-light:hover {
-  background-color: #f5f5f5;
+.user-dropdown-light {
+  &:hover {
+    background-color: #f5f5f5;
+  }
 }
 
-.user-dropdown-dark:hover {
-  background-color: #1890ff;
+.user-dropdown-dark {
+  &:hover {
+    background-color: #1890ff;
+  }
 }
 
 .user-display_username {

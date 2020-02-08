@@ -20,7 +20,7 @@ const TopMenuLayout: React.FC<TopMenuLayoutProps> = ({ header, content }: TopMen
       <TopOrSideMenu mode="horizontal" />
       {header}
     </HeaderComponent>
-      
+
     <Content>
       {content}
     </Content>

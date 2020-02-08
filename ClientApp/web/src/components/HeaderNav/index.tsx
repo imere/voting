@@ -1,15 +1,30 @@
 import React from "react";
+import { SiderTheme } from "antd/lib/layout/Sider";
+import { connect } from "react-redux";
 
 import UserDisplay from "@/components/HeaderUserDisplay";
+import { ApplicationState } from "@/reducers";
+import { classnames } from "@/shared/classnames";
 
 import styles from "./HeaderNav.module.scss";
 
-interface HeaderNavProps {}
+interface HeaderNavOwnStateProps {
+  theme: SiderTheme
+}
 
-const HeaderNavComponent: React.FC<HeaderNavProps> = () =>  (
-  <div className={`${styles["header-nav"]} ant-menu-light`}>
+type HeaderNavProps = HeaderNavOwnStateProps;
+
+const HeaderNavComponent: React.FC<HeaderNavProps> = ({ theme }: HeaderNavProps) =>  (
+  <div className={classnames(
+    styles["header-nav"],
+    `ant-menu-${theme}`,
+  )}>
     <UserDisplay />
   </div>
 );
 
-export default HeaderNavComponent;
+const mapStateToProps = (state: ApplicationState): HeaderNavOwnStateProps => ({
+  theme: state.context.theme,
+});
+
+export default connect(mapStateToProps)(HeaderNavComponent);

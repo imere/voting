@@ -4,11 +4,13 @@ import { Empty } from "antd";
 
 import { API_POLL } from "@/shared";
 
-const PollList: React.FC = () => {
+import Fallback from "../Fallback";
+
+const PollList: React.FunctionComponent = () => {
   const [
     polls,
     setPolls
-  ] = useState([]);
+  ] = useState(null);
 
   const [
     request,
@@ -23,6 +25,8 @@ const PollList: React.FC = () => {
     await request.get();
     if (response.ok) {
       addPolls(await response.json());
+    } else {
+      addPolls([]);
     }
   }
 
@@ -35,11 +39,19 @@ const PollList: React.FC = () => {
     getPolls();
   });
 
-  return (
-    polls.length
-      ? <>{JSON.stringify(polls)}</>
-      : <Empty style={{ paddingTop: "100px" }} />
-  );
+  function render() {
+    if (null === polls) {
+      return <Fallback />;
+    } else {
+      if (undefined === polls || !(polls as any).length) {
+        return <Empty style={{ paddingTop: "100px" }} />;
+      } else {
+        return <>{JSON.stringify(polls)}</>;
+      }
+    }
+  }
+
+  return render();
 };
 
 export default PollList;

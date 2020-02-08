@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace vote.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,7 +30,7 @@ namespace vote.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Username = table.Column<string>(maxLength: 25, nullable: false),
                     Password = table.Column<string>(maxLength: 16, nullable: false),
-                    Displayname = table.Column<string>(type: "varchar(128)", maxLength: 10, nullable: false),
+                    Displayname = table.Column<string>(type: "varchar(128)", maxLength: 25, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -156,7 +156,8 @@ namespace vote.Migrations
                 name: "IX_User_Displayname",
                 table: "User",
                 column: "Displayname",
-                unique: true);
+                unique: true,
+                filter: "[Displayname] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_Username",

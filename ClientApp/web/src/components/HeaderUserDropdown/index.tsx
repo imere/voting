@@ -1,5 +1,5 @@
 import React from "react";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Icon, Menu } from "antd";
 import { connect } from "react-redux";
 import { User } from "oidc-client";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import { iu } from "@/actions";
 import { AuthAction } from "@/actions/auth";
 import { Disp, None } from "@/types";
 
+import styles from "./HeaderUserDropdown.module.scss";
 import { authItems, normalItems } from "./items";
 
 type HeaderUserDropdownDispatch = Disp<ApplicationState, undefined, AuthAction>;
@@ -17,21 +18,24 @@ interface HeaderUserDropdownReceivedProps {
   children?: React.ReactNode;
   user: User | None;
 }
+
 interface HeaderUserDropdownOwnDispatchProps {
   logout: () => void;
 }
+
 export type HeaderUserDropdownProps =
   HeaderUserDropdownOwnDispatchProps &
   HeaderUserDropdownReceivedProps;
 
-const HeaderUserDropdownComponent = (props: HeaderUserDropdownProps) => (
+const HeaderUserDropdownComponent = ({ children, user, logout }: HeaderUserDropdownProps) => (
   <Dropdown
     overlay={
       <Menu>
-        {(props.user
-          ? authItems(props) : normalItems()).map((item, i) => item ? (
+        {(user
+          ? authItems(logout) : normalItems()).map((item, i) => item ? (
           <Menu.Item key={i} onClick={item.onClick}>
-            <Link to={item.link || "#"} rel="noopener noreferrer">{item.content}</Link>
+            {item.iconType && <Icon type={item.iconType} />}
+            <Link className={styles["item-link"]} to={item.link || "#"} rel="noopener noreferrer">{item.content}</Link>
           </Menu.Item>
         )
           : (
@@ -41,7 +45,7 @@ const HeaderUserDropdownComponent = (props: HeaderUserDropdownProps) => (
       </Menu>
     }
   >
-    {props.children}
+    {children}
   </Dropdown>
 );
 

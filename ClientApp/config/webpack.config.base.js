@@ -1,6 +1,7 @@
 const fs = require("fs");
 const webpack = require("webpack");
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
+// const DashboardPlugin = require("webpack-dashboard/plugin");
 // const BuildNotifier = require('webpack-build-notifier');
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const HtmlPlugin = require("html-webpack-plugin");
@@ -109,6 +110,7 @@ const baseConfig = {
       "silent": false,
     }),
     new ProgressBarPlugin(),
+    // new DashboardPlugin(),
     // new BuildNotifier({
     //   title: currentEnv.toUpperCase(),
     //   showDuration: true,
@@ -189,7 +191,7 @@ const baseConfig = {
     }),
     new BundleAnalyzerPlugin({
       "analyzerMode": "static",
-      "reportFilename": require("path").resolve(__dirname, "../docs/bundle", "report.html"),
+      "reportFilename": require("path").resolve(__dirname, "../docs/bundle-analyzer", "report.html"),
       "openAnalyzer": false,
     }),
   ],
@@ -203,6 +205,8 @@ const baseConfig = {
   },
 };
 
-module.exports = new SpeedMeasurePlugin().wrap(
+module.exports = new SpeedMeasurePlugin({
+  outputFormat: "human"
+}).wrap(
   WebpackMerge(baseConfig, require(`./webpack.config.${isProd ? "prod" : "dev"}.js`))
 );

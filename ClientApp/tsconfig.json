@@ -15,6 +15,15 @@
     "paths": {
       "@/*": [
         "web/src/*"
+      ],
+      "@images/*": [
+        "web/assets/images/*"
+      ],
+      "@scripts/*": [
+        "web/assets/scripts/*"
+      ],
+      "@styles/*": [
+        "web/assets/styles/*"
       ]
     },
     "typeRoots": [

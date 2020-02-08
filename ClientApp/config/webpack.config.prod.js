@@ -20,11 +20,6 @@ module.exports = {
           "name": "c0",
           "reuseExistingChunk": true,
         },
-        "react": {
-          "test": /[\\/]node_modules[\\/](.*react.*)[\\/]/,
-          "name": "c01",
-          "reuseExistingChunk": true,
-        },
         "babel": {
           "test": /[\\/]node_modules[\\/](.*babel.*)[\\/]/,
           "name": "c1",
@@ -36,7 +31,7 @@ module.exports = {
           "reuseExistingChunk": true,
         },
         "router": {
-          "test": /[\\/]node_modules[\\/](.*router.*)[\\/]/,
+          "test": /[\\/]node_modules[\\/](.*route.*)[\\/]/,
           "name": "c3",
           "reuseExistingChunk": true,
         },

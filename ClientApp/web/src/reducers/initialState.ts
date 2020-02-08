@@ -2,7 +2,7 @@ import { ApplicationState } from ".";
 
 export const initialState: ApplicationState = {
   context: {
-    theme: "dark"
+    theme: "dark",
   },
   "auth": {
     user: null,

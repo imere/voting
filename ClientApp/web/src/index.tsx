@@ -13,6 +13,12 @@ import { initialState } from "./reducers/initialState";
 import { iu } from "./actions";
 import { Routes } from "./constants";
 
+const AccountLazy = React.lazy(() => import("./pages/Account"));
+
+const AuthCallbackLazy = React.lazy(() => import("./pages/AuthCallback"));
+
+const AppLazy = React.lazy(() => import("./pages/App"));
+
 import("./index.scss");
 
 iu.getUser().then((user) => {
@@ -31,15 +37,16 @@ iu.getUser().then((user) => {
           <Suspense fallback={<Fallback />}>
             <BrowserRouter>
               <Switch>
-                <Route exact path={Routes.AUTH_CALLBACK} component={React.lazy(() => import("./components/AuthCallback"))} />
-                <Route path="/" component={React.lazy(() => import("./components/App"))} />
+                <Route exact path={Routes.AUTH_CALLBACK} component={AuthCallbackLazy} />
+                <Route path={Routes.USER} component={AccountLazy} />
+                <Route path="/" component={AppLazy} />
               </Switch>
             </BrowserRouter>
           </Suspense>
         </ConnectedRouter>
       </Provider>
     </ErrorBoundary>,
-    document.getElementById("root")
+    document.getElementById("__root")
   );
 
   // If you want your app to work offline and load faster, you can change
