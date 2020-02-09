@@ -23,14 +23,3 @@ export type ThunkAction<R, S, E> = (dispatch: Dispatch<S>, getState: () => S, ex
 
 declare const ValidateStatuses: ["success", "warning", "error", "validating", ""];
 export type ValidateStatus = typeof ValidateStatuses[number]
-
-export interface BuiltinResponse {
-  username: string[]
-  password: string[]
-}
-export interface CustomResponse {
-  code: number
-  text: string
-  data: any
-}
-export type ResponseState = CustomResponse & BuiltinResponse;

@@ -14,4 +14,13 @@ const lremove = (key: string) => localStorage.removeItem(key);
 
 const lclear = () => localStorage.clear();
 
-export default { sget, sset, sremove, sclear, lget, lset, lremove, lclear };
+export default {
+  sget,
+  sset,
+  sremove,
+  sclear,
+  lget,
+  lset,
+  lremove,
+  lclear,
+};

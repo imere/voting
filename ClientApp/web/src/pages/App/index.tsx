@@ -32,7 +32,7 @@ function App({ theme }: AppProps) {
     collapsed,
     toggleCollapsed
   ] = useSessionState("siderCollapse", true);
-  
+
   const [useTML] = useSessionState("topMenu", true);
 
   const content = (

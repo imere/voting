@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router";
 import { Spin } from "antd";
 
-import AccountLayout from "@/layouts/AccountLayout";
+import AccountLayout from "@/layouts/AccountFormLayout";
 import { Routes } from "@/constants";
 
 const AccountRegisterFormLazy = React.lazy(() => import("@/components/AccountRegisterForm"));

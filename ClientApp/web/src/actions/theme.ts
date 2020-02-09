@@ -1,11 +1,11 @@
 import { Action } from "redux";
 
 import { ThemeActions } from "@/constants";
-import { ActionDark, ActionLight } from "@/constants/ThemeActions";
+import { ActionSwitchDark, ActionSwitchLight } from "@/constants/ThemeActions";
 
-export interface ThemeLightAction extends Action<ActionLight> { }
+export interface ThemeLightAction extends Action<ActionSwitchLight> { }
 
-export interface ThemeDarkAction extends Action<ActionDark> { }
+export interface ThemeDarkAction extends Action<ActionSwitchDark> { }
 
 export type ThemeAction = ThemeLightAction | ThemeDarkAction
 

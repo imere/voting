@@ -4,15 +4,16 @@ import { Link } from "react-router-dom";
 import { FormComponentProps } from "antd/lib/form/Form";
 import { connect } from "react-redux";
 
-import CheckboxItem from "@/components/FormUnits/CheckboxItem";
-import InputItem from "@/components/FormUnits/InputItem";
+import CheckboxItem from "@/layouts/AccountFormLayout/CheckboxItem";
+import InputItem from "@/layouts/AccountFormLayout/InputItem";
 import AccountFormLogo from "@/layouts/AccountFormLogo";
 import { Routes } from "@/constants";
 import { AuthAction, LoginCallback, UserAuthentication } from "@/actions/auth";
 import { iu } from "@/actions";
 import { ApplicationState } from "@/reducers";
-import { Disp, ResponseState, ValidateStatus } from "@/types";
-import { passwordRules, usernameRules } from "@/shared/validate-utils";
+import { Disp, ValidateStatus } from "@/types";
+import { ResponseState } from "@/data-types";
+import { passwordRules, usernameRules } from "@/shared/account-validate";
 
 import styles from "./AccountLogin.module.scss";
 
@@ -43,7 +44,7 @@ interface AccountLoginFormValues {
 }
 
 const AccountLogin = ({ form, login, pending }: AccountLoginProps) => {
-  
+
   const [
     usernameHelp,
     setUsernameHelp

@@ -4,15 +4,16 @@ import { Button, Checkbox, Icon, message } from "antd";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import CheckboxItem from "@/components/FormUnits/CheckboxItem";
-import InputItem from "@/components/FormUnits/InputItem";
+import CheckboxItem from "@/layouts/AccountFormLayout/CheckboxItem";
+import InputItem from "@/layouts/AccountFormLayout/InputItem";
 import AccountFormLogo from "@/layouts/AccountFormLogo";
 import { Routes } from "@/constants";
 import { AuthAction, RegisterCallback, UserAuthentication } from "@/actions/auth";
 import { iu } from "@/actions";
 import { ApplicationState } from "@/reducers";
-import { Disp, ResponseState, ValidateStatus } from "@/types";
-import { passwordRules, usernameRules } from "@/shared/validate-utils";
+import { Disp, ValidateStatus } from "@/types";
+import { ResponseState } from "@/data-types";
+import { passwordRules, usernameRules } from "@/shared/account-validate";
 
 import styles from "./AccountRegister.module.scss";
 
@@ -66,7 +67,7 @@ const AccountRegister = ({ form, register, pending }: AccountRegisterProps) => {
     passwordStatus,
     setPasswordStatus
   ] = useState<ValidateStatus | undefined>(undefined);
-  
+
   const [
     registering,
     setRegistering
@@ -94,7 +95,7 @@ const AccountRegister = ({ form, register, pending }: AccountRegisterProps) => {
       });
     }
   };
-  
+
   function resetHelp() {
     setUsernameHelp(undefined);
     setUsernameStatus(undefined);

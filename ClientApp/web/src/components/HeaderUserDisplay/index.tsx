@@ -8,7 +8,7 @@ import HeaderUserDropdown from "@/components/HeaderUserDropdown";
 import { ApplicationState } from "@/reducers";
 import { classnames } from "@/shared/classnames";
 import { None } from "@/types";
-import { lengthGt } from "@/shared/validate-utils";
+import { lengthGt } from "@/shared/account-validate";
 
 import styles from "./HeaderUserDisplay.module.scss";
 
@@ -37,8 +37,8 @@ const HeaderUserDisplay = ({ pending, user, theme }: HeaderUserDisplayProps) => 
         </Avatar>
         {user && (
           <span className={styles["user-display_username"]}>{
-            lengthGt(user.profile.name, 5)
-              ? user.profile.name?.slice(0, 5).concat("...")
+            lengthGt(user.profile.name, 10)
+              ? user.profile.name?.slice(0, 10).concat("...")
               : user.profile.name
           }</span>
         )}
