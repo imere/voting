@@ -1,4 +1,4 @@
-import { ValidationRule } from "antd/lib/form";
+import { ValidationRule } from "antd/es/form";
 
 import { None } from "@/types";
 

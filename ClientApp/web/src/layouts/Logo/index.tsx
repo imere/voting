@@ -1,8 +1,8 @@
 import logo from "@images/logo.svg";
 import React from "react";
 import { Link } from "react-router-dom";
-import { MenuMode } from "antd/lib/menu";
-import { SiderTheme } from "antd/lib/layout/Sider";
+import { MenuMode } from "antd/es/menu";
+import { SiderTheme } from "antd/es/layout/Sider";
 
 import { classnames } from "@/shared/classnames";
 

@@ -1,7 +1,7 @@
 import React from "react";
-import Form, { FormComponentProps, GetFieldDecoratorOptions } from "antd/lib/form/Form";
+import Form, { FormComponentProps, GetFieldDecoratorOptions } from "antd/es/form/Form";
 import { Input } from "antd";
-import { InputProps } from "antd/lib/input";
+import { InputProps } from "antd/es/input";
 import { ValidateStatus } from "@/types";
 
 interface InputItemReceivedProps extends Omit<InputProps, "form"> {

@@ -16,6 +16,7 @@ module.exports = {
       // "react-router-dom": "ReactRouterDOM",
       "redux": "Redux",
       "redux-thunk": "ReduxThunk",
+      "antd": "antd",
     },
   ]
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, Spin } from "antd";
 import { connect } from "react-redux";
-import { SiderTheme } from "antd/lib/layout/Sider";
+import { SiderTheme } from "antd/es/layout/Sider";
 import { User } from "oidc-client";
 
 import HeaderUserDropdown from "@/components/HeaderUserDropdown";

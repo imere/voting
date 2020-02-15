@@ -50,6 +50,16 @@ module.exports = {
           "name": "c6",
           "reuseExistingChunk": true,
         },
+        "moment": {
+          "test": /[\\/]node_modules[\\/](.*moment.*)[\\/]/,
+          "name": "c7",
+          "reuseExistingChunk": true,
+        },
+        "i": {
+          "test": /[\\/]node_modules[\\/](.*icon.*)[\\/]/,
+          "name": "c7",
+          "reuseExistingChunk": true,
+        },
         "aui": {
           "test": /[\\/]node_modules[\\/](.*antd.*)[\\/]/,
           "name": "c7",

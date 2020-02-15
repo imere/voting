@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout } from "antd";
-import { MenuMode } from "antd/lib/menu";
-import { SiderTheme } from "antd/lib/layout/Sider";
+import { MenuMode } from "antd/es/menu";
+import { SiderTheme } from "antd/es/layout/Sider";
 import { connect } from "react-redux";
 
 import { ApplicationState } from "@/reducers";
@@ -21,8 +21,8 @@ interface HeaderOwnStateProps {
 }
 
 type HeaderProps =
-  HeaderOwnStateProps
-  & HeaderReceivedProps;
+  HeaderOwnStateProps &
+  HeaderReceivedProps;
 
 const HeaderComponent: React.FC<HeaderProps> = ({ children, mode, theme }: HeaderProps) => (
   <Header className={classnames(

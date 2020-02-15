@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout } from "antd";
 
-import Content from "@/components/Content";
+import ContentComponent from "@/components/Content";
 import HeaderComponent from "@/components/Header";
 import TopOrSideMenu from "@/components/TopOrSideMenu";
 import FooterComponent from "@/layouts/Footer";
@@ -21,9 +21,9 @@ const TopMenuLayout: React.FC<TopMenuLayoutProps> = ({ header, content }: TopMen
       {header}
     </HeaderComponent>
 
-    <Content>
+    <ContentComponent>
       {content}
-    </Content>
+    </ContentComponent>
 
     <FooterComponent />
 

@@ -1,16 +1,16 @@
 import { Reducer } from "redux";
-import { SiderTheme } from "antd/lib/layout/Sider";
+import { SiderTheme } from "antd/es/layout/Sider";
 
 import { ThemeActions } from "@/constants";
-import { ThemeAction } from "@/actions/theme";
+import { ContextAction } from "@/actions/context";
 
-import { initialState } from "./initialState";
+import { initialState } from "./initial-state";
 
 export interface ContextState {
   theme: SiderTheme
 }
 
-export const context: Reducer<ContextState, ThemeAction> = (state = initialState.context, action): ContextState => {
+export const context: Reducer<ContextState, ContextAction> = (state = initialState.context, action): ContextState => {
   switch (action.type) {
   case ThemeActions.SWITCH_LIGHT:
     return {

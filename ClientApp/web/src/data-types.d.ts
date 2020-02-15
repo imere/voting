@@ -1,6 +1,8 @@
-import { CascaderOptionType } from "antd/lib/cascader";
-
-import { ValidateStatus } from "./types";
+import { CascaderOptionType } from "antd/es/cascader";
+import { ValidationRule } from "antd/es/form";
+import { CheckboxOptionType } from "antd/es/checkbox";
+import { RadioGroupButtonStyle } from "antd/es/radio";
+import { OptionProps } from "antd/es/select";
 
 export interface BuiltinResponse {
   username: string[]
@@ -14,87 +16,130 @@ export interface CustomResponse {
 export type ResponseState = CustomResponse & BuiltinResponse;
 
 
-export interface TypeTitle {
-  title: string
-  description?: string
-}
-
 export interface BaseType {
+  id: string
   label: string
   extra?: string
-  rules: ValidateStatus[]
+  rules: ValidationRule[]
 }
 
 export interface TypeNumber extends BaseType {
-  value: number
+  typename: "number"
+  value?: number
   min?: number
   max?: number
 }
 
 export interface TypeInput extends BaseType {
-  value: number
-  min?: number
-  max?: number
+  typename: "input"
+  value?: string
 }
 
 export interface TypeTextArea extends BaseType {
+  typename: "textarea"
   value?: string
 }
 
 export interface TypeSwitch extends BaseType {
+  typename: "switch"
   value?: boolean
 }
 
-type TypeSliderMark = {
+type SliderMarkType = {
   [key: number]: string
 }
 export interface TypeSlider extends BaseType {
+  typename: "slider"
   value?: number
-  values: TypeSliderMark[]
+  options: SliderMarkType[]
 }
 
-export interface TypeRadio<T = any> extends BaseType {
-  type: "group" | "button"
-  value?: T
-  values: T[]
+export interface TypeRadio extends BaseType {
+  typename: "radio"
+  type?: "button" | RadioGroupButtonStyle
+  value?: string
+  options: CheckboxOptionType[]
 }
 
-export interface TypeCheckBox<T = any> extends BaseType {
-  value?: T
-  values: T[]
+export interface TypeCheckBox extends BaseType {
+  typename: "checkbox"
+  value?: boolean
+}
+
+export interface TypeCheckBoxGroup extends BaseType {
+  typename: "checkboxgroup"
+  value: string[]
+  options: CheckboxOptionType[]
 }
 
 export interface TypeRate extends BaseType {
+  typename: "rate"
   value?: number
 }
 
-export interface TypeSelect<T = any> extends BaseType {
-  value?: T
-  values: T[]
+type SelectOptionType = {
+  label: OptionProps["label"]
+  value: OptionProps["value"]
+}
+export interface TypeSelect extends BaseType {
+  typename: "select"
+  value?: string
+  options: SelectOptionType[]
 }
 
-export interface TypeSelectMultiple<T = any> extends BaseType {
-  value?: T[]
-  values: T[]
+export interface TypeSelectMultiple extends BaseType {
+  typename: "selectmultiple"
+  value: string[]
+  options: string[]
 }
 
-export interface TypeSelectCascade<T = any> extends BaseType {
-  value?: T[]
-  values: CascaderOptionType[]
+export interface TypeCascade extends BaseType {
+  typename: "cascade"
+  value: string[]
+  options: CascaderOptionType[]
 }
 
 export interface TypeDate extends BaseType {
+  typename: "date"
   value?: string
 }
 
 export interface TypeDateRange extends BaseType {
-  value?: string[]
+  typename: "daterange"
+  value: string[]
 }
 
 export interface TypeTime extends BaseType {
+  typename: "time"
   value?: string
 }
 
 export interface TypeTimeRange extends BaseType {
-  value?: string[]
+  typename: "timerange"
+  value: string[]
+}
+
+export type QuestionnaireContentType =
+  TypeNumber |
+  TypeInput |
+  TypeTextArea |
+  TypeSwitch |
+  TypeSlider |
+  TypeRadio |
+  TypeCheckBox |
+  TypeCheckBoxGroup |
+  TypeRate |
+  TypeSelect |
+  TypeSelectMultiple |
+  TypeCascade |
+  TypeDate |
+  TypeDateRange |
+  TypeTime |
+  TypeTimeRange
+
+export interface Questionnaire {
+  id: string
+  title: string
+  description?: string
+  content: QuestionnaireContentType[]
 }

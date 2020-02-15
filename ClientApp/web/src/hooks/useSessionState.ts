@@ -1,23 +1,27 @@
 import { useState } from "react";
 
 import storage from "@/shared/storage";
+import { None } from "@/types";
 
 const keySet = new Set();
 
 function useSessionState(key: string, value: any) {
   const { sget, sset, sremove } = storage;
   let initial;
-  try {
-    initial = JSON.parse(sget(key) as string);
 
-    if (null !== initial && typeof initial !== typeof value) {
+  function checkConsistent(value: string | None) {
+    if (null !== value && typeof value !== typeof value) {
       if (keySet.has(key)) {
-        console.error(`Inconsistent session: ${key} (from ${typeof initial} to ${typeof value})`);
+        console.error(`Inconsistent session: ${key} (from ${typeof value} to ${typeof value})`);
       } else {
         keySet.add(key);
       }
     }
+  }
 
+  try {
+    initial = JSON.parse(sget(key) as string);
+    checkConsistent(initial);
   } catch {
     sremove(key);
   }

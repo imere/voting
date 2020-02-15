@@ -22,12 +22,6 @@ exports.createScssLoader = (env) => ({
       },
     ]
   ).concat([
-    // {
-    //   "loader": "cache-loader",
-    //   "options": {
-    //     "cacheDirectory": require("../../config").CacheDir,
-    //   }
-    // },
     {
       "loader": "css-loader",
       "options": {

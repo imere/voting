@@ -4,7 +4,7 @@ export const initialState: ApplicationState = {
   context: {
     theme: "dark",
   },
-  "auth": {
+  auth: {
     user: null,
     pending: false,
   },

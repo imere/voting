@@ -9,12 +9,8 @@ export const ALLOWED_ORIGINS = [API_ORIGIN];
 type FetchType = (input: RequestInfo, init?: RequestInit | undefined) => Promise<Response>;
 
 const request: FetchType = async (input, init = {}) => {
-  function shouldCORS() {
-    if ("string" === typeof input) {
-      return !input.startsWith("/") && !input.startsWith(window.location.origin);
-    } else {
-      return true;
-    }
+  function shouldCORS(url: string) {
+    return !url.startsWith("/") && !url.startsWith(window.location.origin);
   }
 
   function shouldAddAuthorization() {
@@ -53,7 +49,7 @@ const request: FetchType = async (input, init = {}) => {
     url = input.url;
   }
 
-  if (shouldCORS()) {
+  if (shouldCORS(url)) {
     init.mode = "cors";
   }
 

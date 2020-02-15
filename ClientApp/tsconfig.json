@@ -16,6 +16,39 @@
       "@/*": [
         "web/src/*"
       ],
+      "@actions/*": [
+        "web/src/actions/*"
+      ],
+      "@components/*": [
+        "web/src/components/*"
+      ],
+      "@constants/*": [
+        "web/src/constants/*"
+      ],
+      "@contexts/*": [
+        "web/src/contexts/*"
+      ],
+      "@hooks/*": [
+        "web/src/hooks/*"
+      ],
+      "@layouts/*": [
+        "web/src/layouts/*"
+      ],
+      "@pages/*": [
+        "web/src/pages/*"
+      ],
+      "@reducers/*": [
+        "web/src/reducers/*"
+      ],
+      "@routes/*": [
+        "web/src/routes/*"
+      ],
+      "@shared/*": [
+        "web/src/shared/*"
+      ],
+      "@store/*": [
+        "web/src/store/*"
+      ],
       "@images/*": [
         "web/assets/images/*"
       ],
@@ -36,8 +69,7 @@
     "./tests/**/*.ts",
     "./config/**/*.js",
     "./server/**/*.js",
-    "./tests/**/*.js",
-    "./*.js"
+    "./tests/**/*.js"
   ],
   "exclude": [
     "node_modules",

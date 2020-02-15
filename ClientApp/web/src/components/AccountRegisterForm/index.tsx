@@ -1,4 +1,4 @@
-import Form, { FormComponentProps } from "antd/lib/form/Form";
+import Form, { FormComponentProps } from "antd/es/form/Form";
 import React, { useState } from "react";
 import { Button, Checkbox, Icon, message } from "antd";
 import { Link } from "react-router-dom";
@@ -32,9 +32,9 @@ interface AccountRegisterOwnFormProps {
 }
 
 type AccountRegisterProps =
-  AccountRegisterOwnFormProps
-  & AccountRegisterOwnStateProps
-  & AccountRegisterOwnDispatchProps;
+  AccountRegisterOwnFormProps &
+  AccountRegisterOwnStateProps &
+  AccountRegisterOwnDispatchProps;
 
 interface AccountRegisterFormValues {
   username: string

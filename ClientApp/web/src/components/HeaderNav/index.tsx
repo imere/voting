@@ -1,5 +1,5 @@
 import React from "react";
-import { SiderTheme } from "antd/lib/layout/Sider";
+import { SiderTheme } from "antd/es/layout/Sider";
 import { connect } from "react-redux";
 
 import UserDisplay from "@/components/HeaderUserDisplay";

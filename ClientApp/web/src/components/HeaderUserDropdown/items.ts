@@ -1,4 +1,4 @@
-import { ClickParam } from "antd/lib/menu";
+import { ClickParam } from "antd/es/menu";
 
 import { Routes } from "@/constants";
 

@@ -8,8 +8,9 @@ import { ConnectedRouter } from "connected-react-router";
 import * as serviceWorker from "./serviceWorker";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Fallback from "./components/Fallback";
+import Protected from "./layouts/Protected";
 import { configureStore } from "./store";
-import { initialState } from "./reducers/initialState";
+import { initialState } from "./reducers/initial-state";
 import { iu } from "./actions";
 import { Routes } from "./constants";
 
@@ -36,11 +37,13 @@ iu.getUser().then((user) => {
         <ConnectedRouter history={history}>
           <Suspense fallback={<Fallback />}>
             <BrowserRouter>
-              <Switch>
-                <Route exact path={Routes.AUTH_CALLBACK} component={AuthCallbackLazy} />
-                <Route path={Routes.USER} component={AccountLazy} />
-                <Route path="/" component={AppLazy} />
-              </Switch>
+              <Protected redirectTo={Routes.USER_LOGIN}>
+                <Switch>
+                  <Route exact path={Routes.AUTH_CALLBACK} component={AuthCallbackLazy} />
+                  <Route path={Routes.USER} component={AccountLazy} />
+                  <Route path="/" component={AppLazy} />
+                </Switch>
+              </Protected>
             </BrowserRouter>
           </Suspense>
         </ConnectedRouter>

@@ -93,6 +93,7 @@ const baseConfig = {
     "extensions": [
       ".ts",
       ".tsx",
+      ".mjs",
       ".js",
       ".jsx",
     ],

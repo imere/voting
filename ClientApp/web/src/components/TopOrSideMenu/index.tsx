@@ -1,9 +1,9 @@
 import React from "react";
 import { Icon, Menu } from "antd";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { MenuTheme } from "antd/lib/menu/MenuContext";
+import { MenuTheme } from "antd/es/menu/MenuContext";
 import { connect } from "react-redux";
-import { MenuMode } from "antd/lib/menu";
+import { MenuMode } from "antd/es/menu";
 import { User } from "oidc-client";
 
 import Logo from "@/layouts/Logo";
@@ -23,9 +23,9 @@ interface TopOrSideMenuOwnStateProps {
 }
 
 type TopOrSideMenuProps =
-  RouteComponentProps
-  & TopOrSideMenuOwnStateProps
-  & TopOrSideMenuReceivedProps;
+  RouteComponentProps &
+  TopOrSideMenuOwnStateProps &
+  TopOrSideMenuReceivedProps;
 
 const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, user }: TopOrSideMenuProps) => {
   mode = mode.startsWith("vertical") ? "inline" : mode;

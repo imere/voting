@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { connect } from "react-redux";
 
 import { AuthContextType, Provider } from "@/contexts/auth";
@@ -15,14 +15,25 @@ interface ContextAuthProviderReceivedProps {
 interface ContextAuthProviderOwnDispatchProps extends AuthContextType { }
 
 type ContextAuthProviderProps =
-  ContextAuthProviderOwnDispatchProps
-  & ContextAuthProviderReceivedProps;
+  ContextAuthProviderOwnDispatchProps &
+  ContextAuthProviderReceivedProps;
 
-const ContextAuthProvider: React.FC<ContextAuthProviderProps> = ({ children, register, login, logout }: ContextAuthProviderProps) => (
-  <Provider value={{ register: register, login: login, logout: logout }}>
-    {children}
-  </Provider>
-);
+const ContextAuthProvider = ({ children, register, login, logout }: ContextAuthProviderProps) => {
+  const value = useMemo(() => ({
+    register,
+    login,
+    logout,
+  }), [
+    register,
+    login,
+    logout,
+  ]);
+  return (
+    <Provider value={value}>
+      {children}
+    </Provider>
+  );
+};
 
 const mapDispatchToProps = (dispatch: ContextAuthProviderDispatch): ContextAuthProviderOwnDispatchProps => ({
   register: (user) => import("@/actions").then(({ iu }) => dispatch(iu.register(user))),

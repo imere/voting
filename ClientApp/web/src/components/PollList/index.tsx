@@ -1,57 +1,55 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFetch } from "use-http";
 import { Empty } from "antd";
 
+import Fallback from "@/components/Fallback";
 import { API_POLL } from "@/shared";
-
-import Fallback from "../Fallback";
+import { ResponseState } from "@/data-types";
+import { None } from "@/types";
 
 const PollList: React.FunctionComponent = () => {
   const [
+    loading,
+    setLoading
+  ] = useState(false);
+
+  const [
     polls,
     setPolls
-  ] = useState(null);
+  ] = useState([]);
 
   const [
     request,
     response
   ] = useFetch(API_POLL);
 
-  function addPolls(result: any) {
-    setPolls(result.data);
-  }
-
   async function getPolls() {
+    setLoading(true);
     await request.get();
+    setLoading(false);
     if (response.ok) {
-      addPolls(await response.json());
-    } else {
-      addPolls([]);
+      const res: ResponseState = await response.json();
+      setPolls(res.data);
     }
   }
 
-  const mounted = useRef(false);
   useEffect(() => {
-    if (mounted.current) {
-      return;
-    }
-    mounted.current = true;
     getPolls();
-  });
+  }, []);
 
-  function render() {
-    if (null === polls) {
+  function render(loading: boolean, polls: any[] | None) {
+    if (loading) {
       return <Fallback />;
     } else {
-      if (undefined === polls || !(polls as any).length) {
-        return <Empty style={{ paddingTop: "100px" }} />;
-      } else {
+      if (polls && polls.length) {
         return <>{JSON.stringify(polls)}</>;
+      } else {
+        return <Empty style={{ paddingTop: "100px" }} />;
       }
     }
   }
 
-  return render();
+  return render(loading, polls);
 };
 
 export default PollList;

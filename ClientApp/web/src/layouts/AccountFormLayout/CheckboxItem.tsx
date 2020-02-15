@@ -1,6 +1,6 @@
 import React from "react";
-import Checkbox, { CheckboxProps } from "antd/lib/checkbox";
-import Form, { FormComponentProps, GetFieldDecoratorOptions } from "antd/lib/form/Form";
+import Checkbox, { CheckboxProps } from "antd/es/checkbox";
+import Form, { FormComponentProps, GetFieldDecoratorOptions } from "antd/es/form/Form";
 
 interface CheckboxItemReceivedProps extends CheckboxProps {
   form: FormComponentProps["form"]

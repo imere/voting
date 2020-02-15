@@ -37,12 +37,12 @@ export interface RequestLogoutAction extends Action<ActionLogout> { }
 export interface RequestLogoutCompleteAction extends Action<ActionLogoutComplete> { }
 
 export type AuthAction =
-  RequestRegisterAction
-  | RequestRegisterCompleteAction
-  | RequestLoginAction
-  | RequestLoginCompleteAction
-  | RequestLogoutAction
-  | RequestLogoutCompleteAction
+  RequestRegisterAction |
+  RequestRegisterCompleteAction |
+  RequestLoginAction |
+  RequestLoginCompleteAction |
+  RequestLogoutAction |
+  RequestLogoutCompleteAction
 
 export type RegisterCallback = (err: Error | None, res?: Response | None) => any
 export type LoginCallback = RegisterCallback

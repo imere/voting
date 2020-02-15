@@ -1,6 +1,8 @@
 import React from "react";
 import { Layout } from "antd";
 
+import BreadCrumbComponent from "@/components/Breadcrumb";
+
 import styles from "./Content.module.scss";
 
 const { Content } = Layout;
@@ -9,8 +11,9 @@ interface ContentReceivedProps {
   children?: React.ReactNode
 }
 
-const ContentComponent: React.FC<ContentReceivedProps> = ({ children }: ContentReceivedProps) => (
+const ContentComponent = ({ children }: ContentReceivedProps) => (
   <Content className={styles.content}>
+    <BreadCrumbComponent />
     {children}
   </Content>
 );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Checkbox, Form, Icon, message } from "antd";
 import { Link } from "react-router-dom";
-import { FormComponentProps } from "antd/lib/form/Form";
+import { FormComponentProps } from "antd/es/form/Form";
 import { connect } from "react-redux";
 
 import CheckboxItem from "@/layouts/AccountFormLayout/CheckboxItem";
@@ -32,9 +32,9 @@ interface AccountLoginOwnFormProps {
 }
 
 type AccountLoginProps =
-  AccountLoginOwnFormProps
-  & AccountLoginOwnStateProps
-  & AccountLoginOwnDispatchProps;
+  AccountLoginOwnFormProps &
+  AccountLoginOwnStateProps &
+  AccountLoginOwnDispatchProps;
 
 interface AccountLoginFormValues {
   username: string

@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout } from "antd";
-import { SiderTheme } from "antd/lib/layout/Sider";
+import { SiderTheme } from "antd/es/layout/Sider";
 import { connect } from "react-redux";
 
 import { ApplicationState } from "@/reducers";
@@ -17,8 +17,8 @@ interface SiderOwnStateProps {
 }
 
 type SiderProps =
-  SiderOwnStateProps
-  & SiderReceivedProps
+  SiderOwnStateProps &
+  SiderReceivedProps
 
 const { Sider } = Layout;
 

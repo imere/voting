@@ -1,5 +1,6 @@
 import { auth, AuthState } from "./auth";
 import { context, ContextState } from "./context";
+import { loadingBar } from "./loading-bar";
 
 export type ApplicationState = {
   context: ContextState;
@@ -9,4 +10,5 @@ export type ApplicationState = {
 export default {
   context,
   auth,
+  loadingBar,
 };

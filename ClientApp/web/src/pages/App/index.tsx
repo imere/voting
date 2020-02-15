@@ -1,25 +1,20 @@
 import React, { Suspense } from "react";
-import { Redirect, Route, Switch } from "react-router";
+import { Switch } from "react-router";
 import { Icon } from "antd";
-import { SiderTheme } from "antd/lib/layout/Sider";
+import { SiderTheme } from "antd/es/layout/Sider";
 import { connect } from "react-redux";
 
 import Fallback from "@/components/Fallback";
 import HeaderNavComponent from "@/components/HeaderNav";
 import SideMenuLayout from "@/layouts/SideMenuLayout";
 import TopMenuLayout from "@/layouts/TopMenuLayout";
+import AppRoutes from "@/routes/AppRoutes";
 import { useSessionState } from "@/hooks/useSessionState";
-import { Routes } from "@/constants";
 import { ApplicationState } from "@/reducers";
 import { classnames } from "@/shared/classnames";
+import { renderRoutes } from "@/routes/utils";
 
 import styles from "./App.module.scss";
-
-const PollListLazy = React.lazy(() => import("@/components/PollList"));
-
-const AccountCenterLazy = React.lazy(() => import("@/components/AccountCenter"));
-
-const AccountSettingsLazy = React.lazy(() => import("@/components/AccountSettings"));
 
 interface AppOwnStateProps {
   theme: SiderTheme
@@ -39,10 +34,7 @@ function App({ theme }: AppProps) {
     <>
       <Suspense fallback={<Fallback />}>
         <Switch>
-          <Route path={Routes.POLL_LIST} component={PollListLazy}></Route>
-          <Route path={Routes.ACCOUNT_CENTER} component={AccountCenterLazy}></Route>
-          <Route path={Routes.ACCOUNT_SETTINGS} component={AccountSettingsLazy}></Route>
-          <Redirect to={Routes.POLL_LIST} />
+          {renderRoutes(AppRoutes)}
         </Switch>
       </Suspense>
     </>
