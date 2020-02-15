@@ -22,7 +22,7 @@
   "author": "imere",
   "license": "ISC",
   "dependencies": {
-    "antd": "^3.26.6",
+    "antd": "^4.0.0-rc.4",
     "axios": "^0.19.1",
     "connected-react-router": "^6.6.1",
     "history": "^4.10.1",
