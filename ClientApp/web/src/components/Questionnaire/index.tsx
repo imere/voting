@@ -17,11 +17,15 @@ const { Meta } = Card;
 let id = 0;
 
 const Questionnaire: React.FC<QuestionnaireProps> = () => {
-  const [, forceRender] = useState(false);
+  const [, reRender] = useState(false);
   const [
     items,
     setItems
   ] = useState<Array<QuestionnaireContentType>>([]);
+
+  function getItem(name: string) {
+    return items.find((item) => item.name === name);
+  }
 
   function addItem(item: QuestionnaireContentType) {
     setItems((prev) => prev.concat(item));
@@ -37,14 +41,19 @@ const Questionnaire: React.FC<QuestionnaireProps> = () => {
         if (item.name !== name) {
           return false;
         }
-        prev[index] = { name, ...rest };
+        Object.assign(prev[index], { name, ...rest });
         return true;
       });
       return prev;
     });
   }
 
+  function forceRender() {
+    reRender((v) => !v);
+  }
+
   const ctx = useContext(QuestionnaireContext);
+  ctx.getItem = getItem;
   ctx.addItem = addItem;
   ctx.removeItem = removeItem;
   ctx.updateItem = updateItem;
@@ -69,7 +78,7 @@ const Questionnaire: React.FC<QuestionnaireProps> = () => {
     setItems((prev) => prev.concat(
       QItemDataFactory.input({
         label: `${id++}`,
-        rules: QItemDefaultData.input.rules
+        rules: QItemDefaultData.input().rules
       })
     ));
   }

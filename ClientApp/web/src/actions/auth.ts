@@ -1,4 +1,4 @@
-import Oidc, { User, UserManager, UserManagerSettings } from "oidc-client";
+import { User, UserManager, UserManagerSettings, WebStorageStateStore } from "oidc-client";
 import { Action } from "redux";
 
 import { AuthActions, Routes } from "@/constants";
@@ -14,7 +14,7 @@ import {
 } from "@/constants/AuthActions";
 import { AppThunkAction, None } from "@/types";
 import { Http } from "@/shared";
-import { API_ORIGIN, API_USER } from "@/shared/conf";
+import { API_ORIGIN, API_USER, HOST } from "@/shared/conf";
 
 export interface UserAuthentication {
   username: string
@@ -55,11 +55,11 @@ class IdentityService {
   private CLIENT_SETTINGS: UserManagerSettings = {
     "authority": `${API_ORIGIN}`,
     "client_id": "js",
-    "redirect_uri": "http://localhost:5000/auth-callback",
-    "post_logout_redirect_uri": "http://localhost:5000",
+    "redirect_uri": `${HOST}${Routes.AUTH_CALLBACK}`,
+    "post_logout_redirect_uri": `${HOST}${Routes.USER_LOGIN}`,
     "response_type": "id_token token",
     "scope": "openid profile api1",
-    userStore: new Oidc.WebStorageStateStore({
+    userStore: new WebStorageStateStore({
       store: window.localStorage
     })
   };

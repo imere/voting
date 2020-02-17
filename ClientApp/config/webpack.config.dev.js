@@ -1,3 +1,4 @@
+const ForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
 const { ScriptDist } = require("./config.js");
 
 module.exports = {
@@ -35,4 +36,12 @@ module.exports = {
   "performance": {
     "hints": false,
   },
+  plugins: [
+    new ForkTsCheckerPlugin({
+      "checkSyntacticErrors": true,
+      "memoryLimit": 512,
+      "workers": 1,
+      "silent": false,
+    }),
+  ]
 };

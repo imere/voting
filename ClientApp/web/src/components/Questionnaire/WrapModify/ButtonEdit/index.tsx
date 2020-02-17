@@ -4,15 +4,15 @@ import { Popover, Tooltip } from "antd";
 
 import { QuestionnaireContentType } from "@/data-types";
 
-import ButtonEditContent from "./ButtonEditContent";
+import ButtonEditOptions from "./ButtonEditOptions";
 
 type ButtonEditProps = QuestionnaireContentType
 
 const ButtonEdit = (props: ButtonEditProps) => (
   <Popover
-    content={<ButtonEditContent {...props} />}
+    content={<ButtonEditOptions {...props} />}
     trigger="click"
-    placement="left"
+    placement="right"
   >
     <Tooltip title="编辑">
       <EditOutlined

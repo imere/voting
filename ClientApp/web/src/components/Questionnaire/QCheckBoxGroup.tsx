@@ -5,7 +5,7 @@ import { TypeCheckBoxGroup } from "@/data-types";
 
 import styels from "./QCheckBoxGroup.module.scss";
 
-export interface QCheckBoxGroupReceivedProps extends TypeCheckBoxGroup {}
+export interface QCheckBoxGroupReceivedProps extends Omit<TypeCheckBoxGroup, "typename"> {}
 
 const QCheckBoxGroup = ({ label, name, rules = [], extra, ...rest }: QCheckBoxGroupReceivedProps) => (
   <Form.Item

@@ -35,18 +35,18 @@ const BreadCrumbComponent = () => {
           </Breadcrumb.Item>
         ].
           concat(
-            paths.map((name, i) => {
+            paths.map((_, i) => {
               const route = `/${paths.slice(0, i + 1).join("/")}`;
               return (
                 <Breadcrumb.Item key={i}>
                   {
                     Object.values(Routes).some((value) => route === value)
                       ? <Link to={route}>{RouteNameMap[route]}</Link>
-                      : <>{name.toUpperCase()}</>
+                      : undefined
                   }
                 </Breadcrumb.Item>
               );
-            })
+            }).filter((r) => r)
           )
       }
     </Breadcrumb>

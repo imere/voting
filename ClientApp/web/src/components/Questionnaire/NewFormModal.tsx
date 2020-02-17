@@ -2,6 +2,8 @@ import React from "react";
 import { Form, Input, Modal, Switch } from "antd";
 import { Store } from "rc-field-form/lib/interface";
 
+import { toggleRequired } from "./utils";
+
 interface NewFormModalReceivedProps {
   visible?: boolean
   onCreate: (e: Store) => void
@@ -12,12 +14,13 @@ type NewFormModalProps = NewFormModalReceivedProps
 
 const NewFormModal = ({ visible, onCancel, onCreate }: NewFormModalProps) => {
   const [form] = Form.useForm();
+
   return (
     <Modal
       visible={visible}
-      title="Create a new collection"
-      okText="Create"
-      cancelText="Cancel"
+      title="创建问卷"
+      okText="创建"
+      cancelText="取消"
       onCancel={onCancel}
       onOk={() => {
         form.
@@ -39,7 +42,7 @@ const NewFormModal = ({ visible, onCancel, onCreate }: NewFormModalProps) => {
         <Form.Item
           label="Title"
           name="title"
-          rules={[{ required: true }]}
+          rules={toggleRequired([])}
         >
           <Input />
         </Form.Item>

@@ -4,6 +4,8 @@ import { Options } from "@loadable/component";
 
 import Fallback from "@/components/Fallback";
 
+export const HOST = "http://localhost:5000";
+
 export const API_ORIGIN = "http://localhost:61598";
 export const API_USER = `${API_ORIGIN}/api/user`;
 export const API_POLL = `${API_ORIGIN}/api/v1/poll`;

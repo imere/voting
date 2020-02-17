@@ -9,7 +9,6 @@ const CopyPlugin = require("copy-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-const ForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
 // const HardSourcePlugin = require("hard-source-webpack-plugin");
 
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
@@ -104,12 +103,6 @@ const baseConfig = {
     ]
   },
   "plugins": [
-    new ForkTsCheckerPlugin({
-      "checkSyntacticErrors": true,
-      "memoryLimit": 512,
-      "workers": 1,
-      "silent": false,
-    }),
     new ProgressBarPlugin(),
     // new DashboardPlugin(),
     // new BuildNotifier({

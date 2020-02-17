@@ -3,10 +3,11 @@ import React from "react";
 import { MD5 } from "object-hash";
 import { Rule, RuleObject } from "rc-field-form/lib/interface";
 
+import QCheckBoxGroup from "@/components/Questionnaire/QCheckBoxGroup";
+import QInput from "@/components/Questionnaire/QInput";
+import WrapModify from "@/components/Questionnaire/WrapModify";
+import WrapNormal from "@/components/Questionnaire/WrapNormal";
 import { QuestionnaireContentType, TypeCheckBoxGroup, TypeInput } from "@/data-types";
-
-import WrapModify from "./WrapModify";
-import WrapNormal from "./WrapNormal";
 
 export function hashItemId(id: string, salt = "") {
   return MD5(id + salt).slice(0, 7);
@@ -52,11 +53,11 @@ type QItemMapType = {
   [K in QuestionnaireContentType["typename"]]: React.ComponentType<any>;
 };
 export const QItemMap: QItemMapType = {
-  "input": loadable(() => import("./QInput")),
-  "checkboxgroup": loadable(() => import("./QCheckBoxGroup")),
+  "input": QInput,
+  "checkboxgroup": QCheckBoxGroup,
 };
 
-export function renderQItems(edit: boolean, items: (QuestionnaireContentType)[]): any[] {
+export function renderQItems(edit: boolean, items: Array<QuestionnaireContentType>): any[] {
   if (edit) {
     return items.map((item, i) => (
       <WrapModify
@@ -78,16 +79,16 @@ export function renderQItems(edit: boolean, items: (QuestionnaireContentType)[])
 }
 
 type QItemDefaultDataType = {
-  [K in QuestionnaireContentType["typename"]]: QuestionnaireContentType
+  [K in QuestionnaireContentType["typename"]]: () => QuestionnaireContentType
 }
 export const QItemDefaultData: QItemDefaultDataType = {
-  "input": {
+  "input": () => ({
     typename: "input",
     label: "label",
     name: hashName("input"),
     rules: toggleRequired([{ whitespace: true, message: "不能为空" }]),
-  },
-  "checkboxgroup": {
+  }),
+  "checkboxgroup": () => ({
     typename: "checkboxgroup",
     label: "label",
     name: hashName("checkboxgroup"),
@@ -97,13 +98,13 @@ export const QItemDefaultData: QItemDefaultDataType = {
       "B"
     ],
     rules: toggleRequired([]),
-  },
+  }),
 };
 
 // type QItemDataFactoryType = {
 //   [K in QuestionnaireContentType["typename"]]: (prop: any) => any
 // }
-type QItemDataParam<T> = Omit<T, "typename" | "name">
+type QItemDataParam<T> = Omit<T, "typename" | "name"> & { name?: string }
 export const QItemDataFactory = {
   "input": ({ label, ...rest }: QItemDataParam<TypeInput>): TypeInput => ({
     typename: "input",
@@ -117,4 +118,14 @@ export const QItemDataFactory = {
     name: hashName(label),
     ...rest,
   }),
+};
+
+type ButtonEditContentType = QItemMapType
+export const ButtonEditContentMap: ButtonEditContentType = {
+  "input": loadable(
+    () => import("@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQInput")
+  ),
+  "checkboxgroup": loadable(
+    () => import("@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQCheckBoxGroup")
+  ),
 };

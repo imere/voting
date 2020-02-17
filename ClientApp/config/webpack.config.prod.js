@@ -20,6 +20,11 @@ module.exports = {
           "name": "c0",
           "reuseExistingChunk": true,
         },
+        "c01": {
+          "test": /[\\/]node_modules[\\/](.*oidc.*)[\\/]/,
+          "name": "c01",
+          "reuseExistingChunk": true,
+        },
         "babel": {
           "test": /[\\/]node_modules[\\/](.*babel.*)[\\/]/,
           "name": "c1",
@@ -46,7 +51,7 @@ module.exports = {
           "reuseExistingChunk": true,
         },
         "http": {
-          "test": /[\\/]node_modules[\\/](.*(axios|fetch|oidc).*)[\\/]/,
+          "test": /[\\/]node_modules[\\/](.*(axios|fetch).*)[\\/]/,
           "name": "c6",
           "reuseExistingChunk": true,
         },
