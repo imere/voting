@@ -1,16 +1,29 @@
-import React from "react";
+import Loadable from "@loadable/component";
 
 import { Routes } from "@/constants";
+import { defaultLoadableOption } from "@/shared/conf";
 
 import { RouteArrayType } from "./routes";
 
-const PollListLazy = React.lazy(() => import("@/components/PollList"));
+const PollListLazy = Loadable(
+  () => import("@/components/PollList"),
+  defaultLoadableOption
+);
 
-const QuestionnaireLazy = React.lazy(() => import("@/components/Questionnaire"));
+const QuestionnaireLazy = Loadable(
+  () => import("@/components/Questionnaire"),
+  defaultLoadableOption
+);
 
-const AccountCenterLazy = React.lazy(() => import("@/components/AccountCenter"));
+const AccountCenterLazy = Loadable(
+  () => import("@/components/AccountCenter"),
+  defaultLoadableOption
+);
 
-const AccountSettingsLazy = React.lazy(() => import("@/components/AccountSettings"));
+const AccountSettingsLazy = Loadable(
+  () => import("@/components/AccountSettings"),
+  defaultLoadableOption
+);
 
 export default [
   {

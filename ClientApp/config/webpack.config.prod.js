@@ -46,18 +46,8 @@ module.exports = {
           "reuseExistingChunk": true,
         },
         "http": {
-          "test": /[\\/]node_modules[\\/](.*(axios|fetch).*)[\\/]/,
+          "test": /[\\/]node_modules[\\/](.*(axios|fetch|oidc).*)[\\/]/,
           "name": "c6",
-          "reuseExistingChunk": true,
-        },
-        "moment": {
-          "test": /[\\/]node_modules[\\/](.*moment.*)[\\/]/,
-          "name": "c7",
-          "reuseExistingChunk": true,
-        },
-        "i": {
-          "test": /[\\/]node_modules[\\/](.*icon.*)[\\/]/,
-          "name": "c7",
           "reuseExistingChunk": true,
         },
         "aui": {

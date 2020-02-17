@@ -5,4 +5,4 @@ type CustomRouteType = {
   redirect?: boolean,
   auth?: boolean
 }
-export declare type RouteArrayType = Array<(Omit<RouteProps, "path"> | Omit<RedirectProps, "path">) & CustomRouteType>
+export type RouteArrayType = Array<(Omit<RouteProps, "path"> | Omit<RedirectProps, "path">) & CustomRouteType>

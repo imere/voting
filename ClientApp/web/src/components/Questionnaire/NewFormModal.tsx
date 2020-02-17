@@ -1,55 +1,60 @@
 import React from "react";
 import { Form, Input, Modal, Switch } from "antd";
-import { FormComponentProps } from "antd/es/form";
+import { Store } from "rc-field-form/lib/interface";
 
-interface NewFormModalReceivedProps extends FormComponentProps {
+interface NewFormModalReceivedProps {
   visible?: boolean
-  onCreate: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void
+  onCreate: (e: Store) => void
   onCancel: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void
 }
 
-interface NewFormModalOwnProps {
-  form: FormComponentProps["form"]
-}
+type NewFormModalProps = NewFormModalReceivedProps
 
-type NewFormModalProps =
-  NewFormModalReceivedProps &
-  NewFormModalOwnProps
-
-const NewFormModal = ({ form, visible, onCancel, onCreate }: NewFormModalProps) => {
-  const { getFieldDecorator } = form;
+const NewFormModal = ({ visible, onCancel, onCreate }: NewFormModalProps) => {
+  const [form] = Form.useForm();
   return (
     <Modal
       visible={visible}
-      title="创建新问卷"
-      okText="创建"
-      onOk={onCreate}
+      title="Create a new collection"
+      okText="Create"
+      cancelText="Cancel"
       onCancel={onCancel}
+      onOk={() => {
+        form.
+          validateFields().
+          then((values) => {
+            form.resetFields();
+            onCreate(values);
+          }).
+          catch((info) => {
+            console.log("Validate Failed:", info);
+          });
+      }}
     >
-      <Form layout="vertical">
-        <Form.Item label="Title">
-          {getFieldDecorator("title", {
-            rules: [{ required: true, message: "Please input the title of collection!" }],
-          })(<Input />)}
+      <Form
+        form={form}
+        layout="vertical"
+        name="new_form"
+      >
+        <Form.Item
+          label="Title"
+          name="title"
+          rules={[{ required: true }]}
+        >
+          <Input />
         </Form.Item>
-        <Form.Item label="Description">
-          {getFieldDecorator("description")(<Input type="textarea" />)}
+        <Form.Item
+          label="Description"
+          name="description"
+        >
+          <Input type="textarea" />
         </Form.Item>
-        <Form.Item label="Public">
-          {getFieldDecorator("public", {
-            valuePropName: "checked",
-            initialValue: false,
-          })(
-            <Switch />
-          )}
+        <Form.Item label="Public" name="public">
+          <Switch />
         </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-export default Form.create<NewFormModalReceivedProps>({
-  name: "new_form_modal"
-})(
-  React.forwardRef(NewFormModal)
-);
+export default React.forwardRef(NewFormModal);

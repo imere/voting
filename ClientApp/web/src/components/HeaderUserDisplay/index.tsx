@@ -3,6 +3,7 @@ import { Avatar, Spin } from "antd";
 import { connect } from "react-redux";
 import { SiderTheme } from "antd/es/layout/Sider";
 import { User } from "oidc-client";
+import { UserOutlined } from "@ant-design/icons";
 
 import HeaderUserDropdown from "@/components/HeaderUserDropdown";
 import { ApplicationState } from "@/reducers";
@@ -29,7 +30,7 @@ const HeaderUserDisplay = ({ pending, user, theme }: HeaderUserDisplayProps) => 
       <Spin spinning={pending}>
         <Avatar
           style={user ? { color: "#f56a00", backgroundColor: "#fde3cf" } : {}}
-          icon={user ? undefined : "user"}
+          icon={user ? undefined : <UserOutlined />}
         >
           {user && (
             user.profile.name

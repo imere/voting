@@ -1,25 +1,21 @@
 import React from "react";
-import { Checkbox } from "antd";
-import { FormComponentProps } from "antd/es/form";
+import { Checkbox, Form } from "antd";
 
 import { TypeCheckBoxGroup } from "@/data-types";
 
 import styels from "./QCheckBoxGroup.module.scss";
-import { QItemProps } from "./Q";
 
-export interface QCheckBoxGroupReceivedProps extends QItemProps, TypeCheckBoxGroup {
-  form: FormComponentProps["form"]
-}
+export interface QCheckBoxGroupReceivedProps extends TypeCheckBoxGroup {}
 
-const QCheckBoxGroup = ({ form, id, rules, value, options }: QCheckBoxGroupReceivedProps) => (
-  <>
-    {form.getFieldDecorator(id, {
-      initialValue: value,
-      rules
-    })(
-      <Checkbox.Group className={styels.checkboxgroup} options={options} />
-    )}
-  </>
+const QCheckBoxGroup = ({ label, name, rules = [], extra, ...rest }: QCheckBoxGroupReceivedProps) => (
+  <Form.Item
+    label={label}
+    name={name}
+    rules={rules}
+    extra={extra}
+  >
+    <Checkbox.Group className={styels.checkboxgroup} {...rest} />
+  </Form.Item>
 );
 
 export default QCheckBoxGroup;

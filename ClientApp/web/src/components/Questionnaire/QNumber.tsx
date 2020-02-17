@@ -1,16 +1,11 @@
 import React from "react";
 import { Form, InputNumber } from "antd";
-import { FormComponentProps } from "antd/es/form";
 
 import { TypeNumber } from "@/data-types";
 
-import { QItemProps } from "./Q";
+export interface QNumberReceivedProps extends TypeNumber {}
 
-export interface QNumberReceivedProps extends QItemProps, TypeNumber {
-  form: FormComponentProps["form"]
-}
-
-const QNumber = ({ form, id, label, extra, rules, value, min, max }: QNumberReceivedProps) => {
+const QNumber = ({ name, label, extra, rules = [], min, max, ...rest }: QNumberReceivedProps) => {
   if (typeof min !== "undefined" || typeof max !== "undefined") {
     rules.unshift({
       min: min,
@@ -18,13 +13,13 @@ const QNumber = ({ form, id, label, extra, rules, value, min, max }: QNumberRece
     });
   }
   return (
-    <Form.Item label={label} extra={extra}>
-      {form.getFieldDecorator(id, {
-        initialValue: value,
-        rules
-      })(
-        <InputNumber min={min} max={max} />
-      )}
+    <Form.Item
+      label={label}
+      name={name}
+      rules={rules}
+      extra={extra}
+    >
+      <InputNumber min={min} max={max} {...rest} />
     </Form.Item>
   );
 };

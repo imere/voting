@@ -17,7 +17,7 @@ const RouteNameMap: {[key: string]: string} = new Proxy({
   get(target, p, receiver) {
     const value = Reflect.get(target, p, receiver);
     if ("undefined" !== typeof value) {
-      return value; 
+      return value;
     }
     return p;
   }

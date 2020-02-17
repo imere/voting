@@ -1,12 +1,19 @@
-import React from "react";
+import Loadable from "@loadable/component";
 
 import { Routes } from "@/constants";
+import { defaultLoadableOption } from "@/shared/conf";
 
 import { RouteArrayType } from "./routes";
 
-const AccountRegisterFormLazy = React.lazy(() => import("@/components/AccountRegisterForm"));
+const AccountRegisterFormLazy = Loadable(
+  () => import("@/components/AccountRegisterForm"),
+  defaultLoadableOption
+);
 
-const AccountLoginFormLazy = React.lazy(() => import("@/components/AccountLoginForm"));
+const AccountLoginFormLazy = Loadable(
+  () => import("@/components/AccountLoginForm"),
+  defaultLoadableOption
+);
 
 export default [
   {

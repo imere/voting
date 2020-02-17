@@ -1,12 +1,10 @@
-import Form, { FormComponentProps } from "antd/es/form/Form";
 import React, { useState } from "react";
-import { Button, Checkbox, Icon, message } from "antd";
+import { Button, Checkbox, Form, Input, message } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Store, ValidateErrorEntity } from "rc-field-form/lib/interface";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import CheckboxItem from "@/layouts/AccountFormLayout/CheckboxItem";
-import InputItem from "@/layouts/AccountFormLayout/InputItem";
-import AccountFormLogo from "@/layouts/AccountFormLogo";
 import { Routes } from "@/constants";
 import { AuthAction, RegisterCallback, UserAuthentication } from "@/actions/auth";
 import { iu } from "@/actions";
@@ -27,26 +25,18 @@ interface AccountRegisterOwnDispatchProps {
   register: (user: UserAuthentication, cb?: RegisterCallback) => void
 }
 
-interface AccountRegisterOwnFormProps {
-  form: FormComponentProps["form"]
-}
-
 type AccountRegisterProps =
-  AccountRegisterOwnFormProps &
   AccountRegisterOwnStateProps &
   AccountRegisterOwnDispatchProps;
 
-interface AccountRegisterFormValues {
-  username: string
-  password: string
-  confirm: string
-}
+// interface AccountRegisterFormValues {
+//   username: string
+//   password: string
+//   confirm: string
+// }
 
-const AccountRegister = ({ form, register, pending }: AccountRegisterProps) => {
-  const [
-    confirmDirty,
-    setConfirmDirty
-  ] = useState(false);
+const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
+  const [form] = Form.useForm();
 
   const [
     usernameHelp,
@@ -103,157 +93,137 @@ const AccountRegister = ({ form, register, pending }: AccountRegisterProps) => {
     setPasswordStatus(undefined);
   }
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  function onFinish(values: Store) {
     resetHelp();
-    form.validateFieldsAndScroll((err, values: AccountRegisterFormValues) => {
-      if (err) {
-        return;
-      }
-      setRegistering(true);
-      register({
-        username: values.username,
-        password: values.password,
-      }, registerCallback);
-    });
+    setRegistering(true);
+    register({
+      username: values.username,
+      password: values.password,
+    }, registerCallback);
   }
 
-  function handleConfirmBlur(e: React.FocusEvent<HTMLInputElement>) {
-    const { value } = e.target;
-    setConfirmDirty(confirmDirty || !!value);
-  }
-
-  function compareToFirstPassword(_: any, value: string | undefined, callback: Function) {
-    if (value && value !== form.getFieldValue("password")) {
-      return callback("两次密码不一致");
-    }
-    callback();
-  }
-
-  function ensureFilled(_: any, value: boolean, callback: Function) {
-    if (
-      form.getFieldValue("username")
-      && form.getFieldValue("password")
-      && form.getFieldValue("confirm")
-    ) {
-      if (value) {
-        return callback();
-      }
-      return callback("需要同意协议");
-    }
-    callback();
-  }
-
-  function validateToNextPassword(_: any, value: string | undefined, callback: Function) {
-    if (value && confirmDirty) {
-      form.validateFields(["confirm"], { force: true });
-    }
-    callback();
+  function onFinishFailed({ errorFields }: ValidateErrorEntity) {
+    form.scrollToField(errorFields[0].name);
   }
 
   return (
-    <>
-      <Form style={{ display: "none" }}>
-        <Form.Item>
-          {form.getFieldDecorator("_pre", {
-            valuePropName: "checked",
-            initialValue: false,
-          })(
-            <Checkbox />
-          )}
-        </Form.Item>
-      </Form>
-      <Form onSubmit={handleSubmit} className={styles["register-form"]}>
+    <Form
+      className={styles["register-form"]}
+      form={form}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+    >
 
-        <AccountFormLogo />
-
-        <InputItem
-          form={form}
-          name="username"
-          options={{
-            rules: [
-              {
-                required: true,
-                message: "请输入用户名",
-              },
-              ...usernameRules,
-            ],
-          }}
-          prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+      <Form.Item
+        name="username"
+        help={usernameHelp}
+        validateStatus={usernameStatus}
+        rules={[
+          {
+            required: true,
+            message: "请输入用户名",
+          },
+          ...usernameRules,
+        ]}
+      >
+        <Input
           placeholder="用户名"
-          help={usernameHelp}
-          validateStatus={usernameStatus}
+          prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
         />
+      </Form.Item>
 
-        <InputItem
-          form={form}
-          name="password"
-          options={{
-            rules: [
-              {
-                required: true,
-                message: "请输入密码",
-              },
-              ...passwordRules,
-              {
-                validator: validateToNextPassword,
-              },
-            ],
-          }}
-          prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+      <Form.Item
+        name="password"
+        help={passwordHelp}
+        validateStatus={passwordStatus}
+        rules={[
+          {
+            required: true,
+            message: "请输入密码",
+          },
+          ...passwordRules,
+        ]}
+      >
+        <Input
           type="password"
           placeholder="密码"
-          help={passwordHelp}
-          validateStatus={passwordStatus}
+          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
         />
+      </Form.Item>
 
-        <InputItem
-          form={form}
-          name="confirm"
-          options={{
-            rules: [
-              {
-                required: true,
-                message: "请再输入一次密码",
-              },
-              {
-                validator: compareToFirstPassword,
-              },
-            ],
-          }}
-          prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+      <Form.Item
+        name="confirm"
+        help={passwordHelp}
+        validateStatus={passwordStatus}
+        rules={[
+          {
+            required: true,
+            message: "请再输入一次密码",
+          },
+          ({ getFieldValue }) => ({
+            validator(_rule, value) {
+              if (!value || getFieldValue("password") === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject("两次密码不一致");
+            },
+          }),
+        ]}
+      >
+        <Input
           type="password"
           placeholder="确认密码"
-          onBlur={handleConfirmBlur}
+          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
         />
+      </Form.Item>
 
-        <CheckboxItem
-          form={form}
+      <Form.Item>
+        <Form.Item
+          noStyle
           name="agreement"
-          options={{
-            valuePropName: "checked",
-            initialValue: false,
-            rules: [
-              {
-                required: true,
-              },
-              {
-                validator: ensureFilled,
-              },
-            ],
-          }}
-          content="我已阅读"
-          append={
-            <>
-              <a>服务协议</a>
-              <Link className={styles["register-form-registered"]} to={Routes.USER_LOGIN}>已注册?</Link>
-              <Button loading={pending || registering} type="primary" htmlType="submit" className={styles["register-form-button"]}>注册</Button>
-            </>
-          }
-        />
+          valuePropName="checked"
+          rules={[
+            (({ getFieldValue }) => ({
+              validateTrigger: ["onChange"],
+              validator(_, value) {
+                if (value) {
+                  return Promise.resolve();
+                }
+                if (
+                  getFieldValue("username") &&
+                  getFieldValue("password") &&
+                  getFieldValue("confirm")
+                ) {
+                  return Promise.reject("需要同意协议");
+                }
+                return Promise.resolve();
+              }
+            })),
+          ]}
+        >
+          <Checkbox>我已阅读</Checkbox>
+        </Form.Item>
+        <a>服务协议</a>
+        <Link
+          className={styles["register-form-registered"]}
+          to={Routes.USER_LOGIN}
+        >
+          已注册?
+        </Link>
+      </Form.Item>
 
-      </Form>
-    </>
+      <Form.Item>
+        <Button
+          className={styles["register-form-button"]}
+          type="primary"
+          htmlType="submit"
+          loading={pending || registering}
+        >
+          注册
+        </Button>
+      </Form.Item>
+
+    </Form>
   );
 };
 
@@ -265,6 +235,4 @@ const mapDispatchToProps = (dispatch: AccountRegisterDispatch): AccountRegisterO
   register: (user, cb) => dispatch(iu.register(user, cb)),
 });
 
-export default Form.create({ name: "register" })(
-  connect(mapStateToProps, mapDispatchToProps)(AccountRegister)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountRegister);

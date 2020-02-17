@@ -7,28 +7,28 @@ import { ApplicationState } from "@/reducers";
 
 import styles from "./Sider.module.scss";
 
-interface SiderReceivedProps {
+export interface SiderComponentReceivedProps {
   children?: React.ReactNode;
   collapsed: boolean;
 }
 
-interface SiderOwnStateProps {
+interface SiderComponentOwnStateProps {
   theme: SiderTheme;
 }
 
-type SiderProps =
-  SiderOwnStateProps &
-  SiderReceivedProps
+type SiderComponentProps =
+  SiderComponentOwnStateProps &
+  SiderComponentReceivedProps
 
 const { Sider } = Layout;
 
-const SiderComponent: React.FC<SiderProps> = ({ children, collapsed, theme }: SiderProps) => (
+const SiderComponent: React.FC<SiderComponentProps> = ({ children, collapsed, theme }: SiderComponentProps) => (
   <Sider theme={theme} className={styles.sider} trigger={null} collapsible collapsed={collapsed}>
     {children}
   </Sider>
 );
 
-const mapStateToProps = (state: ApplicationState): SiderOwnStateProps => ({
+const mapStateToProps = (state: ApplicationState): SiderComponentOwnStateProps => ({
   theme: state.context.theme,
 });
 

@@ -1,24 +1,20 @@
 import React from "react";
 import { Form, Input } from "antd";
-import { FormComponentProps } from "antd/es/form";
 
 import { TypeTextArea } from "@/data-types";
 
-import { QItemProps } from "./Q";
-
-export interface QTextAreaReceivedProps extends QItemProps, TypeTextArea {
-  form: FormComponentProps["form"]
-}
+export interface QTextAreaReceivedProps extends TypeTextArea {}
 
 const { TextArea } = Input;
 
-const QTextArea = ({ form, id, label, extra, rules }: QTextAreaReceivedProps) => (
-  <Form.Item label={label} extra={extra}>
-    {form.getFieldDecorator(id, {
-      rules
-    })(
-      <TextArea autoSize />
-    )}
+const QTextArea = ({ label, name, extra, rules = [], ...rest }: QTextAreaReceivedProps) => (
+  <Form.Item
+    label={label}
+    name={name}
+    rules={rules}
+    extra={extra}
+  >
+    <TextArea autoSize {...rest} />
   </Form.Item>
 );
 

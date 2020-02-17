@@ -1,10 +1,6 @@
 import { iu } from "@/actions";
 
-export const API_ORIGIN = "http://localhost:61598";
-export const API_USER = `${API_ORIGIN}/api/user`;
-export const API_POLL = `${API_ORIGIN}/api/v1/poll`;
-
-export const ALLOWED_ORIGINS = [API_ORIGIN];
+import { ALLOWED_ORIGINS, API_ORIGIN } from "./conf";
 
 type FetchType = (input: RequestInfo, init?: RequestInit | undefined) => Promise<Response>;
 

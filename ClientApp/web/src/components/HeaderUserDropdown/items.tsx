@@ -1,14 +1,16 @@
+import React from "react";
 import { ClickParam } from "antd/es/menu";
+import { LinkOutlined, PoweroffOutlined, SettingOutlined, UserOutlined } from "@ant-design/icons";
 
 import { Routes } from "@/constants";
 
 import { HeaderUserDropdownProps } from "./index";
 
 type MenuItem =
-  {
+  | {
     content: string
     link?: string
-    iconType?: string
+    icon?: React.ReactNode
     onClick?: (param: ClickParam) => void
   }
   | undefined;
@@ -16,7 +18,7 @@ type MenuItem =
 export function normalItems(): MenuItem[] {
   return [
     {
-      iconType: "link",
+      icon: <LinkOutlined />,
       content: "用户登录",
       link: Routes.USER_LOGIN,
     }
@@ -26,18 +28,18 @@ export function normalItems(): MenuItem[] {
 export function authItems(logout: HeaderUserDropdownProps["logout"]): MenuItem[] {
   return [
     {
-      iconType: "user",
+      icon: <UserOutlined />,
       "content": "用户中心",
       link: Routes.ACCOUNT_CENTER,
     },
     {
-      iconType: "setting",
+      icon: <SettingOutlined />,
       "content": "用户设置",
       link: Routes.ACCOUNT_SETTINGS,
     },
     undefined,
     {
-      iconType: "poweroff",
+      icon: <PoweroffOutlined />,
       "content": "退出登录",
       "onClick": () => logout(),
     },

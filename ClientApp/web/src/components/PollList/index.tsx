@@ -3,7 +3,7 @@ import { useFetch } from "use-http";
 import { Empty } from "antd";
 
 import Fallback from "@/components/Fallback";
-import { API_POLL } from "@/shared";
+import { API_POLL } from "@/shared/conf";
 import { ResponseState } from "@/data-types";
 import { None } from "@/types";
 

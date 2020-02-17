@@ -1,21 +1,25 @@
 import React from "react";
 import { Layout } from "antd";
 
+import AccountFormLogo from "@/layouts/AccountFormLogo";
 import FooterComponent from "@/layouts/Footer";
+
+import styles from "./AccountFormLayout.module.scss";
 
 const { Content } = Layout;
 
 interface AccountLayoutReceivedProps {
-  content: React.ReactNode;
+  children: React.ReactNode;
 }
 
 type AccountLayoutProps = AccountLayoutReceivedProps;
 
-const AccountLayout: React.FC<AccountLayoutProps> = ({ content }: AccountLayoutProps) => (
+const AccountFormLayout: React.FC<AccountLayoutProps> = ({ children }: AccountLayoutProps) => (
   <Layout style={{ "minHeight": "100vh" }}>
 
-    <Content style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-      {content}
+    <Content className={styles["account-form-content"]}>
+      <AccountFormLogo />
+      {children}
     </Content>
 
     <FooterComponent />
@@ -23,4 +27,4 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({ content }: AccountLayoutP
   </Layout>
 );
 
-export default AccountLayout;
+export default AccountFormLayout;

@@ -94,6 +94,7 @@
     "space-before-blocks": "error",
     "space-unary-ops": "error",
     "unicode-bom": "error",
-    "semi": "error"
+    "semi": "error",
+    "no-trailing-spaces":"error"
   }
 }

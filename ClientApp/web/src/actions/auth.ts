@@ -13,7 +13,8 @@ import {
   ActionRegisterSuc,
 } from "@/constants/AuthActions";
 import { AppThunkAction, None } from "@/types";
-import { API_ORIGIN, API_USER, Http } from "@/shared";
+import { Http } from "@/shared";
+import { API_ORIGIN, API_USER } from "@/shared/conf";
 
 export interface UserAuthentication {
   username: string

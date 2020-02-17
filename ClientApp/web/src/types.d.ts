@@ -26,5 +26,6 @@ declare type Disp<S, E, A extends Action> = Dispatch<A> & ThunkDispatch<S, E, A>
 
 declare type ThunkAction<R, S, E> = (dispatch: Dispatch<S>, getState: () => S, extraArgument: E) => R;
 
+
 declare const ValidateStatuses: ["success", "warning", "error", "validating", ""];
 declare type ValidateStatus = typeof ValidateStatuses[number]

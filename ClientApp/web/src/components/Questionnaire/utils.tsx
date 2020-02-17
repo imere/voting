@@ -1,35 +1,38 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { FormComponentProps, ValidationRule } from "antd/es/form";
-import { sha1 } from "object-hash";
+import loadable from "@loadable/component";
+import React from "react";
+import { MD5 } from "object-hash";
+import { Rule, RuleObject } from "rc-field-form/lib/interface";
 
-import { AnyType } from "@/types";
 import { QuestionnaireContentType, TypeCheckBoxGroup, TypeInput } from "@/data-types";
 
-import QCheckBoxGroup from "./QCheckBoxGroup";
-import QInput from "./QInput";
-import WrapEdit from "./WrapEdit";
+import WrapModify from "./WrapModify";
 import WrapNormal from "./WrapNormal";
 
-export function hashItemId(id: string) {
-  return sha1(id).slice(0, 7);
+export function hashItemId(id: string, salt = "") {
+  return MD5(id + salt).slice(0, 7);
 }
 
-export function isRequired(rules: ValidationRule[]): boolean {
-  return rules.some((rule) => rule.required);
+export function hashName(id: string) {
+  return hashItemId(id, Math.random().toFixed(15));
 }
 
-export function setRequiredMessage(rules: ValidationRule[]): void {
-  rules.some((rule) => {
+export function isRequired(rules: Rule[]): boolean {
+  return rules.some((rule) => (rule as RuleObject).required);
+}
+
+export function setRequiredMessage(rules: Rule[], message = "必填项"): Rule[] {
+  (rules as RuleObject[]).some((rule) => {
     if (rule.required) {
-      rule.message = "必填项";
+      rule.message = message;
       return true;
     }
     return false;
   });
+  return rules;
 }
 
-export function toggleRequired(rules: ValidationRule[]): ValidationRule[] {
-  const req = rules.some((rule) => {
+export function toggleRequired(rules: Rule[]): Rule[] {
+  const req = (rules as RuleObject[]).some((rule) => {
     if ("undefined" === typeof rule.required) {
       return false;
     }
@@ -46,33 +49,27 @@ export function toggleRequired(rules: ValidationRule[]): ValidationRule[] {
 }
 
 type QItemMapType = {
-  "input": React.FC<any>;
-  "checkboxgroup": React.FC<any>;
+  [K in QuestionnaireContentType["typename"]]: React.ComponentType<any>;
 };
-const QItemMap: QItemMapType & AnyType = {
-  "input": QInput,
-  "checkboxgroup": QCheckBoxGroup,
+export const QItemMap: QItemMapType = {
+  "input": loadable(() => import("./QInput")),
+  "checkboxgroup": loadable(() => import("./QCheckBoxGroup")),
 };
 
-export type SetItemsDispatch = Dispatch<SetStateAction<(QuestionnaireContentType & AnyType)[]>>
-export function renderQItems(form: FormComponentProps["form"], edit: boolean, items: AnyType[], setItems: SetItemsDispatch = () => undefined): any[] {
+export function renderQItems(edit: boolean, items: (QuestionnaireContentType)[]): any[] {
   if (edit) {
     return items.map((item, i) => (
-      <WrapEdit
+      <WrapModify
         key={i}
-        items={items}
-        form={form}
-        setItems={setItems}
         {...item}
       >
         {QItemMap[item.typename]}
-      </WrapEdit>
+      </WrapModify>
     ));
   }
   return items.map((item, i) => (
     <WrapNormal
       key={i}
-      form={form}
       {...item}
     >
       {QItemMap[item.typename]}
@@ -80,33 +77,44 @@ export function renderQItems(form: FormComponentProps["form"], edit: boolean, it
   ));
 }
 
-type QItemDataFactoryType = {
-  [K in keyof QItemMapType]: (prop: any) => any
+type QItemDefaultDataType = {
+  [K in QuestionnaireContentType["typename"]]: QuestionnaireContentType
 }
-export const QItemDataFactory: QItemDataFactoryType = {
-  "input": ({ id, label, ...rest }: Pick<TypeInput, "id" | "label">): TypeInput => ({
+export const QItemDefaultData: QItemDefaultDataType = {
+  "input": {
     typename: "input",
-    id,
-    label,
-    rules: toggleRequired([]),
-    ...rest,
-  }),
-  "checkboxgroup": ({ id, label, ...rest }: Pick<TypeCheckBoxGroup, "id" | "label">): TypeCheckBoxGroup => ({
+    label: "label",
+    name: hashName("input"),
+    rules: toggleRequired([{ whitespace: true, message: "不能为空" }]),
+  },
+  "checkboxgroup": {
     typename: "checkboxgroup",
-    id,
-    label,
+    label: "label",
+    name: hashName("checkboxgroup"),
     value: [],
     options: [
-      {
-        label: "A",
-        value: "A"
-      },
-      {
-        label: "B",
-        value: "B"
-      },
+      "A",
+      "B"
     ],
     rules: toggleRequired([]),
+  },
+};
+
+// type QItemDataFactoryType = {
+//   [K in QuestionnaireContentType["typename"]]: (prop: any) => any
+// }
+type QItemDataParam<T> = Omit<T, "typename" | "name">
+export const QItemDataFactory = {
+  "input": ({ label, ...rest }: QItemDataParam<TypeInput>): TypeInput => ({
+    typename: "input",
+    label,
+    name: hashName(label),
+    ...rest,
+  }),
+  "checkboxgroup": ({ label, ...rest }: QItemDataParam<TypeCheckBoxGroup>): TypeCheckBoxGroup => ({
+    typename: "checkboxgroup",
+    label,
+    name: hashName(label),
     ...rest,
   }),
 };

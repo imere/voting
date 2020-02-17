@@ -1,12 +1,12 @@
 import { CascaderOptionType } from "antd/es/cascader";
-import { ValidationRule } from "antd/es/form";
+import { Rule } from "rc-field-form/lib/interface";
 import { CheckboxOptionType } from "antd/es/checkbox";
 import { RadioGroupButtonStyle } from "antd/es/radio";
-import { OptionProps } from "antd/es/select";
+import { OptionCoreData } from "rc-select/lib/interface";
 
 export interface BuiltinResponse {
-  username: string[]
-  password: string[]
+  username?: string[]
+  password?: string[]
 }
 export interface CustomResponse {
   code: number
@@ -17,10 +17,10 @@ export type ResponseState = CustomResponse & BuiltinResponse;
 
 
 export interface BaseType {
-  id: string
+  name: string
   label: string
   extra?: string
-  rules: ValidationRule[]
+  rules: Rule[]
 }
 
 export interface TypeNumber extends BaseType {
@@ -69,7 +69,7 @@ export interface TypeCheckBox extends BaseType {
 export interface TypeCheckBoxGroup extends BaseType {
   typename: "checkboxgroup"
   value: string[]
-  options: CheckboxOptionType[]
+  options: (CheckboxOptionType | string)[]
 }
 
 export interface TypeRate extends BaseType {
@@ -78,8 +78,8 @@ export interface TypeRate extends BaseType {
 }
 
 type SelectOptionType = {
-  label: OptionProps["label"]
-  value: OptionProps["value"]
+  label: OptionCoreData["label"]
+  value: OptionCoreData["value"]
 }
 export interface TypeSelect extends BaseType {
   typename: "select"
@@ -120,22 +120,22 @@ export interface TypeTimeRange extends BaseType {
 }
 
 export type QuestionnaireContentType =
-  TypeNumber |
+  // TypeNumber |
   TypeInput |
-  TypeTextArea |
-  TypeSwitch |
-  TypeSlider |
-  TypeRadio |
-  TypeCheckBox |
-  TypeCheckBoxGroup |
-  TypeRate |
-  TypeSelect |
-  TypeSelectMultiple |
-  TypeCascade |
-  TypeDate |
-  TypeDateRange |
-  TypeTime |
-  TypeTimeRange
+  // TypeTextArea |
+  // TypeSwitch |
+  // TypeSlider |
+  // TypeRadio |
+  // TypeCheckBox |
+  TypeCheckBoxGroup
+  // TypeRate |
+  // TypeSelect |
+  // TypeSelectMultiple |
+  // TypeCascade |
+  // TypeDate |
+  // TypeDateRange |
+  // TypeTime |
+  // TypeTimeRange
 
 export interface Questionnaire {
   id: string

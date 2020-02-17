@@ -14,7 +14,7 @@ describe("poll", function () {
       expect("Content-Type", /json/).
       end((err, res) => {
         if (err) {
-          return done(err); 
+          return done(err);
         }
 
         if (res.body.code === 200) {
@@ -29,7 +29,7 @@ describe("poll", function () {
 
   it("get by id success", (done) => {
     if (data.length === 0) {
-      return done(); 
+      return done();
     }
 
     const { id } = data[0];
@@ -39,7 +39,7 @@ describe("poll", function () {
       expect("Content-Type", /json/).
       end((err, res) => {
         if (err) {
-          return done(err); 
+          return done(err);
         }
 
         if (res.body.code === 200 && res.body.data.id === id) {

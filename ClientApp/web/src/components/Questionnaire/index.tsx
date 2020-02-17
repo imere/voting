@@ -1,73 +1,120 @@
-import Form, { FormComponentProps } from "antd/es/form";
-import React, { FormEvent, useState } from "react";
-import { Button, Icon } from "antd";
+import React, { useContext, useState } from "react";
+import { Button, Card, Form } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Store } from "rc-field-form/lib/interface";
+import { Link } from "react-router-dom";
 
-import { AnyType, None } from "@/types";
+import QuestionnaireContext from "@/contexts/questionnaire";
 import { QuestionnaireContentType } from "@/data-types";
+import { Routes } from "@/constants";
 
-import { hashItemId, QItemDataFactory, renderQItems } from "./utils";
+import { QItemDataFactory, QItemDefaultData, renderQItems } from "./utils";
 
-interface QuestionnaireOwnFormProps {
-  form: FormComponentProps["form"]
-}
+type QuestionnaireProps = {}
 
-type QuestionnaireProps = QuestionnaireOwnFormProps
+const { Meta } = Card;
 
 let id = 0;
 
-const Questionnaire = ({ form }: QuestionnaireProps) => {
+const Questionnaire: React.FC<QuestionnaireProps> = () => {
+  const [, forceRender] = useState(false);
   const [
     items,
     setItems
-  ] = useState<(QuestionnaireContentType & AnyType)[]>([]);
+  ] = useState<Array<QuestionnaireContentType>>([]);
 
-  const add = function() {
-    setItems((prev) => prev.concat(
-      Math.random() > 0.5
-        ? QItemDataFactory.input({
-          typename: "input",
-          id: hashItemId(id.toString()),
-          label: `${id++}`,
-        })
-        : QItemDataFactory.checkboxgroup({
-          typename: "checkboxgroup",
-          id: hashItemId(id.toString()),
-          label: `${id++}`,
-        })
-    ));
-  };
+  function addItem(item: QuestionnaireContentType) {
+    setItems((prev) => prev.concat(item));
+  }
 
-  const handleSubmit = function(e: FormEvent) {
-    e.preventDefault();
-    form.validateFieldsAndScroll((err: Error | None, values: AnyType) => {
-      if (err) {
-        return;
-      }
-      console.log("Received values of form: ", values);
+  function removeItem(name: string) {
+    setItems((prev) => prev.filter((item) => item.name !== name));
+  }
+
+  function updateItem({ name, ...rest }: QuestionnaireContentType) {
+    setItems((prev) => {
+      prev.find((item, index, prev) => {
+        if (item.name !== name) {
+          return false;
+        }
+        prev[index] = { name, ...rest };
+        return true;
+      });
+      return prev;
     });
-  };
+  }
+
+  const ctx = useContext(QuestionnaireContext);
+  ctx.addItem = addItem;
+  ctx.removeItem = removeItem;
+  ctx.updateItem = updateItem;
+  ctx.forceRender = forceRender;
+
+  const [form] = Form.useForm();
+
+  function getValues(items: Array<QuestionnaireContentType>) {
+    const ret = {};
+    items.forEach(({ name, value }) => {
+      Reflect.defineProperty(ret, name, {
+        enumerable: true,
+        value,
+      });
+    });
+    return ret;
+  }
+
+  form.setFieldsValue(getValues(items));
+
+  function add() {
+    setItems((prev) => prev.concat(
+      QItemDataFactory.input({
+        label: `${id++}`,
+        rules: QItemDefaultData.input.rules
+      })
+    ));
+  }
+
+  function onFinish(values: Store) {
+    console.log("Received values of form: ", values);
+  }
+
+  const isEditing = window.location.pathname.startsWith(Routes.POLL_NEW);
+
+  const formTitle = (
+    <Meta
+      title="默认标题"
+      description="默认描述"
+    />
+  );
 
   return (
-    <>
+    <Card
+      title={formTitle}
+      extra={<Link to={Routes.ACCOUNT_CENTER}>返回</Link>}
+    >
       <Form
+        form={form}
         layout="vertical"
-        style={{ margin: "0 auto" }}
-        onSubmit={handleSubmit}
+        onFinish={onFinish}
       >
-        {renderQItems(form, true, items, setItems)}
+        {renderQItems(isEditing, items)}
+        {
+          isEditing && (
+            <Form.Item>
+              <Button type="dashed" onClick={add} style={{ width: "50%" }}>
+                <PlusOutlined /> 添加
+              </Button>
+            </Form.Item>
+          )
+        }
         <Form.Item>
-          <Button type="dashed" onClick={add} style={{ width: "50%" }}>
-            <Icon type="plus" /> 添加
-          </Button>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType={ isEditing ? "button" : "submit"}>
             确认
           </Button>
         </Form.Item>
       </Form>
-    </>
+    </Card>
   );
 };
 
-export default Form.create({ name: "Questionnaire" })(Questionnaire);
+export default Questionnaire;

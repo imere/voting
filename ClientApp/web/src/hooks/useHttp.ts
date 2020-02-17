@@ -1,7 +1,7 @@
 import useFetch, { UseFetch } from "use-http";
 
 import { iu } from "@/actions";
-import { ALLOWED_ORIGINS, API_ORIGIN } from "@/shared";
+import { ALLOWED_ORIGINS, API_ORIGIN } from "@/shared/conf";
 
 type CustomFetchType = (input: string, init?: RequestInit | undefined) => UseFetch<any>;
 

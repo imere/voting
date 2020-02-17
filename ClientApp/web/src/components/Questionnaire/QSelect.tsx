@@ -1,27 +1,22 @@
 import React from "react";
 import { Form, Select } from "antd";
-import { FormComponentProps } from "antd/es/form";
 
 import { TypeSelect } from "@/data-types";
 
-import { QItemProps } from "./Q";
-
-export interface QSelectReceivedProps extends QItemProps, TypeSelect {
-  form: FormComponentProps["form"]
-}
+export interface QSelectReceivedProps extends TypeSelect {}
 
 const { Option } = Select;
 
-const QSelect = ({ form, id, label, extra, rules, value, options }: QSelectReceivedProps) => (
-  <Form.Item label={label} extra={extra}>
-    {form.getFieldDecorator(id, {
-      initialValue: value,
-      rules
-    })(
-      <Select>
-        {options.map((option, i) => <Option key={i} value={option.value}>{option.label}</Option>)}
-      </Select>
-    )}
+const QSelect = ({ name, label, extra, rules = [], options, ...rest }: QSelectReceivedProps) => (
+  <Form.Item
+    label={label}
+    name={name}
+    rules={rules}
+    extra={extra}
+  >
+    <Select {...rest}>
+      {options.map((option, i) => <Option key={i} value={option.value}>{option.label}</Option>)}
+    </Select>
   </Form.Item>
 );
 

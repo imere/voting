@@ -1,5 +1,5 @@
 import React from "react";
-import { Dropdown, Icon, Menu } from "antd";
+import { Dropdown, Menu } from "antd";
 import { connect } from "react-redux";
 import { User } from "oidc-client";
 import { Link } from "react-router-dom";
@@ -34,7 +34,7 @@ const HeaderUserDropdownComponent = ({ children, user, logout }: HeaderUserDropd
         {(user
           ? authItems(logout) : normalItems()).map((item, i) => item ? (
           <Menu.Item key={i} onClick={item.onClick}>
-            {item.iconType && <Icon type={item.iconType} />}
+            {item.icon}
             <Link className={styles["item-link"]} to={item.link || "#"} rel="noopener noreferrer">{item.content}</Link>
           </Menu.Item>
         )

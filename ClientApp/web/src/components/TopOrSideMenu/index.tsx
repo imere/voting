@@ -1,5 +1,6 @@
 import React from "react";
-import { Icon, Menu } from "antd";
+import { Menu } from "antd";
+import { TableOutlined, UserOutlined } from "@ant-design/icons";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { MenuTheme } from "antd/es/menu/MenuContext";
 import { connect } from "react-redux";
@@ -37,7 +38,7 @@ const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, us
       <Menu theme={theme} defaultSelectedKeys={[location.pathname]} selectedKeys={[location.pathname]} mode={mode}>
         <Menu.Item key={Routes.POLL_LIST}>
           <Link to={Routes.POLL_LIST}>
-            <Icon type="table" />
+            <TableOutlined />
             <span>问卷列表</span>
           </Link>
         </Menu.Item>
@@ -48,7 +49,7 @@ const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, us
                 key="sub1"
                 title={
                   <span>
-                    <Icon type="user" />
+                    <UserOutlined />
                     <span>个人</span>
                   </span>
                 }

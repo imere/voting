@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "antd";
-
-import { None } from "@/types";
+import { Store } from "rc-field-form/lib/interface";
 
 import NewFormModal from "./NewFormModal";
 
@@ -11,48 +10,29 @@ const NewFormButton = () => {
     setVisible
   ] = useState(false);
 
-  const [
-    formRef,
-    setFormRef
-  ] = useState<any>(null);
-
-  const showModal = () => {
-    setVisible(true);
-  };
-
-  const handleCancel = () => {
+  function onCreate(values: Store) {
+    console.log(values);
     setVisible(false);
-  };
-
-  const handleCreate = () => {
-    const { form } = formRef.props;
-    form.validateFields((err: Error | None, values: any) => {
-      if (err) {
-        return;
-      }
-
-      console.log("Received values of form: ", values);
-      form.resetFields();
-      setVisible(false);
-    });
-  };
-
-  const saveFormRef = (ref: any) => {
-    setFormRef(ref);
-  };
+  }
 
   return (
-    <>
-      <Button type="primary" onClick={showModal}>
+    <div>
+      <Button
+        type="primary"
+        onClick={() => {
+          setVisible(true);
+        }}
+      >
         新问卷
       </Button>
       <NewFormModal
-        ref={saveFormRef}
         visible={visible}
-        onCancel={handleCancel}
-        onCreate={handleCreate}
+        onCreate={onCreate}
+        onCancel={() => {
+          setVisible(false);
+        }}
       />
-    </>
+    </div>
   );
 };
 

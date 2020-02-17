@@ -1,5 +1,6 @@
+import Loadable from "@loadable/component";
+import React from "react";
 import ReactDOM from "react-dom";
-import React, { Suspense } from "react";
 import { createBrowserHistory } from "history";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -7,18 +8,27 @@ import { ConnectedRouter } from "connected-react-router";
 
 import * as serviceWorker from "./serviceWorker";
 import ErrorBoundary from "./components/ErrorBoundary";
-import Fallback from "./components/Fallback";
 import Protected from "./layouts/Protected";
 import { configureStore } from "./store";
 import { initialState } from "./reducers/initial-state";
 import { iu } from "./actions";
 import { Routes } from "./constants";
+import { defaultLoadableOption } from "./shared/conf";
 
-const AccountLazy = React.lazy(() => import("./pages/Account"));
+const AccountLazy = Loadable(
+  () => import("./pages/Account"),
+  defaultLoadableOption
+);
 
-const AuthCallbackLazy = React.lazy(() => import("./pages/AuthCallback"));
+const AuthCallbackLazy = Loadable(
+  () => import("./pages/AuthCallback"),
+  defaultLoadableOption
+);
 
-const AppLazy = React.lazy(() => import("./pages/App"));
+const AppLazy = Loadable(
+  () => import("./pages/App"),
+  defaultLoadableOption
+);
 
 import("./index.scss");
 
@@ -35,17 +45,15 @@ iu.getUser().then((user) => {
     <ErrorBoundary>
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <Suspense fallback={<Fallback />}>
-            <BrowserRouter>
-              <Protected redirectTo={Routes.USER_LOGIN}>
-                <Switch>
-                  <Route exact path={Routes.AUTH_CALLBACK} component={AuthCallbackLazy} />
-                  <Route path={Routes.USER} component={AccountLazy} />
-                  <Route path="/" component={AppLazy} />
-                </Switch>
-              </Protected>
-            </BrowserRouter>
-          </Suspense>
+          <BrowserRouter>
+            <Protected redirectTo={Routes.USER_LOGIN}>
+              <Switch>
+                <Route exact path={Routes.AUTH_CALLBACK} component={AuthCallbackLazy} />
+                <Route path={Routes.USER} component={AccountLazy} />
+                <Route path="/" component={AppLazy} />
+              </Switch>
+            </Protected>
+          </BrowserRouter>
         </ConnectedRouter>
       </Provider>
     </ErrorBoundary>,

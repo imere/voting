@@ -1,4 +1,4 @@
-import { ValidationRule } from "antd/es/form";
+import { Rule } from "rc-field-form/lib/interface";
 
 import { None } from "@/types";
 
@@ -12,7 +12,7 @@ export function lengthLt(s: string | None, len: number): boolean {
   return !!RegExp(`^.{0,${len - 1}}$`).exec(s!);
 }
 
-export const usernameRules: ValidationRule[] = [
+export const usernameRules: Rule[] = [
   {
     min: 5,
     max: 15,
@@ -24,7 +24,7 @@ export const usernameRules: ValidationRule[] = [
   }
 ];
 
-export const passwordRules: ValidationRule[] = [
+export const passwordRules: Rule[] = [
   {
     min: 6,
     max: 16,

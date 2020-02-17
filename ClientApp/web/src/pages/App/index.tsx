@@ -1,10 +1,9 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Switch } from "react-router";
-import { Icon } from "antd";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { SiderTheme } from "antd/es/layout/Sider";
 import { connect } from "react-redux";
 
-import Fallback from "@/components/Fallback";
 import HeaderNavComponent from "@/components/HeaderNav";
 import SideMenuLayout from "@/layouts/SideMenuLayout";
 import TopMenuLayout from "@/layouts/TopMenuLayout";
@@ -31,28 +30,28 @@ function App({ theme }: AppProps) {
   const [useTML] = useSessionState("topMenu", true);
 
   const content = (
-    <>
-      <Suspense fallback={<Fallback />}>
-        <Switch>
-          {renderRoutes(AppRoutes)}
-        </Switch>
-      </Suspense>
-    </>
+    <Switch>
+      {renderRoutes(AppRoutes)}
+    </Switch>
   );
 
+  const iconProps = {
+    className: classnames(
+      styles["header-sider-trigger"],
+      Reflect.get(styles, `header-sider-trigger-${theme}`),
+    ),
+    onClick: () => toggleCollapsed(!collapsed)
+  };
   const SML = (
     <SideMenuLayout
       collapsed={collapsed}
       header={
         <>
-          <Icon
-            className={classnames(
-              styles["header-sider-trigger"],
-              Reflect.get(styles, `header-sider-trigger-${theme}`),
-            )}
-            type={collapsed ? "menu-unfold" : "menu-fold"}
-            onClick={() => toggleCollapsed(!collapsed)}
-          />
+          {
+            collapsed
+              ? <MenuUnfoldOutlined {...iconProps} />
+              : <MenuFoldOutlined {...iconProps} />
+          }
           <HeaderNavComponent />
         </>
       }
@@ -65,7 +64,8 @@ function App({ theme }: AppProps) {
       header={
         <HeaderNavComponent />
       }
-      content={content}/>
+      content={content}
+    />
   );
 
   return useTML ? TML : SML;
