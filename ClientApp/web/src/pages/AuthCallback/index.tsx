@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { ApplicationState } from "@/reducers";
+import { ApplicationState } from "@/reducers/states";
 import { Disp } from "@/types";
-import { AuthAction, CompleteAuthenticationCallback } from "@/actions/auth";
+import { AuthAction, CompleteAuthenticationCallback } from "@/actions/action-auth";
 
 type CallbackDispatch = Disp<ApplicationState, undefined, AuthAction>;
 

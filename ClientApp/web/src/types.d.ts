@@ -1,7 +1,7 @@
 import { Action } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 
-import { ApplicationState } from "./reducers";
+import { ApplicationState } from "@/reducers/states";
 
 declare type None = null | undefined
 

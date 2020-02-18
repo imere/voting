@@ -1,15 +1,9 @@
 import { Reducer } from "redux";
-import { User } from "oidc-client";
 
 import { AuthActions } from "@/constants/index";
-import { AuthAction } from "@/actions/auth";
-import { None } from "@/types";
+import { AuthAction } from "@/actions/action-auth";
 
-export interface AuthState {
-  pending?: boolean;
-  user?: User | None;
-  username?: string;
-}
+import { AuthState } from "./states";
 
 export const auth: Reducer<AuthState, AuthAction> = (state = {}, action): AuthState => {
   switch (action.type) {

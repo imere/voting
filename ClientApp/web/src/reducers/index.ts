@@ -1,11 +1,6 @@
-import { auth, AuthState } from "./auth";
-import { context, ContextState } from "./context";
+import { auth } from "./auth";
+import { context } from "./context";
 import { loadingBar } from "./loading-bar";
-
-export type ApplicationState = {
-  context: ContextState;
-  auth: AuthState;
-}
 
 export default {
   context,

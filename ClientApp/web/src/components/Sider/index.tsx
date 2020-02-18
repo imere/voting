@@ -3,11 +3,11 @@ import { Layout } from "antd";
 import { SiderTheme } from "antd/es/layout/Sider";
 import { connect } from "react-redux";
 
-import { ApplicationState } from "@/reducers";
+import { ApplicationState } from "@/reducers/states";
 
 import styles from "./Sider.module.scss";
 
-export interface SiderComponentReceivedProps {
+interface SiderComponentReceivedProps {
   children?: React.ReactNode;
   collapsed: boolean;
 }

@@ -6,9 +6,9 @@ import { connect } from "react-redux";
 import { Store } from "rc-field-form/lib/interface";
 
 import { Routes } from "@/constants";
-import { AuthAction, LoginCallback, UserAuthentication } from "@/actions/auth";
+import { AuthAction, LoginCallback, UserAuthentication } from "@/actions/action-auth";
 import { iu } from "@/actions";
-import { ApplicationState } from "@/reducers";
+import { ApplicationState } from "@/reducers/states";
 import { Disp, ValidateStatus } from "@/types";
 import { ResponseState } from "@/data-types";
 import { passwordRules, usernameRules } from "@/shared/account-validate";

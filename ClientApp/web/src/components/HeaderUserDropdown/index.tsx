@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { User } from "oidc-client";
 import { Link } from "react-router-dom";
 
-import { ApplicationState } from "@/reducers";
+import { ApplicationState } from "@/reducers/states";
 import { iu } from "@/actions";
-import { AuthAction } from "@/actions/auth";
 import { Disp, None } from "@/types";
+import { AuthAction } from "@/actions/action-auth";
 
 import styles from "./HeaderUserDropdown.module.scss";
 import { authItems, normalItems } from "./items";

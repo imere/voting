@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { Routes } from "@/constants";
-import { AuthAction, RegisterCallback, UserAuthentication } from "@/actions/auth";
+import { AuthAction, RegisterCallback, UserAuthentication } from "@/actions/action-auth";
 import { iu } from "@/actions";
-import { ApplicationState } from "@/reducers";
+import { ApplicationState } from "@/reducers/states";
 import { Disp, ValidateStatus } from "@/types";
 import { ResponseState } from "@/data-types";
 import { passwordRules, usernameRules } from "@/shared/account-validate";

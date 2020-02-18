@@ -1,4 +1,4 @@
-import { ApplicationState } from ".";
+import { ApplicationState } from "./states";
 
 export const initialState: ApplicationState = {
   context: {

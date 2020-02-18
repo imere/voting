@@ -10,6 +10,22 @@ export interface QuestionnaireContextType {
   forceRender: () => void
 }
 
-const QuestionnaireContext = createContext<QuestionnaireContextType>({} as any);
+const QuestionnaireContext = createContext<QuestionnaireContextType>({
+  getItem() {
+    throw "getItem not implemented";
+  },
+  addItem() {
+    throw "getItem not implemented";
+  },
+  removeItem() {
+    throw "getItem not implemented";
+  },
+  updateItem() {
+    throw "getItem not implemented";
+  },
+  forceRender() {
+    throw "getItem not implemented";
+  }
+} as any);
 
 export default QuestionnaireContext;

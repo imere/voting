@@ -4,7 +4,7 @@ import { MenuMode } from "antd/es/menu";
 import { SiderTheme } from "antd/es/layout/Sider";
 import { connect } from "react-redux";
 
-import { ApplicationState } from "@/reducers";
+import { ApplicationState } from "@/reducers/states";
 import { classnames } from "@/shared/classnames";
 
 import styles from "./Header.module.scss";

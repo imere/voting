@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 
 import { AuthContextType, Provider } from "@/contexts/auth";
 import { Disp } from "@/types";
-import { ApplicationState } from "@/reducers";
-import { AuthAction } from "@/actions/auth";
+import { ApplicationState } from "@/reducers/states";
+import { AuthAction } from "@/actions/action-auth";
 
 type ContextAuthProviderDispatch = Disp<ApplicationState, null, AuthAction>
 
