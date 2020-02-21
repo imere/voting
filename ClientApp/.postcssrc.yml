@@ -3,3 +3,5 @@ plugins:
   autoprefixer: {}
   postcss-import: {}
   postcss-url: {}
+  postcss-preset-env: {}
+  stylelint: {}

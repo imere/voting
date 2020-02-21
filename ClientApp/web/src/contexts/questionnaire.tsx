@@ -3,6 +3,7 @@ import { createContext } from "react";
 import { QuestionnaireContentType } from "@/data-types";
 
 export interface QuestionnaireContextType {
+  items: Array<QuestionnaireContentType>
   getItem: (name: string) => QuestionnaireContentType | undefined
   addItem: (arg: QuestionnaireContentType) => void
   removeItem: (name: string) => void
@@ -11,21 +12,22 @@ export interface QuestionnaireContextType {
 }
 
 const QuestionnaireContext = createContext<QuestionnaireContextType>({
+  items: [],
   getItem() {
     throw "getItem not implemented";
   },
   addItem() {
-    throw "getItem not implemented";
+    throw "addItem not implemented";
   },
   removeItem() {
-    throw "getItem not implemented";
+    throw "removeItem not implemented";
   },
   updateItem() {
-    throw "getItem not implemented";
+    throw "updateItem not implemented";
   },
   forceRender() {
-    throw "getItem not implemented";
+    throw "forceRender not implemented";
   }
-} as any);
+});
 
 export default QuestionnaireContext;

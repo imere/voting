@@ -7,6 +7,7 @@ module.exports = {
   },
   "devServer": {
     "disableHostCheck": true,
+    "overlay": true,
   },
   "optimization": {
     "noEmitOnErrors": true,

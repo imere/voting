@@ -2,13 +2,15 @@ import React, { useContext, useState } from "react";
 import { Button, Card, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Store } from "rc-field-form/lib/interface";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useLocation } from "react-router-dom";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
-import { QuestionnaireContentType } from "@/data-types";
+import { Questionnaire, QuestionnaireContentType, ResponseState } from "@/data-types";
 import { Routes } from "@/constants";
+import { useHttp } from "@/hooks/useHttp";
+import { API_POLL } from "@/shared/conf";
 
-import { QItemDataFactory, QItemDefaultData, renderQItems } from "./utils";
+import { getItemsValues, QItemDataFactory, QItemDefaultData, renderQItems } from "./utils";
 
 type QuestionnaireProps = {}
 
@@ -16,43 +18,63 @@ const { Meta } = Card;
 
 let id = 0;
 
-const Questionnaire: React.FC<QuestionnaireProps> = () => {
+const QuestionnaireComponent: React.FC<QuestionnaireProps> = () => {
+  const isEditing = window.location.pathname === Routes.POLL_NEW;
+  const params = new URLSearchParams(useLocation().search);
+
+  let info = {
+    title: params.get("title")?.trim(),
+    description: params.get("description")?.trim(),
+    public: params.get("public")?.trim()
+  };
+
+  info = {
+    title: info.title && decodeURIComponent(info.title),
+    description: info.description && decodeURIComponent(info.description),
+    public: info.public && decodeURIComponent(info.public),
+  };
+
+  if (isEditing) {
+    if (!info.title) {
+      return <Redirect to={Routes.ACCOUNT_CENTER} />;
+    }
+  }
+
   const [, reRender] = useState(false);
-  const [
-    items,
-    setItems
-  ] = useState<Array<QuestionnaireContentType>>([]);
+
+  const ctx = useContext(QuestionnaireContext);
+  const items = ctx.items;
 
   function getItem(name: string) {
     return items.find((item) => item.name === name);
   }
 
+  function forceRender() {
+    requestAnimationFrame(() => reRender((v) => !v));
+  }
+
   function addItem(item: QuestionnaireContentType) {
-    setItems((prev) => prev.concat(item));
+    items.push(item);
+    forceRender();
   }
 
   function removeItem(name: string) {
-    setItems((prev) => prev.filter((item) => item.name !== name));
+    ctx.items = items.filter((item) => item.name !== name);
+    forceRender();
   }
 
   function updateItem({ name, ...rest }: QuestionnaireContentType) {
-    setItems((prev) => {
-      prev.find((item, index, prev) => {
-        if (item.name !== name) {
-          return false;
-        }
-        Object.assign(prev[index], { name, ...rest });
-        return true;
-      });
-      return prev;
-    });
+    for (const item of items) {
+      if (item.name !== name) {
+        continue;
+      }
+      delete item.value;
+      Object.assign(item, { name, ...rest });
+      break;
+    }
+    forceRender();
   }
 
-  function forceRender() {
-    reRender((v) => !v);
-  }
-
-  const ctx = useContext(QuestionnaireContext);
   ctx.getItem = getItem;
   ctx.addItem = addItem;
   ctx.removeItem = removeItem;
@@ -61,45 +83,61 @@ const Questionnaire: React.FC<QuestionnaireProps> = () => {
 
   const [form] = Form.useForm();
 
-  function getValues(items: Array<QuestionnaireContentType>) {
-    const ret = {};
-    items.forEach(({ name, value }) => {
-      Reflect.defineProperty(ret, name, {
-        enumerable: true,
-        value,
-      });
-    });
-    return ret;
-  }
-
-  form.setFieldsValue(getValues(items));
+  form.setFieldsValue(getItemsValues(items));
 
   function add() {
-    setItems((prev) => prev.concat(
-      QItemDataFactory.input({
-        label: `${id++}`,
-        rules: QItemDefaultData.input().rules
-      })
-    ));
+    addItem(QItemDataFactory.input({
+      label: `${id++}`,
+      rules: QItemDefaultData.input().rules
+    }));
   }
 
   function onFinish(values: Store) {
     console.log("Received values of form: ", values);
   }
 
-  const isEditing = window.location.pathname.startsWith(Routes.POLL_NEW);
+  const [
+    uploading,
+    setUploading
+  ] = useState(false);
+
+  const [
+    request,
+    // response
+  ] = useHttp<ResponseState<Array<QuestionnaireContentType>>>(API_POLL, {
+    body: JSON.stringify({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      title: info.title!,
+      description: info.description,
+      public: !!info.public,
+      content: items
+    })
+  });
+
+  async function handleConfirmClick() {
+    setUploading(true);
+    const q: Questionnaire = {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      title: info.title!,
+      description: info.description,
+      isPublic: !!info.public,
+      content: items
+    };
+    await request.put("/", JSON.stringify(q));
+    setUploading(false);
+  }
 
   const formTitle = (
     <Meta
-      title="默认标题"
-      description="默认描述"
+      title={info.title}
+      description={info.description}
     />
   );
 
   return (
     <Card
       title={formTitle}
-      extra={<Link to={Routes.ACCOUNT_CENTER}>返回</Link>}
+      extra={isEditing ?? <Link to={Routes.ACCOUNT_CENTER}>返回</Link>}
     >
       <Form
         form={form}
@@ -117,8 +155,20 @@ const Questionnaire: React.FC<QuestionnaireProps> = () => {
           )
         }
         <Form.Item>
-          <Button type="primary" htmlType={ isEditing ? "button" : "submit"}>
+          <Button
+            type="primary"
+            loading={uploading}
+            htmlType={isEditing ? "button" : "submit"}
+            onClick={isEditing ? () => handleConfirmClick() : undefined}
+          >
             确认
+          </Button>
+          <Button
+            type="link"
+          >
+            <Link to={Routes.ACCOUNT_CENTER} onClick={ isEditing ? () => ctx.items = [] : undefined}>
+              取消
+            </Link>
           </Button>
         </Form.Item>
       </Form>
@@ -126,4 +176,4 @@ const Questionnaire: React.FC<QuestionnaireProps> = () => {
   );
 };
 
-export default Questionnaire;
+export default QuestionnaireComponent;

@@ -7,14 +7,14 @@ import styels from "./QCheckBoxGroup.module.scss";
 
 export interface QCheckBoxGroupReceivedProps extends Omit<TypeCheckBoxGroup, "typename"> {}
 
-const QCheckBoxGroup = ({ label, name, rules = [], extra, ...rest }: QCheckBoxGroupReceivedProps) => (
+const QCheckBoxGroup = ({ label, name, rules = [], extra, options }: QCheckBoxGroupReceivedProps) => (
   <Form.Item
     label={label}
     name={name}
     rules={rules}
     extra={extra}
   >
-    <Checkbox.Group className={styels.checkboxgroup} {...rest} />
+    <Checkbox.Group className={styels.checkboxgroup} options={options} />
   </Form.Item>
 );
 

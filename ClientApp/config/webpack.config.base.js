@@ -9,7 +9,10 @@ const CopyPlugin = require("copy-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const { VueLoaderPlugin } = require("vue-loader");
+const StylelintPlugin = require("stylelint-webpack-plugin");
 // const HardSourcePlugin = require("hard-source-webpack-plugin");
+const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const WebpackMerge = require("webpack-merge");
@@ -17,7 +20,8 @@ const WebpackMerge = require("webpack-merge");
 const {
   OUTPUT_PATH,
   PUBLIC_PATH,
-  FALLBACK_PORT,
+  DEV_HOST,
+  DEV_PORT,
   CssDist
 } = require("./config.js");
 
@@ -33,6 +37,7 @@ const {
   ImageLoader,
   MediaLoader,
   FontLoader,
+  VueLoader,
 } = require("./utils/loaders");
 
 const ENVS = [
@@ -53,17 +58,25 @@ if (isProd) {
 }
 
 const baseConfig = {
+  "mode": currentEnv,
   "entry": {
     "app": "./web/src/index.tsx",
+    "callback": "./web/src/pages/AuthCallback/index.ts",
   },
   "output": {
     "publicPath": PUBLIC_PATH,
     "path": OUTPUT_PATH,
   },
   "devServer": {
-    "port": process.env.PORT || FALLBACK_PORT,
+    "quiet": true,
+    "host": DEV_HOST,
+    "port": DEV_PORT,
     "historyApiFallback": {
       "rewrites": [
+        {
+          "from": /^\/auth-callback$/,
+          "to": "/auth-callback.html",
+        },
         {
           "from": /.*/,
           "to": "/index.html",
@@ -85,17 +98,22 @@ const baseConfig = {
       ImageLoader(currentEnv),
       MediaLoader(currentEnv),
       FontLoader(currentEnv),
+      VueLoader(currentEnv),
     ],
   },
   "resolve": {
     "symlinks": false,
     "extensions": [
-      ".ts",
+      ".vue",
       ".tsx",
+      ".ts",
       ".mjs",
-      ".js",
       ".jsx",
+      ".js",
     ],
+    alias: {
+      "vue$": "vue/dist/vue.esm.js",
+    },
     "plugins": [
       new TsconfigPathsPlugin({
         "configFile": "tsconfig.json"
@@ -111,10 +129,8 @@ const baseConfig = {
     //   excludeWarnings: true,
     //   suppressSuccess: true,
     // }),
-    new webpack.WatchIgnorePlugin([
-      /\.js$/,
-      /\.d\.tsx?$/
-    ]),
+    new webpack.WatchIgnorePlugin([/\.d\.tsx?$/]),
+    new FriendlyErrorsWebpackPlugin(),
     // new HardSourcePlugin({
     //   // Either an absolute path or relative to webpack's options.context.
     //   cacheDirectory: require("path").resolve(__dirname, "../node_modules/.cache/hard-source/[confighash]"),
@@ -150,9 +166,28 @@ const baseConfig = {
     //     sizeThreshold: 50 * 1024 * 1024
     //   },
     // }),
+    new StylelintPlugin({
+      configFile: undefined,
+      files: ["**/*.{vue,html,css,sss,less,scss,sass}"],
+      fix: false,
+    }),
     new HtmlPlugin({
       "filename": "index.html",
       "template": "./web/public/index.html",
+      "inject": true,
+      PUBLIC_PATH,
+      isProd,
+      "favicon": "./web/public/favicon.ico",
+      "minify": {
+        "removeComments": isProd,
+        "collapseWhitespace": isProd,
+        "removeAttributeQuotes": isProd,
+      },
+      "chunksSortMode": "dependency",
+    }),
+    new HtmlPlugin({
+      "filename": "auth-callback.html",
+      "template": "./web/public/auth-callback.html",
       "inject": true,
       PUBLIC_PATH,
       isProd,
@@ -188,6 +223,7 @@ const baseConfig = {
       "reportFilename": require("path").resolve(__dirname, "../docs/bundle-analyzer", "report.html"),
       "openAnalyzer": false,
     }),
+    new VueLoaderPlugin(),
   ],
   "node": {
     "setImmediate": false,
@@ -199,8 +235,13 @@ const baseConfig = {
   },
 };
 
-module.exports = new SpeedMeasurePlugin({
-  outputFormat: "human"
-}).wrap(
-  WebpackMerge(baseConfig, require(`./webpack.config.${isProd ? "prod" : "dev"}.js`))
-);
+const mergedConfig = WebpackMerge(baseConfig, require(`./webpack.config.${isProd ? "prod" : "dev"}.js`));
+
+module.exports = isProd
+  ?
+  new SpeedMeasurePlugin({
+    outputFormat: "human"
+  }).wrap(mergedConfig)
+  :
+  mergedConfig;
+

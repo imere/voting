@@ -6,7 +6,6 @@ import { None } from "@/types";
 declare interface AuthState {
   pending?: boolean;
   user?: User | None;
-  username?: string;
 }
 
 declare interface ContextState {

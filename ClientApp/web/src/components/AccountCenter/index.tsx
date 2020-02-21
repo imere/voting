@@ -1,7 +1,11 @@
 import React from "react";
 
-class AccountCenter extends React.PureComponent {
-  render = () => <>AccountCenter</>
-}
+import NewFormButton from "./NewFormButton";
+
+const AccountCenter = () => (
+  <div style={{ position: "relative" }}>
+    <NewFormButton />
+  </div>
+);
 
 export default AccountCenter;

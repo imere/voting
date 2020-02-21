@@ -1,6 +1,6 @@
 export const POLL_LIST = "/poll/list";
 export const POLL_NEW = "/poll/new";
-export const POLL = "/poll/:pollId";
+export const POLL = "/poll/list/:pollId";
 
 export const USER = "/user";
 export const USER_LOGIN = "/user/login";

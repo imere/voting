@@ -9,7 +9,7 @@ exports.createEslintLoader = (env) => ({
         "cache": true,
         "fix": false,
         "failOnError": true,
-        "configFile": ".eslintrc.json",
+        "configFile": undefined,
         "eslintPath": require.resolve("eslint"),
         "outputReport": {
           "filePath": require("path").resolve(__dirname, "../../../docs/eslint/checkstyle.xml"),

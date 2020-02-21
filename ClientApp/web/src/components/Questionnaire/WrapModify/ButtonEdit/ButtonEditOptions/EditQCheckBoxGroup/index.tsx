@@ -3,17 +3,18 @@ import { Form } from "antd";
 
 import Layout from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/Layout";
 import LengthRange from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/LengthRange";
-import { TypeInput } from "@/data-types";
+import { TypeCheckBoxGroup } from "@/data-types";
 
 import DefaultValue from "./DefaultValue";
+import Options from "./Options";
 
-interface EditQInputReceivedProps extends TypeInput {}
+interface EditQCheckBoxGroupReceivedProps extends TypeCheckBoxGroup {}
 
-type EditQInputProps = EditQInputReceivedProps
+type EditQCheckBoxGroupProps = EditQCheckBoxGroupReceivedProps
 
-const EditQInput: React.FC<EditQInputProps> = (props: EditQInputProps) => (
+const EditQCheckBoxGroup = (props: EditQCheckBoxGroupProps) => (
   <Layout
-    {...props}
+    { ...props }
   >
     <Form.Item
       label="默认值"
@@ -22,15 +23,21 @@ const EditQInput: React.FC<EditQInputProps> = (props: EditQInputProps) => (
       <DefaultValue {...props} />
     </Form.Item>
     <Form.Item
-      label="长度"
+      label="选项"
+      name="options"
+    >
+      <Options {...props} />
+    </Form.Item>
+    <Form.Item
+      label="选项数"
       name="length"
     >
       <LengthRange
-        lengthName="长度"
+        lengthName="选项数"
         {...props}
       />
     </Form.Item>
   </Layout>
 );
 
-export default EditQInput;
+export default EditQCheckBoxGroup;

@@ -17,8 +17,6 @@ namespace vote.Data
 
         public DbSet<PollProp> PollProp { get; set; }
 
-        public DbSet<PollData> PollData { get; set; }
-
         public DbSet<PollAnswer> PollAnswer { get; set; }
 
         public VoteContext(DbContextOptions<VoteContext> options)

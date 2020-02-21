@@ -10,6 +10,7 @@ using System.Security.Claims;
 using vote.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using IdentityServer4.Extensions;
 
 namespace vote.Controllers
 {
@@ -68,9 +69,14 @@ namespace vote.Controllers
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut]
-        public async Task<ActionResult<ResponseState>> Add([FromBody] Poll poll)
+        public async Task<ActionResult<ResponseState>> Add([FromBody] Questionnaire questionnaire)
         {
-            Poll result = await _service.AddPollByUserId(UserHelperExtensions.ParseCookieUserIdLegacy(User), poll);
+            Poll result = await _service.AddPollByUserId(long.Parse(User.GetSubjectId()), new Poll
+            {
+                Title = questionnaire.title,
+                Description = questionnaire.description,
+                CreatedAt = DateTime.UtcNow
+            });
 
             if (null == result) return BadRequest();
 

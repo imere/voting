@@ -27,24 +27,29 @@ const AccountSettingsLazy = Loadable(
 
 export default [
   {
+    exact: true,
     path: Routes.POLL_LIST,
     component: PollListLazy,
   },
   {
+    exact: true,
     path: Routes.POLL,
     component: QuestionnaireLazy,
   },
   {
+    exact: true,
     auth: true,
     path: Routes.POLL_NEW,
     component: QuestionnaireLazy,
   },
   {
+    exact: true,
     auth: true,
     path: Routes.ACCOUNT_CENTER,
     component: AccountCenterLazy,
   },
   {
+    exact: true,
     auth: true,
     path: Routes.ACCOUNT_SETTINGS,
     component: AccountSettingsLazy,
