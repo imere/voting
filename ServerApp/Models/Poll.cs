@@ -19,6 +19,8 @@ namespace vote.Models
         [Column(TypeName = "varchar(512)")]
         public string Description { get; set; }
 
+        public object[] Content { get; set; }
+
         [Required]
         [Column(TypeName = "datetime2")]
         public DateTime CreatedAt { get; set; }
@@ -33,6 +35,9 @@ namespace vote.Models
         public ICollection<PollAnswer> PollAnswers { get; set; }
 
         [Required]
+        [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
+
+        public long UserId { get; set; }
     }
 }

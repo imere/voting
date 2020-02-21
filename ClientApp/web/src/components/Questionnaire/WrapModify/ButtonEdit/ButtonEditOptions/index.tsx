@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import { Tabs } from "antd";
+import { Radio } from "antd";
+import { RadioChangeEvent } from "antd/es/radio";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
 import { QuestionnaireContentType } from "@/data-types";
@@ -7,18 +8,14 @@ import { ButtonEditContentMap, isRequired, QItemDataFactory, QItemDefaultData } 
 
 import { options } from "./options";
 
-const { TabPane } = Tabs;
-
 type ButtonEditOptionsProps = QuestionnaireContentType
 
 const ButtonEditOptions = ({ typename: defaultTypename, label, name, rules, ...rest }: ButtonEditOptionsProps) => {
-  const { updateItem, forceRender } = useContext(QuestionnaireContext);
+  const { updateItem } = useContext(QuestionnaireContext);
 
-  function handleClick(typename: QuestionnaireContentType["typename"]) {
+  function handleClick({ target: { value } }: RadioChangeEvent) {
+    const typename = value as QuestionnaireContentType["typename"];
     const factory = QItemDataFactory[typename];
-    if (!factory) {
-      return;
-    }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { label: _, name: __, rules: ___, ...rest } = QItemDefaultData[typename]();
     updateItem(factory(
@@ -29,23 +26,24 @@ const ButtonEditOptions = ({ typename: defaultTypename, label, name, rules, ...r
         rules: isRequired(rules) ? ___ : [],
       } as any
     ));
-    forceRender();
   }
 
   return (
-    <Tabs
-      tabPosition="bottom"
-      defaultActiveKey={defaultTypename}
-      onChange={(name) => handleClick(name as QuestionnaireContentType["typename"])}
-    >
-      {
-        options.map((option) => (
-          <TabPane tab={option.label} key={option.value}>
-            {React.createElement(ButtonEditContentMap[option.value], { label, name, rules, ...rest })}
-          </TabPane>
-        ))
-      }
-    </Tabs>
+    <>
+      {React.createElement(ButtonEditContentMap[defaultTypename], { typename: defaultTypename, label, name, rules, ...rest })}
+      <Radio.Group
+        defaultValue={defaultTypename}
+        onChange={handleClick}
+      >
+        {
+          options.map((option, i) => (
+            <Radio.Button key={i} value={option.value}>
+              {option.label}
+            </Radio.Button>
+          ))
+        }
+      </Radio.Group>
+    </>
   );
 };
 

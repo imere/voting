@@ -15,7 +15,7 @@ namespace vote.Models
 
         [Column(TypeName = "varchar(1)")]
         [DefaultValue(true)]
-        public bool? Public { get; set; }
+        public bool? isPublic { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime? ExpiresAt { get; set; }

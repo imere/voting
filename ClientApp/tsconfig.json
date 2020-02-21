@@ -64,12 +64,15 @@
     ]
   },
   "include": [
-    "./web/**/*.ts",
     "./web/**/*.tsx",
+    "./web/**/*.ts",
+    "./web/**/*.jsx",
+    "./web/**/*.js",
+    "./web/**/*.vue",
     "./tests/**/*.ts",
+    "./tests/**/*.js",
     "./config/**/*.js",
-    "./server/**/*.js",
-    "./tests/**/*.js"
+    "./server/**/*.js"
   ],
   "exclude": [
     "node_modules",

@@ -17,10 +17,12 @@ const AccountLoginFormLazy = Loadable(
 
 export default [
   {
+    exact: true,
     path: Routes.USER_REGISTER,
     component: AccountRegisterFormLazy,
   },
   {
+    exact: true,
     path: Routes.USER_LOGIN,
     component: AccountLoginFormLazy,
   },

@@ -1,4 +1,4 @@
-import { Rule } from "rc-field-form/lib/interface";
+import { RuleObject } from "rc-field-form/lib/interface";
 
 import { None } from "@/types";
 
@@ -12,7 +12,7 @@ export function lengthLt(s: string | None, len: number): boolean {
   return !!RegExp(`^.{0,${len - 1}}$`).exec(s!);
 }
 
-export const usernameRules: Rule[] = [
+export const usernameRules: RuleObject[] = [
   {
     min: 5,
     max: 15,
@@ -24,7 +24,7 @@ export const usernameRules: Rule[] = [
   }
 ];
 
-export const passwordRules: Rule[] = [
+export const passwordRules: RuleObject[] = [
   {
     min: 6,
     max: 16,

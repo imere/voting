@@ -11,7 +11,7 @@ export const options: RadioType[] = [
     value: "input",
   },
   {
-    label: "Checkbox",
+    label: "CheckboxGroup",
     value: "checkboxgroup"
   }
 ];

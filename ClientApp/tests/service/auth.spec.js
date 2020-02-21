@@ -5,19 +5,11 @@ const API_HOST = "http://localhost:61598";
 const request = supertest(API_HOST);
 
 describe("authentication", function () {
-  it("login success", (done) => {
+  it("login failed with wrong credentials", (done) => {
     request.
       post("/api/user/login").
-      send({ username: "username", password: "password" }).
-      expect(200).
-      end(done);
-  });
-
-  it("login failed with redirect", (done) => {
-    request.
-      post("/api/user/login").
-      send({ username: "usernameusername", password: "passwordpassword" }).
-      expect(302).
+      send({ username: "wrongusernameusername", password: "wrongpasswordpassword" }).
+      expect(400).
       end(done);
   });
 

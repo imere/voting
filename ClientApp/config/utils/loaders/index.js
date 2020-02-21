@@ -11,4 +11,5 @@ module.exports = {
   "LessLoader": require("./LessLoader").createLessLoader,
   "BabelLoader": require("./BabelLoader").createBabelLoader,
   "TsxLoader": require("./TsxLoader").createTsxLoader,
+  "VueLoader": require("./VueLoader").createVueLoader,
 };

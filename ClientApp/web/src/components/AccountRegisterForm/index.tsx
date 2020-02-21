@@ -78,7 +78,7 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
           setPasswordStatus("error");
           setPasswordHelp(res.password);
         }
-        if (res?.data?.username) {
+        if (res.data?.username) {
           setUsernameStatus("error");
           setUsernameHelp(res.data.username);
         }

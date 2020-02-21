@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Input, Modal, Switch } from "antd";
 import { Store } from "rc-field-form/lib/interface";
 
-import { toggleRequired } from "./utils";
+import { toggleRequired } from "@/components/Questionnaire/utils";
 
 interface NewFormModalReceivedProps {
   visible?: boolean
@@ -42,17 +42,22 @@ const NewFormModal = ({ visible, onCancel, onCreate }: NewFormModalProps) => {
         <Form.Item
           label="Title"
           name="title"
-          rules={toggleRequired([])}
+          rules={toggleRequired([{ whitespace: true, message: "不能为空" }])}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="Description"
           name="description"
+          rules={[{ whitespace: true, message: "不能为空" }]}
         >
           <Input type="textarea" />
         </Form.Item>
-        <Form.Item label="Public" name="public">
+        <Form.Item
+          label="Public"
+          name="pub"
+          valuePropName="checked"
+        >
           <Switch />
         </Form.Item>
       </Form>
@@ -60,4 +65,4 @@ const NewFormModal = ({ visible, onCancel, onCreate }: NewFormModalProps) => {
   );
 };
 
-export default React.forwardRef(NewFormModal);
+export default NewFormModal;

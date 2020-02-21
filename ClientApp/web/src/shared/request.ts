@@ -1,40 +1,38 @@
-import { iu } from "@/actions";
-
 import { ALLOWED_ORIGINS, API_ORIGIN } from "./conf";
+
+export async function addAuthorization(init: RequestInit) {
+  const user = await import("@/actions").then(({ iu }) =>  iu.getUser());
+  if (user) {
+    if (!init.headers) {
+      init.headers = {};
+    }
+    Reflect.set(init.headers, "Authorization", `${user.token_type} ${user.access_token}`);
+  }
+}
+
+export function addCredentials(init: RequestInit) {
+  init.credentials = "include";
+}
+
+export function addCORS(init: RequestInit) {
+  init.mode = "cors";
+}
+
+export function shouldCORS(url: string) {
+  return !url.startsWith("/") && !url.startsWith(window.location.origin);
+}
+
+export function shouldAddAuthorization(url: string) {
+  return url.startsWith(API_ORIGIN);
+}
+
+export function shouldAddCredentials(url: string) {
+  return ALLOWED_ORIGINS.some((origin) => url.startsWith(origin));
+}
 
 type FetchType = (input: RequestInfo, init?: RequestInit | undefined) => Promise<Response>;
 
 const request: FetchType = async (input, init = {}) => {
-  function shouldCORS(url: string) {
-    return !url.startsWith("/") && !url.startsWith(window.location.origin);
-  }
-
-  function shouldAddAuthorization() {
-    return "string" === typeof input && input.startsWith(API_ORIGIN);
-  }
-
-  async function addAuthorization(init: RequestInit) {
-    const user = await iu.getUser();
-    if (user) {
-      if (!init.headers) {
-        init.headers = {};
-      }
-      Reflect.set(init.headers, "Authorization", `${user.token_type} ${user.access_token}`);
-    }
-  }
-
-  function shouldAddCredentials(url: string) {
-    return ALLOWED_ORIGINS.some((origin) => url.startsWith(origin));
-  }
-
-  function addCredentials(url: string, init: RequestInit) {
-    if (ALLOWED_ORIGINS.some((origin) => url.startsWith(origin))) {
-      init.credentials = "include";
-    } else {
-      init.credentials = "same-origin";
-    }
-  }
-
   const { method = "GET" } = init;
   init.method = method;
 
@@ -46,14 +44,14 @@ const request: FetchType = async (input, init = {}) => {
   }
 
   if (shouldCORS(url)) {
-    init.mode = "cors";
+    addCORS(init);
   }
 
   if (shouldAddCredentials(url)) {
-    addCredentials(url, init);
+    addCredentials(init);
   }
 
-  if (shouldAddAuthorization()) {
+  if (shouldAddAuthorization(url)) {
     await addAuthorization(init);
   }
 

@@ -1,6 +1,6 @@
-{
+module.exports = {
   "root": true,
-  "parser": "@typescript-eslint/parser",
+  "parser": "vue-eslint-parser",
   "plugins": [
     "@typescript-eslint"
   ],
@@ -19,6 +19,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:react/recommended",
+    "plugin:vue/recommended",
     "prettier/@typescript-eslint"
   ],
   "settings": {
@@ -27,6 +28,7 @@
     }
   },
   "parserOptions": {
+    "parser": "@typescript-eslint/parser",
     "tsconfigRootDir": ".",
     "project": [
       "./tsconfig.json"
@@ -35,7 +37,8 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    }
+    },
+    "extraFileExtensions": ["vue"]
   },
   "rules": {
     "@typescript-eslint/no-empty-interface": "off",
@@ -95,6 +98,6 @@
     "space-unary-ops": "error",
     "unicode-bom": "error",
     "semi": "error",
-    "no-trailing-spaces":"error"
+    "no-trailing-spaces": "error"
   }
 }
