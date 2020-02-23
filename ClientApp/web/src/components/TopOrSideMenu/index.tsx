@@ -24,9 +24,9 @@ interface TopOrSideMenuOwnStateProps {
 }
 
 type TopOrSideMenuProps =
-  RouteComponentProps &
   TopOrSideMenuOwnStateProps &
-  TopOrSideMenuReceivedProps;
+  TopOrSideMenuReceivedProps &
+  RouteComponentProps
 
 const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, user }: TopOrSideMenuProps) => {
   mode = mode.startsWith("vertical") ? "inline" : mode;
@@ -35,7 +35,12 @@ const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, us
   return (
     <>
       <Logo mode={mode} theme={theme} />
-      <Menu theme={theme} defaultSelectedKeys={[location.pathname]} selectedKeys={[location.pathname]} mode={mode}>
+      <Menu
+        mode={mode}
+        theme={theme}
+        defaultSelectedKeys={[location.pathname]}
+        selectedKeys={[location.pathname]}
+      >
         <Menu.Item key={Routes.POLL_LIST}>
           <Link to={Routes.POLL_LIST}>
             <TableOutlined />
@@ -48,10 +53,10 @@ const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, us
               <SubMenu
                 key="sub1"
                 title={
-                  <span>
+                  <>
                     <UserOutlined />
                     <span>个人</span>
-                  </span>
+                  </>
                 }
               >
                 <Menu.Item key={Routes.ACCOUNT_CENTER}>
@@ -66,7 +71,7 @@ const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, us
                 </Menu.Item>
               </SubMenu>
             )
-            : ""
+            : undefined
         }
       </Menu>
     </>

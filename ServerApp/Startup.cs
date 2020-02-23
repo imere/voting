@@ -72,7 +72,7 @@ namespace vote
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IAntiforgery antiforgery, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddFile(@"C:\Users\83891\Desktop\asplog.txt");
+            loggerFactory.AddFile(@".\asplog.txt");
 
             if (Environment.IsDevelopment())
             {
@@ -156,7 +156,7 @@ namespace vote
                 options.UserInteraction = new UserInteractionOptions()
                 {
                     LogoutUrl = "http://localhost:5000",
-                    LoginUrl = "http://localhost:5000",
+                    LoginUrl = "http://localhost:5000/user/login",
                     LoginReturnUrlParameter = "/"
                 };
             })
@@ -220,7 +220,8 @@ namespace vote
                     policy
                         .AllowAnyOrigin()
                         .AllowAnyHeader()
-                        .AllowAnyMethod();
+                        .AllowAnyMethod()
+                        .AllowCredentials();
                 });
             });
         }

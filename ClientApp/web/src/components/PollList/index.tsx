@@ -3,10 +3,9 @@ import { useFetch } from "use-http";
 import { Empty } from "antd";
 
 import Fallback from "@/components/Fallback";
-import { API_POLL } from "@/shared/conf";
+import { API_V1_POLL } from "@/shared/conf";
 import { Questionnaire, ResponseState } from "@/data-types";
 import { None } from "@/types";
-import { questionnaires } from "@/mocks/data";
 
 const PollList: React.FunctionComponent = () => {
   const [
@@ -22,7 +21,7 @@ const PollList: React.FunctionComponent = () => {
   const [
     request,
     response
-  ] = useFetch(API_POLL);
+  ] = useFetch(API_V1_POLL);
 
   async function getPolls() {
     setLoading(true);
@@ -32,7 +31,6 @@ const PollList: React.FunctionComponent = () => {
       const res: ResponseState<Array<Questionnaire>> = await response.json();
       setPolls(res.data);
     }
-    setPolls(questionnaires);
   }
 
   useEffect(() => {

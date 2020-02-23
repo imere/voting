@@ -9,7 +9,7 @@ import HeaderUserDropdown from "@/components/HeaderUserDropdown";
 import { ApplicationState } from "@/reducers/states";
 import { classnames } from "@/shared/classnames";
 import { None } from "@/types";
-import { lengthGt } from "@/shared/account-validate";
+import { lengthGt } from "@/shared/validate";
 
 import styles from "./HeaderUserDisplay.module.scss";
 
@@ -29,11 +29,11 @@ const HeaderUserDisplay = ({ pending, user, theme }: HeaderUserDisplayProps) => 
     )}>
       <Spin spinning={pending}>
         <Avatar
-          style={user ? { color: "#f56a00", backgroundColor: "#fde3cf" } : {}}
+          style={user ? { color: "#f56a00", backgroundColor: "#fde3cf" } : undefined}
           icon={user ? undefined : <UserOutlined />}
         >
           {user && (
-            user.profile.name
+            user.profile.name?.slice(0, 5)
           )}
         </Avatar>
         {user && (

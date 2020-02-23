@@ -1,8 +1,8 @@
 import { CascaderOptionType } from "antd/es/cascader";
-import { RuleObject } from "rc-field-form/lib/interface";
+import { RuleObject } from "rc-field-form/es/interface";
 import { CheckboxOptionType } from "antd/es/checkbox";
 import { RadioGroupButtonStyle } from "antd/es/radio";
-import { OptionCoreData } from "rc-select/lib/interface";
+import { OptionCoreData } from "rc-select/es/interface";
 
 export interface BuiltinResponse {
   username?: string[]
@@ -17,8 +17,8 @@ export type ResponseState<T = any> = CustomResponse<T> & BuiltinResponse;
 
 
 export interface BaseType {
-  name: string
   label: string
+  name: string
   extra?: string
   rules: RuleObject[]
 }
@@ -142,4 +142,8 @@ export interface Questionnaire {
   description?: string
   isPublic?: boolean
   content: QuestionnaireContentType[]
+}
+
+export interface QuestionnaireUpdate extends Questionnaire {
+  id: number
 }

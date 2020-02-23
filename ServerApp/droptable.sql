@@ -1,5 +1,4 @@
 ﻿drop table [PollAnswer];
-drop table [PollData];
 drop table [Poll];
 drop table [PollProp];
 drop table [User];

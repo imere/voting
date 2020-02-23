@@ -24,7 +24,7 @@ using System.Security.Claims;
 
 namespace vote.UserController
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -76,7 +76,7 @@ namespace vote.UserController
 
             ApplicationUser result = await _service.AddUser(user);
 
-            if (null == result) return BadRequest(new ResponseState(new { Username = "用户名已存在" }, code: 400, text: "error"));
+            if (null == result) return BadRequest(new ResponseState(new { Username = "用户名已存在" }));
 
             return CreatedAtAction(nameof(Register), new ResponseState(result));
         }
@@ -85,12 +85,12 @@ namespace vote.UserController
         [HttpDelete]
         public async Task<ActionResult> UnRegister()
         {
-            ApplicationUser result = await _service.RemoveUser(new ApplicationUser
+            ApplicationUser result = await _service.RemoveUserById(new ApplicationUser
             {
                 Id = long.Parse(User.GetSubjectId())
             });
 
-            if (null == result) return BadRequest();
+            if (null == result) return BadRequest(new ResponseState(null));
 
             return NoContent();
         }
@@ -100,7 +100,7 @@ namespace vote.UserController
         {
             ApplicationUser result = await SignInAsync(user);
 
-            if (null == result) return BadRequest(new ResponseState(new { Username = "用户或密码不正确" }, code: 400, text: "error"));
+            if (null == result) return BadRequest(new ResponseState(new { Username = "用户或密码不正确" }));
 
             return Ok(new ResponseState(null));
         }
@@ -121,11 +121,11 @@ namespace vote.UserController
 
             result.LastLogin = DateTime.UtcNow;
 
-            await _service.UpdateUser(result);
-
             await _events.RaiseAsync(new UserLoginSuccessEvent(result.Username, $"{result.Id}", result.Username));
 
             await JwtSignInAsync(result, user.Persist);
+
+            await _service.UpdateUser(result);
 
             return result;
         }
@@ -152,13 +152,14 @@ namespace vote.UserController
 
         private async Task JwtSignInAsync(ApplicationUser user, bool persist = false)
         {
+            var display = user.Displayname ?? user.Username;
             await HttpContext.SignInAsync(
                 $"{user.Id}",
                 user.Username,
                 UserHelperExtensions.GetAuthenticationProperties(persist),
                 new Claim(JwtClaimTypes.Id, $"{user.Id}"),
-                new Claim(JwtClaimTypes.NickName, user.Displayname ?? user.Username),
-                new Claim(JwtClaimTypes.Name, user.Displayname ?? user.Username));
+                new Claim(JwtClaimTypes.NickName, display),
+                new Claim(JwtClaimTypes.Name, display));
         }
 
         private async Task JwtSignOutAsync()

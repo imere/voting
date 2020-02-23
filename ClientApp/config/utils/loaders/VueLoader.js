@@ -1,6 +1,6 @@
 const MiniCSSExtractWebpackPlugin = require("mini-css-extract-plugin");
 
-exports.createVueLoader = env => {
+exports.createVueLoader = (env) => {
   const isProd = "production" === env;
   return {
     test: /\.vue$/,
@@ -37,11 +37,14 @@ exports.createVueLoader = env => {
         },
       ],
       transformToRequire: {
-        video: ["src", "poster"],
+        video: [
+          "src",
+          "poster"
+        ],
         source: "src",
         img: "src",
         image: "xlink:href",
       },
     }
   };
-}
+};

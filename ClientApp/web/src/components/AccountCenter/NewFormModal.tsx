@@ -1,8 +1,8 @@
 import React from "react";
 import { Form, Input, Modal, Switch } from "antd";
-import { Store } from "rc-field-form/lib/interface";
+import { Store } from "rc-field-form/es/interface";
 
-import { toggleRequired } from "@/components/Questionnaire/utils";
+import { descriptionRules, titleRules } from "@/shared/validate";
 
 interface NewFormModalReceivedProps {
   visible?: boolean
@@ -42,14 +42,14 @@ const NewFormModal = ({ visible, onCancel, onCreate }: NewFormModalProps) => {
         <Form.Item
           label="Title"
           name="title"
-          rules={toggleRequired([{ whitespace: true, message: "不能为空" }])}
+          rules={titleRules}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="Description"
           name="description"
-          rules={[{ whitespace: true, message: "不能为空" }]}
+          rules={descriptionRules}
         >
           <Input type="textarea" />
         </Form.Item>

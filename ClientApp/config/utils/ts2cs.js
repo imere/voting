@@ -4,27 +4,28 @@ const parser = require("@babel/parser");
 const t = require("@babel/types");
 const traverse = require("@babel/traverse").default;
 const generate = require("@babel/generator").default;
+const { upperFirst } = require("lodash");
 
 const inFile = join(__dirname, "../..", "web/src/data-types.d.ts");
 const filename = "Questionnaire";
 const suffix = ".cs";
-const outFile = join(__dirname, "../../../ServerApp/Models", `${filename}${suffix}`);
+const outFile = join(__dirname, "../../..", "/ServerApp/Models", `${filename}${suffix}`);
 
 const TypeMap = new Proxy({
   "string": "string",
-  "string[]": "string[]",
+  "string[]": "ICollection<string>",
   "boolean": "bool",
-  "boolean[]": "bool[]",
+  "boolean[]": "ICollection<bool>",
   "number": "double",
-  "number[]": "double[]",
+  "number[]": "ICollection<double>",
 }, {
   get(target, p, receiver) {
     const value = Reflect.get(target, p, receiver);
     if (undefined === value) {
       if (p.endsWith("[]")) {
-        return "object[]"; 
+        return "ICollection<object>";
       }
-      return "object"; 
+      return "object";
     }
     return value;
   }
@@ -125,8 +126,9 @@ traverse(ast, {
 const { code } = generate(ast, {}, "");
 
 function wrap(code) {
-  return `using System;
+  return "/* Auto generated */\n" + `using System;
   using System.Collections.Generic;
+  using System.Collections.ObjectModel;
   using System.ComponentModel.DataAnnotations;
   using System.ComponentModel.DataAnnotations.Schema;
   using System.Linq;
@@ -137,21 +139,24 @@ function wrap(code) {
 fs.writeFileSync(outFile,
   wrap(
     code.
-      replace(/public ([a-z]+?)(\?)?:(?:\s+)?(.+?);$/gm, (match, name, optional, type) => {
+      replace(/public ([a-zA-Z]+?)(\?)?:(?:\s+)?(.+?);$/gm, (match, name, optional, type) => {
         if (type.startsWith("\"")) {
           if (type.includes("|")) {
-            return `public string ${name} { get; set; }`;
+            return `public string ${upperFirst(name)} { get; set; }`;
           }
-          return `public readonly string ${name} = ${type};`;
+          return `public readonly string ${upperFirst(name)} = ${type};`;
         } else {
           if (type.includes("string")) {
             optional = null;
           }
-          return `public ${TypeMap[type]}${optional ? optional : ""} ${name} { get; set; }`;
+          return `public ${TypeMap[type]}${optional ? optional : ""} ${upperFirst(name)} { get; set; }`;
         }
       }).
       replace(/class/g, "public class").
-      replace(/extends/g, ":")
+      replace(/extends/g, ":").
+      replace(/\/\/.+/g, "").
+      replace(/^\s+$/gm, "").
+      replace(/^(.+?)\s+double\s+?(.*Id)/gim, "\t[Required]\n$1 long $2")
   ),
   { encoding: "utf8" }
 );

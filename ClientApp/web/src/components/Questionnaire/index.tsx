@@ -1,14 +1,14 @@
 import React, { useContext, useState } from "react";
-import { Button, Card, Form } from "antd";
+import { Button, Card, Form, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { Store } from "rc-field-form/lib/interface";
+import { Store } from "rc-field-form/es/interface";
 import { Link, Redirect, useLocation } from "react-router-dom";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
 import { Questionnaire, QuestionnaireContentType, ResponseState } from "@/data-types";
 import { Routes } from "@/constants";
 import { useHttp } from "@/hooks/useHttp";
-import { API_POLL } from "@/shared/conf";
+import { API_V1_POLL } from "@/shared/conf";
 
 import { getItemsValues, QItemDataFactory, QItemDefaultData, renderQItems } from "./utils";
 
@@ -23,15 +23,15 @@ const QuestionnaireComponent: React.FC<QuestionnaireProps> = () => {
   const params = new URLSearchParams(useLocation().search);
 
   let info = {
-    title: params.get("title")?.trim(),
-    description: params.get("description")?.trim(),
-    public: params.get("public")?.trim()
+    title: params.get("title"),
+    description: params.get("description") || undefined,
+    public: params.get("public")
   };
 
   info = {
-    title: info.title && decodeURIComponent(info.title),
-    description: info.description && decodeURIComponent(info.description),
-    public: info.public && decodeURIComponent(info.public),
+    title: info.title && decodeURIComponent(info.title).trim(),
+    description: info.description && decodeURIComponent(info.description).trim(),
+    public: info.public && decodeURIComponent(info.public).trim(),
   };
 
   if (isEditing) {
@@ -103,8 +103,8 @@ const QuestionnaireComponent: React.FC<QuestionnaireProps> = () => {
 
   const [
     request,
-    // response
-  ] = useHttp<ResponseState<Array<QuestionnaireContentType>>>(API_POLL, {
+    response
+  ] = useHttp<ResponseState<Array<QuestionnaireContentType>>>(API_V1_POLL, {
     body: JSON.stringify({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       title: info.title!,
@@ -125,6 +125,11 @@ const QuestionnaireComponent: React.FC<QuestionnaireProps> = () => {
     };
     await request.put("/", JSON.stringify(q));
     setUploading(false);
+    if (response.ok) {
+      location.href = Routes.ACCOUNT_CENTER;
+    } else {
+      message.error("请检查网络", 3);
+    }
   }
 
   const formTitle = (

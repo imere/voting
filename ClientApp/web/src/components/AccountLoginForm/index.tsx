@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Input, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Store } from "rc-field-form/lib/interface";
+import { Store } from "rc-field-form/es/interface";
 
 import { Routes } from "@/constants";
 import { AuthAction, LoginCallback, UserAuthentication } from "@/actions/action-auth";
@@ -11,7 +11,7 @@ import { iu } from "@/actions";
 import { ApplicationState } from "@/reducers/states";
 import { Disp, ValidateStatus } from "@/types";
 import { ResponseState } from "@/data-types";
-import { passwordRules, usernameRules } from "@/shared/account-validate";
+import { passwordRules, usernameRules } from "@/shared/validate";
 
 import styles from "./AccountLogin.module.scss";
 
@@ -103,19 +103,16 @@ const AccountLogin = ({ login, pending }: AccountLoginProps) => {
   }
 
   return (
-    <Form onFinish={onFinish} className={styles["login-form"]}>
+    <Form
+      className={styles["login-form"]}
+      onFinish={onFinish}
+    >
 
       <Form.Item
         name="username"
         help={usernameHelp}
         validateStatus={usernameStatus}
-        rules={[
-          {
-            required: true,
-            message: "请输入用户名",
-          },
-          ...usernameRules,
-        ]}
+        rules={usernameRules}
       >
         <Input placeholder="用户名" prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />} />
       </Form.Item>
@@ -124,13 +121,7 @@ const AccountLogin = ({ login, pending }: AccountLoginProps) => {
         name="password"
         help={passwordHelp}
         validateStatus={passwordStatus}
-        rules={[
-          {
-            required: true,
-            message: "请输入密码",
-          },
-          ...passwordRules,
-        ]}
+        rules={passwordRules}
       >
         <Input type="password" placeholder="密码" prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />} />
       </Form.Item>

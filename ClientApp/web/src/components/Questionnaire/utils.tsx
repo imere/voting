@@ -1,12 +1,13 @@
 import React from "react";
 import { MD5 } from "object-hash";
-import { RuleObject } from "rc-field-form/lib/interface";
+import { RuleObject } from "rc-field-form/es/interface";
 
 import QCheckBoxGroup from "@/components/Questionnaire/QCheckBoxGroup";
 import QInput from "@/components/Questionnaire/QInput";
 import WrapModify from "@/components/Questionnaire/WrapModify";
 import WrapNormal from "@/components/Questionnaire/WrapNormal";
 import { QuestionnaireContentType, TypeCheckBoxGroup, TypeInput } from "@/data-types";
+import { BuiltinRules } from "@/shared/validate";
 
 import EditQCheckBoxGroup from "./WrapModify/ButtonEdit/ButtonEditOptions/EditQCheckBoxGroup";
 import EditQInput from "./WrapModify/ButtonEdit/ButtonEditOptions/EditQInput";
@@ -24,52 +25,52 @@ export function isRequired(rules: RuleObject[]): boolean {
 }
 
 export function getLength(rules: RuleObject[]): RuleObject | undefined {
-  const length = rules.find((rule) => typeof rule.max !== "undefined" || typeof rule.min !== "undefined");
-  if (!length) {
+  const lengthObject = rules.find((rule) => typeof rule.max !== "undefined" || typeof rule.min !== "undefined");
+  if (!lengthObject) {
     return;
   }
-  return length;
+  return lengthObject;
 }
 
 export function setLengthMessage(rules: RuleObject[], name = "长度"): RuleObject[] {
-  rules.some((rule) => {
-    if (typeof rule.min ==="undefined" && typeof rule.max ==="undefined") {
-      return false;
+  for (const rule of rules) {
+    if (typeof rule.min === "undefined" && typeof rule.max === "undefined") {
+      continue;
     }
-    if (typeof rule.min ==="undefined") {
+    if (typeof rule.min === "undefined") {
       rule.message = `${name}不能大于${rule.max}`;
-      return true;
+      break;
     }
-    if (typeof rule.max ==="undefined") {
+    if (typeof rule.max === "undefined") {
       rule.message = `${name}不能小于${rule.min}`;
-      return true;
+      break;
     }
     rule.message = `${name}应为${rule.min} ~ ${rule.max}`;
-    return true;
-  });
+    break;
+  }
   return rules;
 }
 
 export function setRequiredMessage(rules: RuleObject[], message = "必填项"): RuleObject[] {
-  rules.some((rule) => {
+  for (const rule of rules) {
     if (rule.required) {
       rule.message = message;
-      return true;
+      break;
     }
-    return false;
-  });
+    continue;
+  }
   return rules;
 }
 
 export function toggleRequired(rules: RuleObject[]): RuleObject[] {
-  const req = rules.some((rule) => {
+  const hasRequireSet = rules.some((rule) => {
     if ("undefined" === typeof rule.required) {
       return false;
     }
     rule.required = !rule.required;
     return true;
   });
-  if (!req) {
+  if (!hasRequireSet) {
     rules.unshift({
       required: true,
       message: "必填项",
@@ -126,10 +127,12 @@ export const QItemDefaultData: QItemDefaultDataType = {
     typename: "input",
     label: "label",
     name: hashName("input"),
-    rules: toggleRequired([
-      { whitespace: true, message: "不能为空" },
-      { min: 0, message: "长度不符合要求" },
-    ]),
+    rules: toggleRequired(
+      setLengthMessage([
+        BuiltinRules.NoSpaceBothEnds,
+        { min: 0 },
+      ])
+    ),
   }),
   "checkboxgroup": () => ({
     typename: "checkboxgroup",

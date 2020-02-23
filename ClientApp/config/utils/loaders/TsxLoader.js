@@ -8,7 +8,7 @@ exports.createTsxLoader = (env) => ({
         "transpileOnly": true,
         "happyPackMode": true,
         "appendTsxSuffixTo": [/\.vue$/],
-        "configFile": "tsconfig.json",
+        "configFile": undefined,
       },
     },
   ],

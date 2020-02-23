@@ -29,13 +29,11 @@ namespace vote.Data
             }
         }
 
-        public async Task<ApplicationUser> RemoveUser(ApplicationUser user)
+        public async Task<ApplicationUser> RemoveUserById(ApplicationUser user)
         {
             try
             {
                 var result = _context.User.Remove(user);
-
-                if (null == result) return null;
 
                 await _context.SaveChangesAsync();
 

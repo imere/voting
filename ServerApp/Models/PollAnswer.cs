@@ -12,17 +12,20 @@ namespace vote.Models
         [Key]
         public long Id { get; set; }
 
-        [Required]
         [DataType(DataType.Text)]
         public string Answer { get; set; }
 
-        [Required]
         [Column(TypeName = "datetime2")]
         public DateTime CreatedAt { get; set; }
 
-        [Required]
+        [ForeignKey("PollId")]
         public Poll Poll { get; set; }
 
+        public long PollId { get; set; }
+
+        [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
+
+        public long UserId { get; set; }
     }
 }

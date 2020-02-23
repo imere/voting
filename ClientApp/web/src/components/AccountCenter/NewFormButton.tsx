@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "antd";
-import { Store } from "rc-field-form/lib/interface";
+import { Store } from "rc-field-form/es/interface";
 import { Redirect } from "react-router";
 
 import { Routes } from "@/constants";

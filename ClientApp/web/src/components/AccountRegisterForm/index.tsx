@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Checkbox, Form, Input, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Store, ValidateErrorEntity } from "rc-field-form/lib/interface";
+import { Store, ValidateErrorEntity } from "rc-field-form/es/interface";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -11,7 +11,7 @@ import { iu } from "@/actions";
 import { ApplicationState } from "@/reducers/states";
 import { Disp, ValidateStatus } from "@/types";
 import { ResponseState } from "@/data-types";
-import { passwordRules, usernameRules } from "@/shared/account-validate";
+import { passwordRules, usernameRules } from "@/shared/validate";
 
 import styles from "./AccountRegister.module.scss";
 
@@ -118,13 +118,7 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
         name="username"
         help={usernameHelp}
         validateStatus={usernameStatus}
-        rules={[
-          {
-            required: true,
-            message: "请输入用户名",
-          },
-          ...usernameRules,
-        ]}
+        rules={usernameRules}
       >
         <Input
           placeholder="用户名"
@@ -136,13 +130,7 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
         name="password"
         help={passwordHelp}
         validateStatus={passwordStatus}
-        rules={[
-          {
-            required: true,
-            message: "请输入密码",
-          },
-          ...passwordRules,
-        ]}
+        rules={passwordRules}
       >
         <Input
           type="password"

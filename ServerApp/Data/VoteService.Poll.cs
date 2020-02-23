@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +13,40 @@ namespace vote.Data
 {
     public partial class VoteService
     {
-        public async Task<Poll> AddPollByUserId(long userId, Poll poll)
+        public async Task<Poll> ReturnPollIfPublic(Poll poll)
+        {
+            if (null == poll?.PollPropId) return poll;
+
+            var prop = await GetPollPropById(poll.PollPropId);
+
+            if (false == prop?.IsPublic) return null;
+
+            return poll;
+        }
+
+        public async Task<Poll> AddPollByUserId(long userId, Questionnaire questionnaire)
         {
             try
             {
-                poll.User.Id = userId;
-                var result = await _context.Poll.AddAsync(poll);
+                EntityEntry<PollProp> prop = null;
+                if ((bool)questionnaire.IsPublic)
+                {
+                    prop = await _context.PollProp.AddAsync(new PollProp
+                    {
+                        IsPublic = questionnaire.IsPublic
+                    });
+                }
+
+                var result = await _context.Poll.AddAsync(new Poll
+                {
+                    Title = questionnaire.Title,
+                    Description = questionnaire.Description,
+                    Content = JsonConvert.SerializeObject(questionnaire.Content),
+                    CreatedAt = DateTime.UtcNow,
+                    UserId = userId,
+                    PollPropId = prop?.Entity.Id
+                });
+
                 await _context.SaveChangesAsync();
 
                 return result.Entity;
@@ -50,20 +80,20 @@ namespace vote.Data
 
             foreach (var poll in polls)
             {
-                var tmp = await GetPollIfPublic(poll);
+                var tmp = await ReturnPollIfPublic(poll);
                 if (null != tmp) res.Add(tmp);
             }
 
             return res;
         }
 
-        public async Task<Poll> GetPollById(long id)
+        public async Task<Poll> GetPollById(long pollId)
         {
             try
             {
                 return await (
                         from o in _context.Poll.AsNoTracking()
-                        where o.Id == id
+                        where o.Id == pollId
                         select o
                     )
                     .SingleOrDefaultAsync();
@@ -74,13 +104,13 @@ namespace vote.Data
             }
         }
 
-        public async Task<Poll> GetPublicPollById(long id)
+        public async Task<Poll> GetPublicPollById(long pollId)
         {
             try
             {
-                var poll = await GetPollById(id);
+                var poll = await GetPollById(pollId);
 
-                return await GetPollIfPublic(poll);
+                return await ReturnPollIfPublic(poll);
             }
             catch (Exception ex)
             {
@@ -105,12 +135,36 @@ namespace vote.Data
             }
         }
 
-        private async Task<Poll> UpdatePoll(Poll poll)
+        private async Task<Poll> UpdatePoll(QuestionnaireUpdate questionnaire)
         {
             try
             {
-                var result = _context.Poll.Update(poll);
+                var result = _context.Poll.Update(new Poll
+                {
+                    Id = questionnaire.Id,
+                    Content = JsonConvert.SerializeObject(questionnaire.Content)
+                });
                 result.State = EntityState.Modified;
+
+                if (null == result.Entity.PollPropId)
+                {
+                    if ((bool)questionnaire.IsPublic)
+                    {
+                        await AddPollPropByPollId(result.Entity.Id, new PollProp
+                        {
+                            IsPublic = questionnaire.IsPublic
+                        });
+                    }
+                }
+                else
+                {
+                    UpdatePollProp(new PollProp
+                    {
+                        Id = (long)result.Entity.PollPropId,
+                        IsPublic = questionnaire.IsPublic
+                    });
+                }
+
                 await _context.SaveChangesAsync();
                 return result.Entity;
             }
@@ -120,13 +174,15 @@ namespace vote.Data
             }
         }
 
-        public async Task<Poll> UpdatePollByUserId(long userId, Poll poll)
+        public async Task<Poll> UpdatePollByUserId(long userId, QuestionnaireUpdate questionnaire)
         {
             try
             {
-                var result = await _context.Poll.Where(predicate => predicate.User.Id == userId).Where(predicate => predicate.Id == poll.Id).SingleOrDefaultAsync();
+                var result = await _context.Poll.Where(predicate => predicate.User.Id == userId).Where(predicate => predicate.Id == questionnaire.Id).SingleOrDefaultAsync();
 
-                return await UpdatePoll(poll);
+                if (null == result) return null;
+
+                return await UpdatePoll(questionnaire);
             }
             catch (Exception ex)
             {
@@ -138,11 +194,11 @@ namespace vote.Data
         {
             try
             {
-                if (null != poll?.PollPropId) _context.PollProp.Remove(new PollProp { Id = (long)poll.PollPropId });
+                if (null != poll?.PollPropId) RemovePollPropById((long)poll.PollPropId);
 
                 var result = _context.Poll.Remove(poll);
-                await _context.SaveChangesAsync();
 
+                await _context.SaveChangesAsync();
                 return result.Entity;
             }
             catch (Exception ex)
@@ -151,7 +207,7 @@ namespace vote.Data
             }
         }
 
-        public async Task<Poll> DeletePollByUserId(long userId, Poll poll)
+        public async Task<Poll> DeletePollByIdAndUser(long userId, Poll poll)
         {
             try
             {
@@ -163,18 +219,6 @@ namespace vote.Data
             {
                 throw ex;
             }
-        }
-
-        private async Task<Poll> GetPollIfPublic(Poll poll)
-        {
-
-            if (null == poll?.PollPropId) return poll;
-
-            var props = await GetPollPropsById(poll.PollPropId);
-
-            if (false == props.Public) return null;
-
-            return poll;
         }
     }
 }

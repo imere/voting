@@ -3,7 +3,7 @@ import { User, UserManager, UserManagerSettings, WebStorageStateStore } from "oi
 import { AuthActions, Routes } from "@/constants";
 import { AppThunkAction, None } from "@/types";
 import { Http } from "@/shared";
-import { API_ORIGIN, API_USER, HOST } from "@/shared/conf";
+import { API_ORIGIN, API_V1_USER, HOST } from "@/shared/conf";
 
 import {
   AuthAction,
@@ -28,7 +28,7 @@ class IdentityService {
     "authority": `${API_ORIGIN}`,
     "client_id": "js",
     "redirect_uri": `${HOST}${Routes.AUTH_CALLBACK}`,
-    "post_logout_redirect_uri": `${HOST}${Routes.USER_LOGIN}`,
+    "post_logout_redirect_uri": `${HOST}`,
     "response_type": "id_token token",
     "scope": "openid profile api1",
     userStore: new WebStorageStateStore({
@@ -56,7 +56,7 @@ class IdentityService {
   register = (user: UserAuthentication, cb?: RegisterCallback): AppThunkAction<AuthAction> => async (dispatch) => {
     dispatch(this.requestRegister());
     try {
-      await Http(`${API_USER}`, {
+      await Http(`${API_V1_USER}`, {
         "method": "PUT",
         "body": new Blob([JSON.stringify(user)], {
           type: "application/json",
@@ -96,7 +96,7 @@ class IdentityService {
   login = (user: UserAuthentication, cb?: LoginCallback): AppThunkAction<AuthAction> => async (dispatch) => {
     dispatch(this.requestLogin());
     try {
-      await Http(`${API_USER}/login`, {
+      await Http(`${API_V1_USER}/login`, {
         "method": "POST",
         "headers": {
           "Content-Type": "application/json",
@@ -144,10 +144,10 @@ class IdentityService {
     "type": AuthActions.LOGOUT_COMPLETE
   })
 
-  logout = (cb?: LogoutCallback): AppThunkAction<AuthAction> => async (dispatch) => {
+  logout = (cb?: LogoutCallback): AppThunkAction<AuthAction> => (dispatch) => {
     dispatch(this.requestLogout());
     try {
-      await this._manager.signoutRedirect().then(() => {
+      this._manager.signoutRedirect().then(() => {
         cb && cb(null);
       });
       return dispatch(this.requestLogoutComplete());

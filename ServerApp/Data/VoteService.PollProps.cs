@@ -9,30 +9,33 @@ namespace vote.Data
 {
     public partial class VoteService
     {
-        public async Task<PollProp> AddProps(Poll poll, PollProp props)
+        public async Task<PollProp> AddPollPropByPollId(long pollId, PollProp prop)
         {
-            Poll result;
-            try
-            {
-                result = await _context.Poll.Where(predicate => predicate.Id == poll.Id).SingleOrDefaultAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            Poll result = await _context.Poll.Where(predicate => predicate.Id == pollId).SingleOrDefaultAsync();
 
             if (null == result) return null;
 
-            result.PollProp = props;
+            result.PollPropId = prop.Id;
 
-            await _context.PollProp.AddAsync(props);
-            await _context.SaveChangesAsync();
-            return props;
+            await _context.PollProp.AddAsync(prop);
+            return prop;
         }
 
-        public async Task<PollProp> GetPollPropsById(long? propsId)
+        public async Task<PollProp> GetPollPropById(long? propId)
         {
-            return await _context.PollProp.Where(predicate => predicate.Id == propsId).SingleOrDefaultAsync();
+            return await _context.PollProp.AsNoTracking().Where(predicate => predicate.Id == propId).SingleOrDefaultAsync();
+        }
+
+        public PollProp UpdatePollProp(PollProp prop)
+        {
+            var result = _context.PollProp.Update(prop);
+            result.State = EntityState.Modified;
+            return result.Entity;
+        }
+
+        public void RemovePollPropById(long propId)
+        {
+            _context.PollProp.Remove(new PollProp { Id = propId });
         }
     }
 }

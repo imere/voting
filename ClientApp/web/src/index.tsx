@@ -16,7 +16,6 @@ import { iu } from "./actions";
 import { Routes } from "./constants";
 import { defaultLoadableOption } from "./shared/conf";
 import { addAuthorization, addCredentials, shouldAddAuthorization, shouldAddCredentials } from "./shared/request";
-import { setUser } from "./mocks/data";
 
 const AccountLazy = Loadable(
   () => import("./pages/Account"),
@@ -30,7 +29,6 @@ const AppLazy = Loadable(
 
 import("./index.scss");
 
-setUser();
 
 iu.getUser().then((user) => {
   const baseUrl = document.

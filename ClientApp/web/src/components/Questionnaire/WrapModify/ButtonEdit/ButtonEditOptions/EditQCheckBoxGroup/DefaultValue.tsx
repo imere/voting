@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Select } from "antd";
-import { SelectValue } from "antd/lib/select";
+import { SelectValue } from "antd/es/select";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
 import { TypeCheckBoxGroup } from "@/data-types";

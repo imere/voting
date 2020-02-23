@@ -40,7 +40,8 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "use-http": "^0.2.5",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-property-decorator": "^8.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
@@ -75,6 +76,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-module-resolver": "^4.0.0",
+    "babel-preset-typescript-vue": "^1.0.3",
     "cache-loader": "^4.1.0",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^6.0.3",

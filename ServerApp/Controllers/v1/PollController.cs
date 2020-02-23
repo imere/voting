@@ -11,6 +11,8 @@ using vote.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using IdentityServer4.Extensions;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace vote.Controllers
 {
@@ -38,32 +40,32 @@ namespace vote.Controllers
                     poll.Title,
                     poll.Description,
                     poll.CreatedAt,
-                    poll.User.Displayname,
                 });
 
             return Ok(new ResponseState(polls));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetById(int id)
+        public async Task<ActionResult> GetById(long id)
         {
             try
             {
-                Poll result = await _service.GetPublicPollById(id);
+                Poll result = await _service.GetPollById(id);
 
-                if (null == result) return Ok(new ResponseState(null));
+                if (null == result) return BadRequest(new ResponseState(null));
 
                 var poll = new
                 {
                     result.Id,
                     result.Title,
+                    result.Description
                 };
 
                 return Ok(new ResponseState(poll));
             }
             catch
             {
-                return BadRequest();
+                return BadRequest(new ResponseState(null));
             }
         }
 
@@ -71,23 +73,22 @@ namespace vote.Controllers
         [HttpPut]
         public async Task<ActionResult<ResponseState>> Add([FromBody] Questionnaire questionnaire)
         {
-            Poll result = await _service.AddPollByUserId(long.Parse(User.GetSubjectId()), new Poll
-            {
-                Title = questionnaire.title,
-                Description = questionnaire.description,
-                CreatedAt = DateTime.UtcNow
-            });
+            Poll result = await _service.AddPollByUserId(
+                long.Parse(User.GetSubjectId()),
+                questionnaire);
 
-            if (null == result) return BadRequest();
+            if (null == result) return BadRequest(new ResponseState(null));
 
-            return CreatedAtAction(nameof(Add), result);
+            return Created(nameof(Add), new ResponseState(questionnaire));
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
-        public async Task<ActionResult> Update([FromBody] Poll poll)
+        public async Task<ActionResult> Update([FromBody] QuestionnaireUpdate questionnaire)
         {
-            Poll result = await _service.UpdatePollByUserId(UserHelperExtensions.ParseCookieUserIdLegacy(User), poll);
+            Poll result = await _service.UpdatePollByUserId(
+                long.Parse(User.GetSubjectId()),
+                questionnaire);
 
             if (null == result) return BadRequest();
 
@@ -96,9 +97,9 @@ namespace vote.Controllers
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteById(int id)
+        public async Task<ActionResult> DeleteById(long id)
         {
-            await _service.DeletePollByUserId(UserHelperExtensions.ParseCookieUserIdLegacy(User), new Poll { Id = id });
+            await _service.DeletePollByIdAndUser(long.Parse(User.GetSubjectId()), new Poll { Id = id });
             return NoContent();
         }
     }
