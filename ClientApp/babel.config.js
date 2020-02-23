@@ -9,7 +9,6 @@ if (compilerOptions) {
 
 module.exports = {
   "presets": [
-    "typescript-vue",
     [
       "@babel/preset-env",
       {
