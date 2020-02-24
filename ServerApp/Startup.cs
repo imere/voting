@@ -14,17 +14,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using vote.Data;
-using System.Security.Claims;
-using IdentityServer;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Identity;
-using vote.Models;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using IdentityServer4.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Newtonsoft.Json.Serialization;
+using IdentityServer4.EntityFramework.DbContexts;
 
 namespace vote
 {
@@ -57,7 +55,11 @@ namespace vote
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
 
             AddIdentityServer(services);
             AddIdentityServerAuth(services);
@@ -151,6 +153,13 @@ namespace vote
 
         private void AddIdentityServer(IServiceCollection services)
         {
+            var b = new SqlConnectionStringBuilder(Configuration.GetConnectionString("VoteConnection"));
+            IConfigurationSection voteCredentials = Configuration.GetSection("VoteCredentials");
+            b.UserID = voteCredentials["UserId"];
+            b.Password = voteCredentials["Password"];
+
+            const string migrationsAssembly = "vote";
+
             var builder = services.AddIdentityServer(options =>
             {
                 options.UserInteraction = new UserInteractionOptions()
@@ -160,9 +169,32 @@ namespace vote
                     LoginReturnUrlParameter = "/"
                 };
             })
-               .AddInMemoryIdentityResources(Config.GetIdentityResources())
-               .AddInMemoryApiResources(Config.GetApis())
-               .AddInMemoryClients(Config.GetClients());
+                //.AddInMemoryIdentityResources(Config.GetIdentityResources())
+                //.AddInMemoryApiResources(Config.GetApis())
+                //.AddInMemoryClients(Config.GetClients())
+                // this adds the config data from DB (clients, resources, CORS)
+                .AddConfigurationStore<ConfigurationDbContext>(options =>
+                {
+                    options.ResolveDbContextOptions = (provider, optionsBuilder) =>
+                    {
+                        optionsBuilder.UseSqlServer(b.ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    };
+                })
+                // this adds the operational data from DB (codes, tokens, consents)
+                .AddOperationalStore<PersistedGrantDbContext>(options =>
+                {
+                    options.ConfigureDbContext = optionsBuilder =>
+                    {
+                        optionsBuilder.UseSqlServer(b.ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    };
+
+                    // this enables automatic token cleanup. this is optional.
+                    options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 60 * 60 * 1; // interval in seconds
+                })
+                .AddConfigurationStoreCache();
+
+            services.AddLocalApiAuthentication();
 
             if (Environment.IsDevelopment())
             {
@@ -179,8 +211,6 @@ namespace vote
                 //var certificates = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, true);
                 //builder.AddSigningCredential(certificates[0]);
             }
-
-            services.AddLocalApiAuthentication();
         }
 
 

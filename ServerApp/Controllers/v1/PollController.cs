@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -7,14 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using vote.Models;
 using vote.Data;
 using System.Security.Claims;
-using vote.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using IdentityServer4.Extensions;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
-namespace vote.Controllers
+namespace vote.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
@@ -33,14 +30,7 @@ namespace vote.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-            var polls = (await _service.GetAllPublicPolls())
-                .Select(poll => new
-                {
-                    poll.Id,
-                    poll.Title,
-                    poll.Description,
-                    poll.CreatedAt,
-                });
+            var polls = (await _service.GetAllPolls());
 
             return Ok(new ResponseState(polls));
         }
@@ -48,25 +38,20 @@ namespace vote.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> GetById(long id)
         {
-            try
+            Poll result = await _service.GetPollById(id);
+
+            if (null == result) return BadRequest(new ResponseState(null));
+
+            var poll = new
             {
-                Poll result = await _service.GetPollById(id);
+                result.Id,
+                result.Title,
+                result.Description,
+                result.Content,
+                result.CreatedAt
+            };
 
-                if (null == result) return BadRequest(new ResponseState(null));
-
-                var poll = new
-                {
-                    result.Id,
-                    result.Title,
-                    result.Description
-                };
-
-                return Ok(new ResponseState(poll));
-            }
-            catch
-            {
-                return BadRequest(new ResponseState(null));
-            }
+            return Ok(new ResponseState(poll));
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -79,7 +64,7 @@ namespace vote.Controllers
 
             if (null == result) return BadRequest(new ResponseState(null));
 
-            return Created(nameof(Add), new ResponseState(questionnaire));
+            return Created("/", new ResponseState(questionnaire));
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -90,7 +75,7 @@ namespace vote.Controllers
                 long.Parse(User.GetSubjectId()),
                 questionnaire);
 
-            if (null == result) return BadRequest();
+            if (null == result) return BadRequest(new ResponseState(null));
 
             return Ok(new ResponseState(result));
         }

@@ -126,7 +126,8 @@ traverse(ast, {
 const { code } = generate(ast, {}, "");
 
 function wrap(code) {
-  return "/* Auto generated */\n" + `using System;
+  return "/* Auto generated */\n" +
+  `using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.ComponentModel.DataAnnotations;
@@ -140,7 +141,7 @@ fs.writeFileSync(outFile,
   wrap(
     code.
       replace(/public ([a-zA-Z]+?)(\?)?:(?:\s+)?(.+?);$/gm, (match, name, optional, type) => {
-        if (type.startsWith("\"")) {
+        if (type.includes("\"")) {
           if (type.includes("|")) {
             return `public string ${upperFirst(name)} { get; set; }`;
           }
@@ -156,7 +157,8 @@ fs.writeFileSync(outFile,
       replace(/extends/g, ":").
       replace(/\/\/.+/g, "").
       replace(/^\s+$/gm, "").
-      replace(/^(.+?)\s+double\s+?(.*Id)/gim, "\t[Required]\n$1 long $2")
+      replace(/^(.+?)\s+double\s+?(.*Id)/gim, "\t[Required]\n$1 long $2").
+      replace(/^(.+?)\s+bool\?\s(IsPublic.+)$/gim, "$1 bool? $2 = true;")
   ),
   { encoding: "utf8" }
 );

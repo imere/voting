@@ -22,7 +22,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Data.SqlClient;
 using System.Security.Claims;
 
-namespace vote.UserController
+namespace vote.UserController.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]

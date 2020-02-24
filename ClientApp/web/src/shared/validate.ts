@@ -41,7 +41,7 @@ export const BuiltinRules = {
 };
 
 
-const commonAuthRuls = [BuiltinRules.AlphaNumOnly];
+const commonAuthRules: RuleObject[] = [BuiltinRules.AlphaNumOnly];
 
 export const usernameRules: RuleObject[] = [
   {
@@ -53,7 +53,7 @@ export const usernameRules: RuleObject[] = [
     max: 15,
     message: "应为5~15位字符",
   },
-  ...commonAuthRuls,
+  ...commonAuthRules,
 ];
 
 export const passwordRules: RuleObject[] = [
@@ -66,11 +66,16 @@ export const passwordRules: RuleObject[] = [
     max: 16,
     message: "应为6~16位字符",
   },
-  ...commonAuthRuls,
+  ...commonAuthRules,
 ];
 
 
-const commonQRules = [BuiltinRules.NoSpaceBothEnds];
+const commonQRules: RuleObject[] = [
+  {
+    whitespace: true,
+    message: "不能为空",
+  }
+];
 
 export const titleRules: RuleObject[] = toggleRequired(
   setLengthMessage([

@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using vote.Models;
 
@@ -13,13 +11,11 @@ namespace vote.Data
 {
     public partial class VoteService
     {
-        public async Task<Poll> ReturnPollIfPublic(Poll poll)
+        public Poll ReturnPollIfPublic(Poll poll)
         {
-            if (null == poll?.PollPropId) return poll;
+            if (null == poll.PollProp) return poll;
 
-            var prop = await GetPollPropById(poll.PollPropId);
-
-            if (false == prop?.IsPublic) return null;
+            if (false == poll.PollProp.IsPublic) return null;
 
             return poll;
         }
@@ -29,7 +25,7 @@ namespace vote.Data
             try
             {
                 EntityEntry<PollProp> prop = null;
-                if ((bool)questionnaire.IsPublic)
+                if (null != questionnaire.IsPublic && false == questionnaire.IsPublic)
                 {
                     prop = await _context.PollProp.AddAsync(new PollProp
                     {
@@ -51,20 +47,32 @@ namespace vote.Data
 
                 return result.Entity;
             }
+            catch (JsonSerializationException)
+            {
+                return null;
+            }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
 
-        public async Task<List<Poll>> GetAllPolls()
+        public async Task<List<Poll>> GetAllPolls(long startId = 0, int? count = null)
         {
             try
             {
-                return await (
-                        from o in _context.Poll.AsNoTracking()
-                        select o
-                    )
+                var chain = _context.Poll
+                    .Include(p => p.PollProp)
+                    .Include(p => p.PollAnswers)
+                    .Where(p => p.Id >= startId);
+
+                if (null != count)
+                {
+                    chain = chain.Take((int)count);
+                }
+
+                return await chain
+                    .AsNoTracking()
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -80,7 +88,7 @@ namespace vote.Data
 
             foreach (var poll in polls)
             {
-                var tmp = await ReturnPollIfPublic(poll);
+                var tmp = ReturnPollIfPublic(poll);
                 if (null != tmp) res.Add(tmp);
             }
 
@@ -91,11 +99,11 @@ namespace vote.Data
         {
             try
             {
-                return await (
-                        from o in _context.Poll.AsNoTracking()
-                        where o.Id == pollId
-                        select o
-                    )
+                return await _context.Poll
+                    .Include(p => p.PollProp)
+                    .Include(p => p.PollAnswers)
+                    .Where(p => p.Id == pollId)
+                    .AsNoTracking()
                     .SingleOrDefaultAsync();
             }
             catch (Exception ex)
@@ -110,7 +118,7 @@ namespace vote.Data
             {
                 var poll = await GetPollById(pollId);
 
-                return await ReturnPollIfPublic(poll);
+                return ReturnPollIfPublic(poll);
             }
             catch (Exception ex)
             {
@@ -122,11 +130,11 @@ namespace vote.Data
         {
             try
             {
-                return await (
-                        from o in _context.Poll.AsNoTracking()
-                        where o.User.Id == userId
-                        select o
-                    )
+                return await _context.Poll
+                    .Include(p => p.PollProp)
+                    .Include(p => p.PollAnswers)
+                    .Where(p => p.User.Id == userId)
+                    .AsNoTracking()
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -168,6 +176,10 @@ namespace vote.Data
                 await _context.SaveChangesAsync();
                 return result.Entity;
             }
+            catch (JsonSerializationException)
+            {
+                return null;
+            }
             catch (Exception ex)
             {
                 throw ex;
@@ -178,7 +190,7 @@ namespace vote.Data
         {
             try
             {
-                var result = await _context.Poll.Where(predicate => predicate.User.Id == userId).Where(predicate => predicate.Id == questionnaire.Id).SingleOrDefaultAsync();
+                var result = await _context.Poll.Where(p => p.User.Id == userId).Where(p => p.Id == questionnaire.Id).SingleOrDefaultAsync();
 
                 if (null == result) return null;
 
@@ -211,7 +223,7 @@ namespace vote.Data
         {
             try
             {
-                var result = await _context.Poll.Where(predicate => predicate.User.Id == userId).Where(predicate => predicate.Id == poll.Id).SingleOrDefaultAsync();
+                var result = await _context.Poll.Where(p => p.User.Id == userId).Where(p => p.Id == poll.Id).SingleOrDefaultAsync();
 
                 return await DeletePollById(result);
             }

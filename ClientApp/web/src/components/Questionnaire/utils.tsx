@@ -7,7 +7,6 @@ import QInput from "@/components/Questionnaire/QInput";
 import WrapModify from "@/components/Questionnaire/WrapModify";
 import WrapNormal from "@/components/Questionnaire/WrapNormal";
 import { QuestionnaireContentType, TypeCheckBoxGroup, TypeInput } from "@/data-types";
-import { BuiltinRules } from "@/shared/validate";
 
 import EditQCheckBoxGroup from "./WrapModify/ButtonEdit/ButtonEditOptions/EditQCheckBoxGroup";
 import EditQInput from "./WrapModify/ButtonEdit/ButtonEditOptions/EditQInput";
@@ -129,7 +128,7 @@ export const QItemDefaultData: QItemDefaultDataType = {
     name: hashName("input"),
     rules: toggleRequired(
       setLengthMessage([
-        BuiltinRules.NoSpaceBothEnds,
+        { whitespace: true, message: "不能为空" },
         { min: 0 },
       ])
     ),

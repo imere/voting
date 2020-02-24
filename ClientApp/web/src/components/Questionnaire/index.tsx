@@ -5,7 +5,7 @@ import { Store } from "rc-field-form/es/interface";
 import { Link, Redirect, useLocation } from "react-router-dom";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
-import { Questionnaire, QuestionnaireContentType, ResponseState } from "@/data-types";
+import { QuestionnaireContentType, ResponseState } from "@/data-types";
 import { Routes } from "@/constants";
 import { useHttp } from "@/hooks/useHttp";
 import { API_V1_POLL } from "@/shared/conf";
@@ -25,13 +25,13 @@ const QuestionnaireComponent: React.FC<QuestionnaireProps> = () => {
   let info = {
     title: params.get("title"),
     description: params.get("description") || undefined,
-    public: params.get("public")
+    isPublic: params.get("public")
   };
 
   info = {
     title: info.title && decodeURIComponent(info.title).trim(),
     description: info.description && decodeURIComponent(info.description).trim(),
-    public: info.public && decodeURIComponent(info.public).trim(),
+    isPublic: info.isPublic && decodeURIComponent(info.isPublic).trim(),
   };
 
   if (isEditing) {
@@ -109,21 +109,14 @@ const QuestionnaireComponent: React.FC<QuestionnaireProps> = () => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       title: info.title!,
       description: info.description,
-      public: !!info.public,
+      isPublic: !!info.isPublic,
       content: items
     })
   });
 
   async function handleConfirmClick() {
     setUploading(true);
-    const q: Questionnaire = {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      title: info.title!,
-      description: info.description,
-      isPublic: !!info.public,
-      content: items
-    };
-    await request.put("/", JSON.stringify(q));
+    await request.put("/");
     setUploading(false);
     if (response.ok) {
       location.href = Routes.ACCOUNT_CENTER;

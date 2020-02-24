@@ -29,6 +29,17 @@ const AppLazy = Loadable(
 
 import("./index.scss");
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+RegExp.prototype.toJSON || (
+  Reflect.defineProperty(RegExp.prototype, "toJSON", {
+    value: function () {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      return (this as RegExp).toString();
+    }
+  })
+);
 
 iu.getUser().then((user) => {
   const baseUrl = document.
