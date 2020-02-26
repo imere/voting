@@ -2,7 +2,7 @@ import React from "react";
 import { EditOutlined } from "@ant-design/icons";
 import { Popover, Tooltip } from "antd";
 
-import { QuestionnaireContentType } from "@/data-types";
+import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
 
 import ButtonEditOptions from "./ButtonEditOptions";
 

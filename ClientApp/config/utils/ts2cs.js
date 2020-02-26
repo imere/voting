@@ -6,7 +6,7 @@ const traverse = require("@babel/traverse").default;
 const generate = require("@babel/generator").default;
 const { upperFirst } = require("lodash");
 
-const inFile = join(__dirname, "../..", "web/src/data-types.d.ts");
+const inFile = join(__dirname, "../..", "web/src/components/Questionnaire/questionnaire.d.ts");
 const filename = "Questionnaire";
 const suffix = ".cs";
 const outFile = join(__dirname, "../../..", "/ServerApp/Models", `${filename}${suffix}`);
@@ -52,20 +52,11 @@ traverse(ast, {
         let superClass = null;
         const body = [];
         traverse(path.node, {
-          TSTypeAliasDeclaration(path) {
+          TSTypeAliasDeclaration() {
             shouldSkip = true;
-            if (path.node.id.name.includes("Response")) {
-              path.remove();
-              return;
-            }
           },
           TSInterfaceDeclaration(path) {
             interfaceId = path.node.id;
-            if (interfaceId.name.includes("Response")) {
-              shouldSkip = true;
-              path.remove();
-              return;
-            }
             typeParameters = path.node.typeParameters;
             typeParameters && (
               typeParameters.params.forEach((param) => {

@@ -1,14 +1,13 @@
 import { useState } from "react";
 
 import { sget, sremove, sset } from "@/shared/storage";
-import { None } from "@/types";
 
 const keySet = new Set();
 
 function useSessionState(key: string, value: any) {
   let initial;
 
-  function checkConsistent(oldValue: string | None, newValue: string | None) {
+  function checkConsistent(oldValue: any, newValue: any) {
     if (null !== oldValue && typeof oldValue !== typeof newValue) {
       if (keySet.has(key)) {
         console.error(`Inconsistent session: ${key} (from ${typeof value} to ${typeof value})`);

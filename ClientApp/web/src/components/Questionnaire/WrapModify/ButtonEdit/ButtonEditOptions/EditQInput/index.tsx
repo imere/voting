@@ -3,7 +3,7 @@ import { Form } from "antd";
 
 import Layout from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/Layout";
 import LengthRange from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/LengthRange";
-import { TypeInput } from "@/data-types";
+import { TypeInput } from "@/components/Questionnaire/questionnaire";
 
 import DefaultValue from "./DefaultValue";
 

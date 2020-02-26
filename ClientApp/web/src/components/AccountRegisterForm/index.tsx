@@ -12,6 +12,7 @@ import { ApplicationState } from "@/reducers/states";
 import { Disp, ValidateStatus } from "@/types";
 import { ResponseState } from "@/data-types";
 import { passwordRules, usernameRules } from "@/shared/validate";
+import { toastMessageByStatus } from "@/shared/toast-message";
 
 import styles from "./AccountRegister.module.scss";
 
@@ -67,6 +68,9 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
     setRegistering(false);
     if (err) {
       return message.error("请检查网络", 3);
+    }
+    if (res) {
+      toastMessageByStatus(res.status, [400]);
     }
     if (res && 400 === res.status) {
       res.json().then((res: ResponseState) => {

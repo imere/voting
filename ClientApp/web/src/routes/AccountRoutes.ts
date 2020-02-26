@@ -15,7 +15,7 @@ const AccountLoginFormLazy = Loadable(
   defaultLoadableOption
 );
 
-export default [
+const r: RouteArrayType = [
   {
     exact: true,
     path: Routes.USER_REGISTER,
@@ -30,4 +30,6 @@ export default [
     redirect: true,
     to: Routes.POLL_LIST,
   },
-] as RouteArrayType;
+];
+
+export default r;

@@ -3,7 +3,7 @@ import { User, UserManager, UserManagerSettings, WebStorageStateStore } from "oi
 import { AuthActions, Routes } from "@/constants";
 import { AppThunkAction, None } from "@/types";
 import { Http } from "@/shared";
-import { API_ORIGIN, API_V1_USER, HOST } from "@/shared/conf";
+import { API_ORIGIN, API_V1_USER, API_V1_USER_LOGIN, API_V1_USER_LOGOUT, HOST } from "@/shared/conf";
 
 import {
   AuthAction,
@@ -56,7 +56,7 @@ class IdentityService {
   register = (user: UserAuthentication, cb?: RegisterCallback): AppThunkAction<AuthAction> => async (dispatch) => {
     dispatch(this.requestRegister());
     try {
-      await Http(`${API_V1_USER}`, {
+      await Http(API_V1_USER, {
         "method": "PUT",
         "body": new Blob([JSON.stringify(user)], {
           type: "application/json",
@@ -96,7 +96,7 @@ class IdentityService {
   login = (user: UserAuthentication, cb?: LoginCallback): AppThunkAction<AuthAction> => async (dispatch) => {
     dispatch(this.requestLogin());
     try {
-      await Http(`${API_V1_USER}/login`, {
+      await Http(API_V1_USER_LOGIN, {
         "method": "POST",
         "headers": {
           "Content-Type": "application/json",
@@ -147,6 +147,9 @@ class IdentityService {
   logout = (cb?: LogoutCallback): AppThunkAction<AuthAction> => (dispatch) => {
     dispatch(this.requestLogout());
     try {
+      Http(API_V1_USER_LOGOUT, {
+        method: "POST",
+      });
       this._manager.signoutRedirect().then(() => {
         cb && cb(null);
       });

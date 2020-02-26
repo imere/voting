@@ -3,7 +3,7 @@ import { Radio } from "antd";
 import { RadioChangeEvent } from "antd/es/radio";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
-import { QuestionnaireContentType } from "@/data-types";
+import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
 import { ButtonEditContentMap, isRequired, QItemDataFactory, QItemDefaultData } from "@/components/Questionnaire/utils";
 
 import { options } from "./options";
@@ -15,17 +15,18 @@ const ButtonEditOptions = ({ typename: defaultTypename, label, name, rules, ...r
 
   function handleClick({ target: { value } }: RadioChangeEvent) {
     const typename = value as QuestionnaireContentType["typename"];
-    const factory = QItemDataFactory[typename];
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { label: _, name: __, rules: ___, ...rest } = QItemDefaultData[typename]();
-    updateItem(factory(
-      {
-        ...rest,
-        label,
-        name,
-        rules: isRequired(rules) ? ___ : [],
-      } as any
-    ));
+    updateItem(
+      QItemDataFactory[typename](
+        {
+          ...rest,
+          label,
+          name,
+          rules: isRequired(rules) ? ___ : [],
+        } as any
+      )
+    );
   }
 
   return (

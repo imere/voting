@@ -1,6 +1,6 @@
 import { lset } from "@/shared/storage";
-import { Questionnaire } from "@/data-types";
 import { QItemDefaultData } from "@/components/Questionnaire/utils";
+import { QuestionnaireExtended } from "@/data-types";
 
 export function setUser() {
   lset(
@@ -24,10 +24,11 @@ export function setUser() {
   );
 }
 
-function getQuestionnaire(s: any): Questionnaire {
+function getQuestionnaire(s: any): QuestionnaireExtended {
   const title = s + Math.random().toFixed(15);
   const description = title;
   return {
+    id: Math.floor(Math.random() * (10 ** 6)),
     title,
     description,
     content: [
@@ -39,11 +40,12 @@ function getQuestionnaire(s: any): Questionnaire {
       QItemDefaultData.checkboxgroup(),
       QItemDefaultData.checkboxgroup(),
       QItemDefaultData.input(),
-    ]
+    ],
+    createdAt: new Date().toUTCString(),
   };
 }
 
-function getQuestionnaires(): Questionnaire[] {
+function getQuestionnaires(): QuestionnaireExtended[] {
   return [...Array(10).keys()].map((v) => getQuestionnaire(v));
 }
 

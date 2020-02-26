@@ -7,11 +7,11 @@ import { Store } from "rc-field-form/es/interface";
 
 import { Routes } from "@/constants";
 import { AuthAction, LoginCallback, UserAuthentication } from "@/actions/action-auth";
-import { iu } from "@/actions";
 import { ApplicationState } from "@/reducers/states";
 import { Disp, ValidateStatus } from "@/types";
 import { ResponseState } from "@/data-types";
 import { passwordRules, usernameRules } from "@/shared/validate";
+import { toastMessageByStatus } from "@/shared/toast-message";
 
 import styles from "./AccountLogin.module.scss";
 
@@ -66,6 +66,9 @@ const AccountLogin = ({ login, pending }: AccountLoginProps) => {
     setLogining(false);
     if (err) {
       return message.error("请检查网络", 3);
+    }
+    if (res && res.status !== 400) {
+      toastMessageByStatus(res.status, [400]);
     }
     if (res && 400 === res.status) {
       res.json().then((res: ResponseState) => {
@@ -155,7 +158,7 @@ const mapStateToProps = (state: ApplicationState): AccountLoginOwnStateProps => 
 });
 
 const mapDispatchToProps = (dispatch: AccountLoginDispatch): AccountLoginOwnDispatchProps => ({
-  login: (user, cb) => dispatch(iu.login(user, cb)),
+  login: (user, cb) => import("@/actions").then(({ iu }) => dispatch(iu.login(user, cb))),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountLogin);

@@ -5,7 +5,7 @@ import "@testing-library/jest-dom/extend-expect";
 import FooterComponent from "./index";
 
 test("renders copyright", () => {
-  const { getByText } = render(React.createElement(FooterComponent));
+  const { getByText } = render(<FooterComponent />);
   const ele = getByText("Voting System ©2020 Created by ime");
   expect(ele).toBeInTheDocument();
 });

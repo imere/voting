@@ -2,18 +2,17 @@ import React, { useContext } from "react";
 import { Input, InputNumber } from "antd";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
-import { QuestionnaireContentType } from "@/data-types";
+import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
 import { getLength, setLengthMessage } from "@/components/Questionnaire/utils";
 
-interface LengthRangeReceivedProps {
+type LengthRangeReceivedProps = {
   id?: string
   onChange?: (ev: React.ChangeEvent) => void
   lengthName: string
-}
-
-type LengthRangeProps =
-  LengthRangeReceivedProps &
+} &
   QuestionnaireContentType
+
+type LengthRangeProps = LengthRangeReceivedProps
 
 const LengthRange = ({ lengthName, typename, name }: LengthRangeProps) => {
   const { getItem, updateItem } = useContext(QuestionnaireContext);

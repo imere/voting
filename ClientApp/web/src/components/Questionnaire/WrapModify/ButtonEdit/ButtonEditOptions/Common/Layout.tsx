@@ -3,16 +3,15 @@ import { Checkbox, Form, Input } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
-import { QuestionnaireContentType, TypeCheckBoxGroup } from "@/data-types";
+import { QuestionnaireContentType, TypeCheckBoxGroup } from "@/components/Questionnaire/questionnaire";
 import { getLength, isRequired, toggleRequired } from "@/components/Questionnaire/utils";
 
-interface LayoutReceivedProps {
+type LayoutReceivedProps = {
   children?: React.ReactNode
-}
-
-type LayoutProps =
-  LayoutReceivedProps &
+} &
   QuestionnaireContentType & { options?: TypeCheckBoxGroup["options"] }
+
+type LayoutProps = LayoutReceivedProps
 
 const Layout: React.FC<LayoutProps> = ({ children, label, name, value, options, rules }: LayoutProps) => {
   const { getItem, updateItem, forceRender } = useContext(QuestionnaireContext);

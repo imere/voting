@@ -7,9 +7,9 @@ exports.createVueLoader = (env) => {
     loader: "vue-loader",
     options: {
       loaders: [
-        {
-          ts: "babel-loader!ts-loader",
-        },
+        // {
+        //   ts: "babel-loader!ts-loader",
+        // },
         {
           loader: "vue-style-loader",
           options: {

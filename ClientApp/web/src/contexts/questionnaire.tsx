@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-import { QuestionnaireContentType } from "@/data-types";
+import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
 
 export interface QuestionnaireContextType {
   items: Array<QuestionnaireContentType>

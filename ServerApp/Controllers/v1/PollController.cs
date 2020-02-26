@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using IdentityServer4.Extensions;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace vote.Controllers.v1
 {
@@ -35,10 +37,10 @@ namespace vote.Controllers.v1
             return Ok(new ResponseState(polls));
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetById(long id)
+        [HttpGet("p/{pollId}")]
+        public async Task<ActionResult> GetByPollId(long pollId)
         {
-            Poll result = await _service.GetPollById(id);
+            Poll result = await _service.GetPollById(pollId);
 
             if (null == result) return BadRequest(new ResponseState(null));
 
@@ -52,6 +54,38 @@ namespace vote.Controllers.v1
             };
 
             return Ok(new ResponseState(poll));
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPut("answer/{pollId}")]
+        public async Task<ActionResult> AnswerPoll([FromRoute] long pollId, [FromBody] object answer)
+        {
+            _logger.LogError($"asdasd: {pollId} {JsonConvert.SerializeObject(answer)}");
+            var result = await _service.AddAnswerByUserAndPoll(
+                long.Parse(User.GetSubjectId()),
+                pollId,
+                answer);
+
+            if (null == result) return BadRequest(new ResponseState(null));
+
+            return Created("/", new ResponseState(null));
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("u")]
+        public async Task<ActionResult> GetByCurrentUser()
+        {
+            List<Poll> result = await _service.GetPollsByUserId(long.Parse(User.GetSubjectId()));
+
+            var polls = result.Select(poll => new
+            {
+                poll.Id,
+                poll.Title,
+                poll.Description,
+                poll.CreatedAt
+            });
+
+            return Ok(new ResponseState(polls));
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -81,10 +115,10 @@ namespace vote.Controllers.v1
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteById(long id)
+        [HttpDelete("{pollId}")]
+        public async Task<ActionResult> DeleteById(long pollId)
         {
-            await _service.DeletePollByIdAndUser(long.Parse(User.GetSubjectId()), new Poll { Id = id });
+            await _service.DeletePollByIdAndUser(long.Parse(User.GetSubjectId()), new Poll { Id = pollId });
             return NoContent();
         }
     }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "antd";
 
-import { QuestionnaireContentType } from "@/data-types";
+import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
 
 import ButtonDelete from "./ButtonDelete";
 import ButtonEdit from "./ButtonEdit";

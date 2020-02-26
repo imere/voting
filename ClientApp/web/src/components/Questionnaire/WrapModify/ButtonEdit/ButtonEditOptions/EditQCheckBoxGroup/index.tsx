@@ -3,7 +3,7 @@ import { Form } from "antd";
 
 import Layout from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/Layout";
 import LengthRange from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/LengthRange";
-import { TypeCheckBoxGroup } from "@/data-types";
+import { TypeCheckBoxGroup } from "@/components/Questionnaire/questionnaire";
 
 import DefaultValue from "./DefaultValue";
 import Options from "./Options";

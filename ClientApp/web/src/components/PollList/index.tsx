@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useFetch } from "use-http";
-import { Empty } from "antd";
+import "./PollList.scss";
 
-import Fallback from "@/components/Fallback";
-import { API_V1_POLL } from "@/shared/conf";
-import { Questionnaire, ResponseState } from "@/data-types";
-import { None } from "@/types";
+import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
+import { Table } from "antd";
+import { ColumnsType } from "antd/es/table";
+import { GetComponentProps } from "rc-table/lib/interface";
+import { useHistory } from "react-router";
+
+import { API_V1_POLLS } from "@/shared/conf";
+import { QuestionnaireExtended, ResponseState } from "@/data-types";
+import { Http } from "@/shared";
+import { Routes } from "@/constants";
+import { toastMessageByStatus } from "@/shared/toast-message";
 
 const PollList: React.FunctionComponent = () => {
+  const history = useHistory();
   const [
     loading,
     setLoading
@@ -16,39 +23,72 @@ const PollList: React.FunctionComponent = () => {
   const [
     polls,
     setPolls
-  ] = useState<Array<Questionnaire>>([]);
-
-  const [
-    request,
-    response
-  ] = useFetch(API_V1_POLL);
+  ] = useState<Array<QuestionnaireExtended>>([]);
 
   async function getPolls() {
     setLoading(true);
-    await request.get();
-    setLoading(false);
+    const response = await Http(API_V1_POLLS);
     if (response.ok) {
-      const res: ResponseState<Array<Questionnaire>> = await response.json();
+      const res: ResponseState<Array<QuestionnaireExtended>> = await response.json();
       setPolls(res.data);
+    } else {
+      toastMessageByStatus(response.status);
     }
+    setLoading(false);
   }
 
   useEffect(() => {
     getPolls();
   }, []);
 
-  function render(loading: boolean, polls: any[] | None) {
-    if (loading) {
-      return <Fallback />;
-    }
-    if (polls && polls.length) {
-      return <>{JSON.stringify(polls)}</>;
-    } else {
-      return <Empty style={{ paddingTop: "100px" }} />;
-    }
-  }
+  const columns: ColumnsType<QuestionnaireExtended> = [
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      ellipsis: true,
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      ellipsis: true,
+    },
+    {
+      title: "Time",
+      dataIndex: "createdAt",
+      key: "createdAt",
+    },
+  ];
 
-  return render(loading, polls);
+  const onRow: GetComponentProps<QuestionnaireExtended> = (record) => ({
+    onClick: () => {
+      history.push({
+        pathname: `${Routes.POLL_ANSWER.split(":")[0]}${record.id}`
+      });
+    },
+  });
+
+  return (
+    <Table<QuestionnaireExtended>
+      className="poll-list"
+      loading={loading}
+      showHeader={false}
+      columns={columns}
+      onRow={onRow}
+      pagination={polls?.length ? { position: "bottom" } : false}
+      dataSource={
+        polls?.map((poll, i) => {
+          Reflect.set(poll, "key", i);
+          poll.createdAt = dayjs(poll.createdAt).
+            add(8, "h").
+            toDate().
+            toLocaleString();
+          return poll;
+        })
+      }
+    />
+  );
 };
 
 export default PollList;

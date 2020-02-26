@@ -48,7 +48,7 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "accessor-pairs": "warn",
     "array-callback-return": "warn",
-    "arrow-body-style": "error",
+    "arrow-body-style": "warn",
     "array-bracket-newline": "warn",
     "array-element-newline": "warn",
     "arrow-parens": "error",

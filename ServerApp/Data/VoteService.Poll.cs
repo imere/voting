@@ -51,39 +51,28 @@ namespace vote.Data
             {
                 return null;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         public async Task<List<Poll>> GetAllPolls(long startId = 0, int? count = null)
         {
-            try
-            {
-                var chain = _context.Poll
-                    .Include(p => p.PollProp)
-                    .Include(p => p.PollAnswers)
-                    .Where(p => p.Id >= startId);
+            var chain = _context.Poll
+                .Include(p => p.PollProp)
+                .Include(p => p.PollAnswers)
+                .Where(p => p.Id >= startId);
 
-                if (null != count)
-                {
-                    chain = chain.Take((int)count);
-                }
-
-                return await chain
-                    .AsNoTracking()
-                    .ToListAsync();
-            }
-            catch (Exception ex)
+            if (null != count)
             {
-                throw ex;
+                chain = chain.Take((int)count);
             }
+
+            return await chain
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public async Task<List<Poll>> GetAllPublicPolls()
+        public async Task<List<Poll>> GetAllPublicPolls(long startId = 0, int? count = null)
         {
-            var polls = await GetAllPolls();
+            var polls = await GetAllPolls(startId, count);
             List<Poll> res = new List<Poll>();
 
             foreach (var poll in polls)
@@ -97,50 +86,29 @@ namespace vote.Data
 
         public async Task<Poll> GetPollById(long pollId)
         {
-            try
-            {
-                return await _context.Poll
-                    .Include(p => p.PollProp)
-                    .Include(p => p.PollAnswers)
-                    .Where(p => p.Id == pollId)
-                    .AsNoTracking()
-                    .SingleOrDefaultAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return await _context.Poll
+                .Include(p => p.PollProp)
+                .Include(p => p.PollAnswers)
+                .Where(p => p.Id == pollId)
+                .AsNoTracking()
+                .SingleOrDefaultAsync();
         }
 
         public async Task<Poll> GetPublicPollById(long pollId)
         {
-            try
-            {
-                var poll = await GetPollById(pollId);
+            var poll = await GetPollById(pollId);
 
-                return ReturnPollIfPublic(poll);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return ReturnPollIfPublic(poll);
         }
 
         public async Task<List<Poll>> GetPollsByUserId(long userId)
         {
-            try
-            {
-                return await _context.Poll
-                    .Include(p => p.PollProp)
-                    .Include(p => p.PollAnswers)
-                    .Where(p => p.User.Id == userId)
-                    .AsNoTracking()
-                    .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return await _context.Poll
+                .Include(p => p.PollProp)
+                .Include(p => p.PollAnswers)
+                .Where(p => p.User.Id == userId)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         private async Task<Poll> UpdatePoll(QuestionnaireUpdate questionnaire)
@@ -180,57 +148,34 @@ namespace vote.Data
             {
                 return null;
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         public async Task<Poll> UpdatePollByUserId(long userId, QuestionnaireUpdate questionnaire)
         {
-            try
-            {
-                var result = await _context.Poll.Where(p => p.User.Id == userId).Where(p => p.Id == questionnaire.Id).SingleOrDefaultAsync();
+            var result = await _context.Poll.Where(p => p.User.Id == userId).Where(p => p.Id == questionnaire.Id).SingleOrDefaultAsync();
 
-                if (null == result) return null;
+            if (null == result) return null;
 
-                return await UpdatePoll(questionnaire);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return await UpdatePoll(questionnaire);
         }
 
         private async Task<Poll> DeletePollById(Poll poll)
         {
-            try
-            {
-                if (null != poll?.PollPropId) RemovePollPropById((long)poll.PollPropId);
+            if (null != poll?.PollPropId) RemovePollPropById((long)poll.PollPropId);
 
-                var result = _context.Poll.Remove(poll);
+            var result = _context.Poll.Remove(poll);
 
-                await _context.SaveChangesAsync();
-                return result.Entity;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            await _context.SaveChangesAsync();
+            return result.Entity;
         }
 
         public async Task<Poll> DeletePollByIdAndUser(long userId, Poll poll)
         {
-            try
-            {
-                var result = await _context.Poll.Where(p => p.User.Id == userId).Where(p => p.Id == poll.Id).SingleOrDefaultAsync();
+            var result = await _context.Poll.Where(p => p.User.Id == userId).Where(p => p.Id == poll.Id).SingleOrDefaultAsync();
 
-                return await DeletePollById(result);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            if (null == result) return null;
+
+            return await DeletePollById(result);
         }
     }
 }

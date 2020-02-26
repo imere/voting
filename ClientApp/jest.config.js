@@ -77,11 +77,11 @@ module.exports = {
 
   // An array of file extensions your modules use
   "moduleFileExtensions": [
+    "tsx",
+    "ts",
+    "jsx",
     "js",
     "json",
-    "jsx",
-    "ts",
-    "tsx",
     "node"
   ],
 
@@ -170,9 +170,10 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   "transform": {
-    "^.+\\.(j|t)sx?$": "ts-jest",
+    "^.+\\.tsx?$": "ts-jest",
     "^.+\\.(svg)$": "./config/utils/jestTransform.js",
-    "^.+\\.(s?(c|a)ss)$": "./config/utils/jestTransform.js",
+    "^.+\\.(s?css)$": "./config/utils/jestTransform.js",
+    "^.+\\.sass$": "./config/utils/jestTransform.js",
     "^.+\\.less$": "./config/utils/jestTransform.js",
   },
 

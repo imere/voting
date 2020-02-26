@@ -3,7 +3,7 @@ import { Select } from "antd";
 import { SelectValue } from "antd/es/select";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
-import { TypeCheckBoxGroup } from "@/data-types";
+import { TypeCheckBoxGroup } from "@/components/Questionnaire/questionnaire";
 
 const { Option } = Select;
 

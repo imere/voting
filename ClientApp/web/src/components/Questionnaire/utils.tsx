@@ -2,14 +2,13 @@ import React from "react";
 import { MD5 } from "object-hash";
 import { RuleObject } from "rc-field-form/es/interface";
 
-import QCheckBoxGroup from "@/components/Questionnaire/QCheckBoxGroup";
-import QInput from "@/components/Questionnaire/QInput";
+import QCheckBoxGroup from "@/components/Questionnaire/Components/QCheckBoxGroup";
+import QInput from "@/components/Questionnaire/Components/QInput";
 import WrapModify from "@/components/Questionnaire/WrapModify";
+import EditQCheckBoxGroup from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQCheckBoxGroup";
+import EditQInput from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQInput";
 import WrapNormal from "@/components/Questionnaire/WrapNormal";
-import { QuestionnaireContentType, TypeCheckBoxGroup, TypeInput } from "@/data-types";
-
-import EditQCheckBoxGroup from "./WrapModify/ButtonEdit/ButtonEditOptions/EditQCheckBoxGroup";
-import EditQInput from "./WrapModify/ButtonEdit/ButtonEditOptions/EditQInput";
+import { QuestionnaireContentType, TypeCheckBoxGroup, TypeInput } from "@/components/Questionnaire/questionnaire";
 
 export function hashItemId(id: string, salt = "") {
   return MD5(id + salt).slice(0, 7);

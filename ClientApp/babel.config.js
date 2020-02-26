@@ -9,6 +9,7 @@ if (compilerOptions) {
 
 module.exports = {
   "presets": [
+    "typescript-vue",
     [
       "@babel/preset-env",
       {
@@ -36,7 +37,7 @@ module.exports = {
         "helpers": true,
         "regenerator": true,
         "useESModules": false,
-        "version": "^7.8.3"
+        "version": "^7.8.4"
       }
     ],
     "@babel/plugin-transform-arrow-functions",

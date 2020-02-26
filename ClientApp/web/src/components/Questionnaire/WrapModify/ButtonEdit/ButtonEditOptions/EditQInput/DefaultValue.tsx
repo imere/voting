@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Input } from "antd";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
-import { TypeInput } from "@/data-types";
+import { TypeInput } from "@/components/Questionnaire/questionnaire";
 
 interface DefaultValueReceivedProps extends Omit<TypeInput, "typename"> {
   id?: string

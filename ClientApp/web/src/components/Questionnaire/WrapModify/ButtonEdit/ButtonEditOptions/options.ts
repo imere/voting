@@ -1,4 +1,4 @@
-import { QuestionnaireContentType } from "@/data-types";
+import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
 
 type RadioType = {
   label: string
