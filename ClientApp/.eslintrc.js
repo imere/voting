@@ -38,7 +38,7 @@ module.exports = {
     "ecmaFeatures": {
       "jsx": true
     },
-    "extraFileExtensions": ["vue"]
+    "extraFileExtensions": [".vue"]
   },
   "rules": {
     "@typescript-eslint/no-empty-interface": "off",

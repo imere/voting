@@ -18,12 +18,12 @@ export function initQContext() {
 
   function addItem(item: QuestionnaireContentType) {
     ctx.items.push(item);
-    forceRender();
+    ctx.forceRender();
   }
 
   function removeItem(name: string) {
     ctx.items = ctx.items.filter((item) => item.name !== name);
-    forceRender();
+    ctx.forceRender();
   }
 
   function updateItem({ name, ...rest }: QuestionnaireContentType) {
@@ -35,7 +35,7 @@ export function initQContext() {
       Object.assign(item, { name, ...rest });
       break;
     }
-    forceRender();
+    ctx.forceRender();
   }
 
   ctx.getItem = getItem;

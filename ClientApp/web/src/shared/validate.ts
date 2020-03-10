@@ -1,7 +1,7 @@
 import { RuleObject } from "rc-field-form/es/interface";
 
 import { None } from "@/types";
-import { setLengthMessage, toggleRequired } from "@/components/Questionnaire/utils";
+import { setLengthMessage, toggleRequired } from "@/components/Questionnaire/util";
 
 export function lengthGt(s: string | None, len: number): boolean {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

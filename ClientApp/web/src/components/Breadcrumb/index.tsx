@@ -3,7 +3,7 @@ import { Breadcrumb } from "antd";
 import { Link } from "react-router-dom";
 
 import { Routes } from "@/constants";
-import { RouteNameMap } from "@/routes/utils";
+import { RouteNameMap } from "@/routes/util";
 
 import styles from "./Breadcrumb.module.scss";
 

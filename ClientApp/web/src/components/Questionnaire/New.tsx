@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Redirect, useLocation } from "react-router-dom";
+import { LocationDescriptor } from "history";
 
 import { QuestionnaireExtended, ResponseState } from "@/data-types";
 import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
@@ -7,8 +8,9 @@ import { Routes } from "@/constants";
 import { useHttp } from "@/hooks/useHttp";
 import { API_V1_POLLS } from "@/shared/conf";
 import { toastMessageByStatus } from "@/shared/toast-message";
-import { initQContext } from "@/hooks/utils";
+import { initQContext } from "@/hooks/util";
 
+import RedirectTo from "../RedirectTo";
 import Common from "./Common";
 
 interface NewReceivedProps {
@@ -50,26 +52,34 @@ const New: React.FC<NewProps> = () => {
     })
   });
 
+  const [
+    redirectUrl,
+    setRedirectUrl
+  ] = useState<LocationDescriptor | undefined>(undefined);
+
   async function handleConfirmClick() {
     await request.put("/");
     if (response.ok) {
-      location.href = Routes.ACCOUNT_CENTER;
+      setRedirectUrl(Routes.ACCOUNT_CENTER);
     } else {
       toastMessageByStatus(response.status);
     }
   }
 
   return (
-    <Common
-      info={info as any}
-      dataSource={{
-        title: info.title,
-        description: info.description,
-        isPublic: !!info.isPublic,
-        content: ctx.items,
-      }}
-      onConfirmClick={handleConfirmClick}
-    />
+    <RedirectTo redirectUrl={redirectUrl}>
+      <Common
+        isEditing={true}
+        info={info as any}
+        dataSource={{
+          title: info.title,
+          description: info.description,
+          isPublic: !!info.isPublic,
+          content: ctx.items,
+        }}
+        onConfirmClick={handleConfirmClick}
+      />
+    </RedirectTo>
   );
 };
 

@@ -1,4 +1,4 @@
-import { hashItemId } from "./utils";
+import { hashItemId } from "./util";
 
 let source: number[];
 let salt: string;

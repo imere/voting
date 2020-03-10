@@ -15,9 +15,9 @@ namespace vote.Data
         {
             if (null == poll.PollProp) return poll;
 
-            if (false == poll.PollProp.IsPublic) return null;
+            if (true == poll.PollProp.IsPublic) return poll;
 
-            return poll;
+            return null;
         }
 
         public async Task<Poll> AddPollByUserId(long userId, Questionnaire questionnaire)
@@ -111,18 +111,13 @@ namespace vote.Data
                 .ToListAsync();
         }
 
-        private async Task<Poll> UpdatePoll(QuestionnaireUpdate questionnaire)
+        private async Task<Poll> UpdatePoll(Poll poll, QuestionnaireUpdate questionnaire)
         {
             try
             {
-                var result = _context.Poll.Update(new Poll
-                {
-                    Id = questionnaire.Id,
-                    Content = JsonConvert.SerializeObject(questionnaire.Content)
-                });
-                result.State = EntityState.Modified;
+                var result = _context.Poll.Update(poll);
 
-                if (null == result.Entity.PollPropId)
+                if (null == poll.PollPropId)
                 {
                     if ((bool)questionnaire.IsPublic)
                     {
@@ -134,13 +129,13 @@ namespace vote.Data
                 }
                 else
                 {
-                    UpdatePollProp(new PollProp
+                    if (null != questionnaire.IsPublic)
                     {
-                        Id = (long)result.Entity.PollPropId,
-                        IsPublic = questionnaire.IsPublic
-                    });
+                        poll.PollProp.IsPublic = questionnaire.IsPublic;
+                    }
                 }
 
+                result.State = EntityState.Modified;
                 await _context.SaveChangesAsync();
                 return result.Entity;
             }
@@ -152,11 +147,25 @@ namespace vote.Data
 
         public async Task<Poll> UpdatePollByUserId(long userId, QuestionnaireUpdate questionnaire)
         {
-            var result = await _context.Poll.Where(p => p.User.Id == userId).Where(p => p.Id == questionnaire.Id).SingleOrDefaultAsync();
+            var result = await _context.Poll
+                .Include(p => p.PollProp)
+                .Where(p => p.User.Id == userId)
+                .Where(p => p.Id == questionnaire.Id)
+                .AsNoTracking()
+                .SingleOrDefaultAsync();
 
             if (null == result) return null;
 
-            return await UpdatePoll(questionnaire);
+            try
+            {
+                result.Content = JsonConvert.SerializeObject(questionnaire.Content);
+            }
+            catch (JsonSerializationException)
+            {
+                return null;
+            }
+
+            return await UpdatePoll(result, questionnaire);
         }
 
         private async Task<Poll> DeletePollById(Poll poll)

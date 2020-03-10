@@ -1,5 +1,5 @@
 import { lset } from "@/shared/storage";
-import { QItemDefaultData } from "@/components/Questionnaire/utils";
+import { QItemDefaultData } from "@/components/Questionnaire/util";
 import { QuestionnaireExtended } from "@/data-types";
 
 export function setUser() {

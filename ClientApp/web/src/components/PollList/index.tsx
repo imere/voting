@@ -30,6 +30,12 @@ const PollList: React.FunctionComponent = () => {
     const response = await Http(API_V1_POLLS);
     if (response.ok) {
       const res: ResponseState<Array<QuestionnaireExtended>> = await response.json();
+      for (const poll of res.data) {
+        poll.createdAt = dayjs(poll.createdAt).
+          add(8, "h").
+          toDate().
+          toLocaleString();
+      }
       setPolls(res.data);
     } else {
       toastMessageByStatus(response.status);
@@ -77,16 +83,7 @@ const PollList: React.FunctionComponent = () => {
       columns={columns}
       onRow={onRow}
       pagination={polls?.length ? { position: "bottom" } : false}
-      dataSource={
-        polls?.map((poll, i) => {
-          Reflect.set(poll, "key", i);
-          poll.createdAt = dayjs(poll.createdAt).
-            add(8, "h").
-            toDate().
-            toLocaleString();
-          return poll;
-        })
-      }
+      dataSource={polls}
     />
   );
 };

@@ -12,6 +12,7 @@ using IdentityServer4.Extensions;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using vote.Extensions;
 
 namespace vote.Controllers.v1
 {
@@ -32,7 +33,8 @@ namespace vote.Controllers.v1
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-            var polls = (await _service.GetAllPolls());
+            var polls = (await _service.GetAllPublicPolls())
+                .Select(poll => PollExtensions.ToQuestionnaire(poll));
 
             return Ok(new ResponseState(polls));
         }
@@ -40,27 +42,17 @@ namespace vote.Controllers.v1
         [HttpGet("p/{pollId}")]
         public async Task<ActionResult> GetByPollId(long pollId)
         {
-            Poll result = await _service.GetPollById(pollId);
+            var result = PollExtensions.ToQuestionnaire(await _service.GetPollById(pollId));
 
             if (null == result) return BadRequest(new ResponseState(null));
 
-            var poll = new
-            {
-                result.Id,
-                result.Title,
-                result.Description,
-                result.Content,
-                result.CreatedAt
-            };
-
-            return Ok(new ResponseState(poll));
+            return Ok(new ResponseState(result));
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut("answer/{pollId}")]
         public async Task<ActionResult> AnswerPoll([FromRoute] long pollId, [FromBody] object answer)
         {
-            _logger.LogError($"asdasd: {pollId} {JsonConvert.SerializeObject(answer)}");
             var result = await _service.AddAnswerByUserAndPoll(
                 long.Parse(User.GetSubjectId()),
                 pollId,
@@ -73,7 +65,7 @@ namespace vote.Controllers.v1
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("u")]
-        public async Task<ActionResult> GetByCurrentUser()
+        public async Task<ActionResult> GetPollsByCurrentUser()
         {
             List<Poll> result = await _service.GetPollsByUserId(long.Parse(User.GetSubjectId()));
 
@@ -105,9 +97,9 @@ namespace vote.Controllers.v1
         [HttpPost]
         public async Task<ActionResult> Update([FromBody] QuestionnaireUpdate questionnaire)
         {
-            Poll result = await _service.UpdatePollByUserId(
+            var result = PollExtensions.ToQuestionnaire(await _service.UpdatePollByUserId(
                 long.Parse(User.GetSubjectId()),
-                questionnaire);
+                questionnaire));
 
             if (null == result) return BadRequest(new ResponseState(null));
 

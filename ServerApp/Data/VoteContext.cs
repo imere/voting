@@ -53,9 +53,6 @@ namespace vote.Data
             builder.Entity<Poll>()
                 .Property(props => props.CreatedAt)
                 .IsRequired();
-            builder.Entity<Poll>()
-                .Property(props => props.UserId)
-                .IsRequired();
 
 
             builder.Entity<PollProp>()
@@ -71,9 +68,6 @@ namespace vote.Data
                 .IsRequired();
             builder.Entity<PollAnswer>()
                 .Property(props => props.PollId)
-                .IsRequired();
-            builder.Entity<PollAnswer>()
-                .Property(props => props.UserId)
                 .IsRequired();
             builder.Entity<PollAnswer>()
                 .HasOne(props => props.User)

@@ -12,7 +12,7 @@ import { useHttp } from "@/hooks/useHttp";
 import { API_V1_POLLS } from "@/shared/conf";
 import { toastMessageByStatus } from "@/shared/toast-message";
 
-import { getItemsValues, QItemDataFactory, QItemDefaultData, renderQItems } from "./utils";
+import { getItemsValues, QItemDataFactory, QItemDefaultData, renderQItems } from "./util";
 
 interface QuestionnaireReceivedProps {
   dataSource?: Array<QuestionnaireExtended>

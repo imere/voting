@@ -8,6 +8,8 @@ import { Http } from "@/shared";
 import { API_V1_ANSWER, API_V1_POLL_BY_ID } from "@/shared/conf";
 import { toastMessageByStatus } from "@/shared/toast-message";
 
+import { unifyDataSource } from "./util";
+
 const Answer: React.FC = () => {
   const { pollId } = useParams();
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -44,7 +46,7 @@ const Answer: React.FC = () => {
     const response = await Http(`${API_V1_POLL_BY_ID}/${id}`);
     if (response.ok) {
       const res: ResponseState<QuestionnaireExtended> = await response.json();
-      setDataSource(res.data);
+      setDataSource(unifyDataSource(res.data));
     } else {
       toastMessageByStatus(response.status);
     }
@@ -52,12 +54,12 @@ const Answer: React.FC = () => {
   }
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     getPollById(id);
   }, []);
 
   return (
     <Common
+      isEditing={false}
       loading={loading}
       info={{
         title: dataSource.title,

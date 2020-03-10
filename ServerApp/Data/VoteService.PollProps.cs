@@ -11,7 +11,10 @@ namespace vote.Data
     {
         public async Task<PollProp> AddPollPropByPollId(long pollId, PollProp prop)
         {
-            Poll result = await _context.Poll.Where(predicate => predicate.Id == pollId).SingleOrDefaultAsync();
+            Poll result = await _context.Poll
+                .Where(predicate => predicate.Id == pollId)
+                .AsNoTracking()
+                .SingleOrDefaultAsync();
 
             if (null == result) return null;
 
@@ -23,7 +26,10 @@ namespace vote.Data
 
         public async Task<PollProp> GetPollPropById(long? propId)
         {
-            return await _context.PollProp.AsNoTracking().Where(predicate => predicate.Id == propId).SingleOrDefaultAsync();
+            return await _context.PollProp
+                .Where(predicate => predicate.Id == propId)
+                .AsNoTracking()
+                .SingleOrDefaultAsync();
         }
 
         public PollProp UpdatePollProp(PollProp prop)

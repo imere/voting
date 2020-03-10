@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
-import { Button, Card, Form } from "antd";
+import { Button, Card, Form, Tag } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Store } from "rc-field-form/es/interface";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
 import { Questionnaire } from "@/components/Questionnaire/questionnaire";
 import { Routes } from "@/constants";
-import { getItemsValues, QItemDataFactory, QItemDefaultData, renderQItems } from "@/components/Questionnaire/utils";
+import { getItemsValues, QItemDataFactory, QItemDefaultData, renderQItems } from "@/components/Questionnaire/util";
 import { QuestionnaireExtended } from "@/data-types";
 
 export function dataSourceHolder(): QuestionnaireExtended {
@@ -26,11 +26,12 @@ interface Info {
 }
 
 interface QuestionnaireReceivedProps {
+  isEditing: boolean
   loading?: boolean
   info: Info
   dataSource: Questionnaire
   onConfirmClick?: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => Promise<void>
-  onCancelClick?: (ev: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => Promise<void>
+  onCancelClick?: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => Promise<void>
   onFinish?: (value: Store) => void
 }
 
@@ -38,16 +39,8 @@ type QuestionnaireProps = QuestionnaireReceivedProps
 
 let id = 0;
 
-const Common = ({ loading, info, dataSource, onFinish, onConfirmClick, onCancelClick }: QuestionnaireProps) => {
-  dataSource.content = typeof dataSource.content === "string"
-    ? JSON.parse(dataSource.content)
-    : dataSource.content;
-
+const Common = ({ isEditing, loading, info, dataSource, onFinish, onConfirmClick, onCancelClick }: QuestionnaireProps) => {
   const { Meta } = Card;
-
-  const { pathname } = location;
-  const isEditing = pathname.startsWith(Routes.POLL_EDIT) ||
-    pathname.startsWith(Routes.POLL_NEW);
 
   if (isEditing) {
     if (!info.title) {
@@ -71,10 +64,21 @@ const Common = ({ loading, info, dataSource, onFinish, onConfirmClick, onCancelC
     setProcessing
   ] = useState(false);
 
+  const [
+    canceling,
+    setCanceling
+  ] = useState(false);
+
   async function handleConfirmClick(ev: React.MouseEvent<HTMLElement, MouseEvent>) {
     setProcessing(true);
     onConfirmClick && await onConfirmClick(ev);
     setProcessing(false);
+  }
+
+  async function handleCancelClick(ev: React.MouseEvent<HTMLElement, MouseEvent>) {
+    setCanceling(true);
+    onCancelClick && await onCancelClick(ev);
+    setCanceling(false);
   }
 
   const formTitle = (
@@ -88,7 +92,13 @@ const Common = ({ loading, info, dataSource, onFinish, onConfirmClick, onCancelC
     <Card
       loading={loading}
       title={formTitle}
-      extra={isEditing ?? <Link to={Routes.ACCOUNT_CENTER}>返回</Link>}
+      extra={
+        !loading &&(
+          dataSource.isPublic
+            ? <Tag color="volcano">公开</Tag>
+            : <Tag color="green">非公开</Tag>
+        )
+      }
     >
       <Form
         form={form}
@@ -116,9 +126,10 @@ const Common = ({ loading, info, dataSource, onFinish, onConfirmClick, onCancelC
             确认
           </Button>
           <Button
+            loading={canceling}
             type="link"
           >
-            <a onClick={onCancelClick}>
+            <a onClick={handleCancelClick}>
               取消
             </a>
           </Button>

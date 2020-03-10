@@ -8,6 +8,9 @@ export function toastMessageByStatus(status: number, omit: number[] = []) {
   case 401:
     message.error("登录过期");
     break;
+  case 403:
+    message.error("无权访问");
+    break;
   case 400:
   case 500:
     message.error("加载错误");

@@ -15,6 +15,11 @@ const QuestionnaireNewLazy = Loadable(
   defaultLoadableOption
 );
 
+const QuestionnaireEditLazy = Loadable(
+  () => import("@/components/Questionnaire/Edit"),
+  defaultLoadableOption
+);
+
 const QuestionnaireAnswerLazy = Loadable(
   () => import("@/components/Questionnaire/Answer"),
   defaultLoadableOption
@@ -41,6 +46,12 @@ const r: RouteArrayType = [
     auth: true,
     path: Routes.POLL_NEW,
     component: QuestionnaireNewLazy,
+  },
+  {
+    exact: true,
+    auth: true,
+    path: Routes.POLL_EDIT,
+    component: QuestionnaireEditLazy,
   },
   {
     exact: true,

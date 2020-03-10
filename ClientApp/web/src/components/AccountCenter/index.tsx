@@ -30,8 +30,14 @@ const AccountCenter = () => {
     setLoading(true);
     const response = await Http(API_V1_POLLS_BY_USER);
     if (response.ok) {
-      const json: ResponseState<Array<QuestionnaireExtended>> = await response.json();
-      setPolls(json.data);
+      const res: ResponseState<Array<QuestionnaireExtended>> = await response.json();
+      res.data.forEach((item) => {
+        item.createdAt = dayjs(item.createdAt).
+          add(8, "h").
+          toDate().
+          toLocaleString();
+      });
+      setPolls(res.data);
     } else {
       toastMessageByStatus(response.status);
     }
@@ -49,7 +55,7 @@ const AccountCenter = () => {
         <List
           loading={loading}
           grid={{
-            gutter: 16,
+            gutter: 10,
             xs: 1,
             sm: 2,
             md: 4,
@@ -58,17 +64,11 @@ const AccountCenter = () => {
             xxl: 3,
           }}
           dataSource={polls}
-          renderItem={(item) => {
-            item.createdAt = dayjs(item.createdAt).
-              add(8, "h").
-              toDate().
-              toLocaleString();
-            return (
-              <List.Item>
-                <PollLazy setPolls={setPolls} {...item} />
-              </List.Item>
-            );
-          }}
+          renderItem={(item) => (
+            <List.Item>
+              <PollLazy setPolls={setPolls} {...item} />
+            </List.Item>
+          )}
         />
       </div>
     </div>

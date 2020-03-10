@@ -47,7 +47,7 @@ iu.getUser().then((user) => {
     getAttribute("href") as string;
   const history = createBrowserHistory({ "basename": baseUrl });
 
-  window.onerror = window.onunhandledrejection = console.error.bind(console);
+  window.onerror = window.onunhandledrejection = console.warn.bind(console);
 
   initialState.auth.user = user;
   const store = configureStore(history, initialState);

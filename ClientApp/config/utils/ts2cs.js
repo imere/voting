@@ -12,6 +12,7 @@ const suffix = ".cs";
 const outFile = join(__dirname, "../../..", "/ServerApp/Models", `${filename}${suffix}`);
 
 const TypeMap = new Proxy({
+  "Date": "DateTime",
   "string": "string",
   "string[]": "ICollection<string>",
   "boolean": "bool",
@@ -23,7 +24,7 @@ const TypeMap = new Proxy({
     const value = Reflect.get(target, p, receiver);
     if (undefined === value) {
       if (p.endsWith("[]")) {
-        return "ICollection<object>";
+        return "object";
       }
       return "object";
     }

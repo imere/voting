@@ -26,6 +26,6 @@ namespace vote.Models
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
 
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
     }
 }

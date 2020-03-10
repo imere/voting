@@ -4,7 +4,7 @@ import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
 import { QuestionnaireContentType, TypeCheckBoxGroup } from "@/components/Questionnaire/questionnaire";
-import { getLength, isRequired, toggleRequired } from "@/components/Questionnaire/utils";
+import { getLength, isRequired, toggleRequired } from "@/components/Questionnaire/util";
 
 type LayoutReceivedProps = {
   children?: React.ReactNode

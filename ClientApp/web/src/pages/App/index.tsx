@@ -5,13 +5,14 @@ import { SiderTheme } from "antd/es/layout/Sider";
 import { connect } from "react-redux";
 
 import HeaderNavComponent from "@/components/HeaderNav";
+import SessionStates from "@/hooks/SessionStates";
 import SideMenuLayout from "@/layouts/SideMenuLayout";
 import TopMenuLayout from "@/layouts/TopMenuLayout";
 import AppRoutes from "@/routes/AppRoutes";
 import { useSessionState } from "@/hooks/useSessionState";
 import { ApplicationState } from "@/reducers/states";
 import { classnames } from "@/shared/classnames";
-import { renderRoutes } from "@/routes/utils";
+import { renderRoutes } from "@/routes/util";
 
 import styles from "./App.module.scss";
 
@@ -25,9 +26,9 @@ function App({ theme }: AppProps) {
   const [
     collapsed,
     toggleCollapsed
-  ] = useSessionState("siderCollapse", true);
+  ] = useSessionState<boolean>(SessionStates.siderCollapse, true);
 
-  const [useTML] = useSessionState("topMenu", true);
+  const [useTML] = useSessionState(SessionStates.useTML, true);
 
   const content = (
     <Switch>
@@ -40,7 +41,7 @@ function App({ theme }: AppProps) {
       styles["header-sider-trigger"],
       Reflect.get(styles, `header-sider-trigger-${theme}`),
     ),
-    onClick: () => toggleCollapsed(!collapsed)
+    onClick: () => toggleCollapsed((v) => !v)
   };
   const SML = (
     <SideMenuLayout

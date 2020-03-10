@@ -4,7 +4,7 @@ import { RadioChangeEvent } from "antd/es/radio";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
 import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
-import { ButtonEditContentMap, isRequired, QItemDataFactory, QItemDefaultData } from "@/components/Questionnaire/utils";
+import { ButtonEditContentMap, isRequired, QItemDataFactory, QItemDefaultData } from "@/components/Questionnaire/util";
 
 import { options } from "./options";
 

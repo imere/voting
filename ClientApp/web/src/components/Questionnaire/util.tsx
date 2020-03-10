@@ -9,6 +9,7 @@ import EditQCheckBoxGroup from "@/components/Questionnaire/WrapModify/ButtonEdit
 import EditQInput from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQInput";
 import WrapNormal from "@/components/Questionnaire/WrapNormal";
 import { QuestionnaireContentType, TypeCheckBoxGroup, TypeInput } from "@/components/Questionnaire/questionnaire";
+import { QuestionnaireExtended } from "@/data-types";
 
 export function hashItemId(id: string, salt = "") {
   return MD5(id + salt).slice(0, 7);
@@ -43,7 +44,11 @@ export function setLengthMessage(rules: RuleObject[], name = "长度"): RuleObje
       rule.message = `${name}不能小于${rule.min}`;
       break;
     }
-    rule.message = `${name}应为${rule.min} ~ ${rule.max}`;
+    if (rule.max === rule.min) {
+      rule.message = `${name}应为${rule.min}`;
+    } else {
+      rule.message = `${name}应为${rule.min} ~ ${rule.max}`;
+    }
     break;
   }
   return rules;
@@ -77,6 +82,19 @@ export function toggleRequired(rules: RuleObject[]): RuleObject[] {
   return rules;
 }
 
+/**
+ * Use when server may response without deserializing `content`
+ */
+export function unifyDataSource(questionnaire: QuestionnaireExtended): QuestionnaireExtended {
+  questionnaire.content = typeof questionnaire.content === "string"
+    ? JSON.parse(questionnaire.content)
+    : questionnaire.content;
+  return questionnaire;
+}
+
+/**
+ * Helper to get `items` values ready for antd `Form` values
+ */
 export function getItemsValues(items: Array<QuestionnaireContentType>) {
   const ret = {};
   items.forEach(({ name, value }) => {

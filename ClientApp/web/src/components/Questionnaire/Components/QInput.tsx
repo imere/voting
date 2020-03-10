@@ -3,7 +3,7 @@ import { Input, Form } from "antd";
 
 import { TypeInput } from "@/components/Questionnaire/questionnaire";
 
-export interface QInputReceivedProps extends Omit<TypeInput, "typename"> {}
+export interface QInputReceivedProps extends TypeInput {}
 
 const QInput: React.FC<QInputReceivedProps> = ({ label, name, rules = [], extra, ...rest }: QInputReceivedProps) => (
   <Form.Item

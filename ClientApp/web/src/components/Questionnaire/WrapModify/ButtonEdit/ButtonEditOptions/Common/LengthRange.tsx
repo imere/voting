@@ -3,7 +3,7 @@ import { Input, InputNumber } from "antd";
 
 import QuestionnaireContext from "@/contexts/questionnaire";
 import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
-import { getLength, setLengthMessage } from "@/components/Questionnaire/utils";
+import { getLength, setLengthMessage } from "@/components/Questionnaire/util";
 
 type LengthRangeReceivedProps = {
   id?: string

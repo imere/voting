@@ -137,3 +137,8 @@ export interface Questionnaire {
 export interface QuestionnaireUpdate extends Questionnaire {
   id: number
 }
+
+export interface QuestionnaireResponse extends Questionnaire {
+  id: number
+  createdAt: Date
+}

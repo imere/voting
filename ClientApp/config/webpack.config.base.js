@@ -9,6 +9,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin");
 const { VueLoaderPlugin } = require("vue-loader");
 const StylelintPlugin = require("stylelint-webpack-plugin");
 // const HardSourcePlugin = require("hard-source-webpack-plugin");
@@ -224,6 +225,9 @@ const baseConfig = {
       "openAnalyzer": false,
     }),
     new VueLoaderPlugin(),
+    new AntdDayjsWebpackPlugin({
+      replaceMoment: true,
+    }),
   ],
   "node": {
     "setImmediate": false,

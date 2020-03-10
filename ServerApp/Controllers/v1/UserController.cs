@@ -71,8 +71,8 @@ namespace vote.UserController.v1
         public async Task<ActionResult> Register(ApplicationUser user)
         {
             user.Displayname = null;
-            user.CreatedAt = DateTime.UtcNow;
             user.LastLogin = null;
+            user.CreatedAt = DateTime.UtcNow;
 
             ApplicationUser result = await _service.AddUser(user);
 
