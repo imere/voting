@@ -10,7 +10,7 @@ import SideMenuLayout from "@/layouts/SideMenuLayout";
 import TopMenuLayout from "@/layouts/TopMenuLayout";
 import AppRoutes from "@/routes/AppRoutes";
 import { useSessionState } from "@/hooks/useSessionState";
-import { ApplicationState } from "@/reducers/states";
+import { ApplicationState } from "@/reducers/state";
 import { classnames } from "@/shared/classnames";
 import { renderRoutes } from "@/routes/util";
 

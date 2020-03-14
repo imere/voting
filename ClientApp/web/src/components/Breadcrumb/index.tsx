@@ -25,7 +25,7 @@ const BreadCrumbComponent = () => {
                 return (
                   <Breadcrumb.Item key={i}>
                     {
-                      Object.values(Routes).some((value) => route === value)
+                      Object.values(Routes).some((value) => route === value.split("/:")[0])
                         ? <Link to={route}>{RouteNameMap[route]}</Link>
                         : undefined
                     }

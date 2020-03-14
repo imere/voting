@@ -1,56 +1,46 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Redirect, useLocation } from "react-router-dom";
 import { LocationDescriptor } from "history";
 
-import { QuestionnaireExtended, ResponseState } from "@/data-types";
-import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
+import { QuestionnaireContext } from "@/contexts/questionnaire";
+import { Questionnaire } from "@/components/Questionnaire/questionnaire";
 import { Routes } from "@/constants";
-import { useHttp } from "@/hooks/useHttp";
 import { API_V1_POLLS } from "@/shared/conf";
 import { toastMessageByStatus } from "@/shared/toast-message";
-import { initQContext } from "@/hooks/util";
+import { Http } from "@/shared";
 
-import RedirectTo from "../RedirectTo";
-import Common from "./Common";
+import QCommon, { Info } from "./QCommon";
+import { stripRulesLengthMessage } from "./data-util";
 
-interface NewReceivedProps {
-  dataSource?: Array<QuestionnaireExtended>
-}
+const New: React.FC = () => {
+  function getInfo() {
+    const params = new URLSearchParams(useLocation().search);
 
-type NewProps = NewReceivedProps
+    const res = {
+      title: params.get("title"),
+      description: params.get("description") || undefined,
+      isPublic: params.get("public")
+    };
 
-const New: React.FC<NewProps> = () => {
-  const params = new URLSearchParams(useLocation().search);
+    try {
+      return {
+        title: res.title && decodeURIComponent(res.title).trim(),
+        description: res.description && decodeURIComponent(res.description).trim(),
+        isPublic: res.isPublic && decodeURIComponent(res.isPublic).trim(),
+      };
+    } catch {
+      return {};
+    }
+  }
 
-  let info = {
-    title: params.get("title"),
-    description: params.get("description") || undefined,
-    isPublic: params.get("public")
-  };
+  const info = getInfo();
 
-  info = {
-    title: info.title && decodeURIComponent(info.title).trim(),
-    description: info.description && decodeURIComponent(info.description).trim(),
-    isPublic: info.isPublic && decodeURIComponent(info.isPublic).trim(),
-  };
-
+  // ! non-null assertion check disabled below
   if (!info.title) {
     return <Redirect to={Routes.ACCOUNT_CENTER} />;
   }
 
-  const ctx = initQContext();
-
-  const [
-    request,
-    response
-  ] = useHttp<ResponseState<Array<QuestionnaireContentType>>>(API_V1_POLLS, {
-    body: JSON.stringify({
-      title: info.title,
-      description: info.description,
-      isPublic: !!info.isPublic,
-      content: ctx.items
-    })
-  });
+  const ctx = useContext(QuestionnaireContext);
 
   const [
     redirectUrl,
@@ -58,28 +48,44 @@ const New: React.FC<NewProps> = () => {
   ] = useState<LocationDescriptor | undefined>(undefined);
 
   async function handleConfirmClick() {
-    await request.put("/");
+    for (const item of ctx.items) {
+      stripRulesLengthMessage(item.rules);
+    }
+    const dataSource: Questionnaire = {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      title: info.title!,
+      description: info.description,
+      isPublic: !!info.isPublic,
+      content: ctx.items,
+    };
+    const response = await Http(API_V1_POLLS, {
+      method: "PUT",
+      body: new Blob([JSON.stringify(dataSource)], {
+        type: "application/json; charset=utf-8",
+      })
+    });
     if (response.ok) {
       setRedirectUrl(Routes.ACCOUNT_CENTER);
-    } else {
-      toastMessageByStatus(response.status);
     }
+    toastMessageByStatus(response.status);
+  }
+
+  async function onCancelClick() {
+    setRedirectUrl(Routes.ACCOUNT_CENTER);
   }
 
   return (
-    <RedirectTo redirectUrl={redirectUrl}>
-      <Common
-        isEditing={true}
-        info={info as any}
-        dataSource={{
-          title: info.title,
-          description: info.description,
-          isPublic: !!info.isPublic,
-          content: ctx.items,
-        }}
-        onConfirmClick={handleConfirmClick}
-      />
-    </RedirectTo>
+    <QCommon
+      redirectUrl={redirectUrl}
+      isEditing={true}
+      info={{
+        title: info.title,
+        description: info.description,
+        isPublic: info.isPublic as any as Info["isPublic"]
+      }}
+      onConfirmClick={handleConfirmClick}
+      onCancelClick={onCancelClick}
+    />
   );
 };
 

@@ -6,7 +6,7 @@ import { Http } from "@/shared";
 import { API_V1_USER } from "@/shared/conf";
 import { toastMessageByStatus } from "@/shared/toast-message";
 import { Disp } from "@/types";
-import { ApplicationState } from "@/reducers/states";
+import { ApplicationState } from "@/reducers/state";
 import { AuthAction } from "@/actions/action-auth";
 
 type UnregisterDispatch = Disp<ApplicationState, null, AuthAction>
@@ -40,9 +40,8 @@ class Unregister extends React.PureComponent<UnregisterProps, UnregisterState> {
       });
     if (response.ok) {
       this.props.logout();
-    } else {
-      toastMessageByStatus(response.status);
     }
+    toastMessageByStatus(response.status);
     this.setState({ loading: false });
   }
 

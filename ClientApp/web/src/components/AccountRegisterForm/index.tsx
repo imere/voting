@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Checkbox, Form, Input, message } from "antd";
+import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Store, ValidateErrorEntity } from "rc-field-form/es/interface";
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { Routes } from "@/constants";
 import { AuthAction, RegisterCallback, UserAuthentication } from "@/actions/action-auth";
 import { iu } from "@/actions";
-import { ApplicationState } from "@/reducers/states";
+import { ApplicationState } from "@/reducers/state";
 import { Disp, ValidateStatus } from "@/types";
 import { ResponseState } from "@/data-types";
 import { passwordRules, usernameRules } from "@/shared/validate";
@@ -64,15 +64,10 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
     setRegistering
   ] = useState(false);
 
-  const registerCallback: RegisterCallback = (err, res) => {
+  const registerCallback: RegisterCallback = (_, res) => {
     setRegistering(false);
-    if (err) {
-      return message.error("请检查网络", 3);
-    }
-    if (res) {
-      toastMessageByStatus(res.status, [400]);
-    }
-    if (res && 400 === res.status) {
+    toastMessageByStatus(res?.status, [400]);
+    if (res?.status === 400) {
       res.json().then((res: ResponseState) => {
         if (res.username) {
           setUsernameStatus("error");

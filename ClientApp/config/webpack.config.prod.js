@@ -3,6 +3,31 @@ const OptimizeCSSAssetsWebpackPlugin = require("optimize-css-assets-webpack-plug
 
 const { ScriptDist, Externals } = require("./config.js");
 
+function groups() {
+  const tests = [
+    "(.*hot.*)",
+    "oidc-client",
+    "object-hash",
+    ".*babel.*",
+    ".*(axios|fetch).*",
+    "react",
+    "vue",
+    ".*antd.*",
+  ];
+  const ret = {};
+  let i = 0;
+  for (const str of tests) {
+    const name = `c${i}`;
+    ret[name] = {
+      test: RegExp(`[\\\\/]node_modules[\\\\/]${str}`),
+      name,
+      reuseExistingChunk: true,
+    };
+    i++;
+  }
+  return ret;
+}
+
 module.exports = {
   "output": {
     "filename": ScriptDist("[name].[hash:5].js"),
@@ -14,52 +39,22 @@ module.exports = {
     "moduleIds": "hashed",
     "splitChunks": {
       "chunks": "all",
+      "maxInitialRequests": Infinity,
+      "minSize": 0,
       "cacheGroups": {
-        "hot": {
-          "test": /[\\/]node_modules[\\/](.*hot.*)[\\/]/,
-          "name": "c0",
+        "vendors": {
+          "test": /[\\/]node_modules[\\/]/,
+          "name": "vendor",
           "reuseExistingChunk": true,
         },
-        "c01": {
-          "test": /[\\/]node_modules[\\/](.*oidc.*)[\\/]/,
-          "name": "c01",
-          "reuseExistingChunk": true,
+        "commons": {
+          "chunks": "initial",
+          "name": "common",
+          "minChunks": 1,
+          "maxInitialRequests": Infinity,
+          "minSize": 0,
         },
-        "babel": {
-          "test": /[\\/]node_modules[\\/](.*babel.*)[\\/]/,
-          "name": "c1",
-          "reuseExistingChunk": true,
-        },
-        "core": {
-          "test": /[\\/]node_modules[\\/](.*core.*)[\\/]/,
-          "name": "c2",
-          "reuseExistingChunk": true,
-        },
-        "router": {
-          "test": /[\\/]node_modules[\\/](.*route.*)[\\/]/,
-          "name": "c3",
-          "reuseExistingChunk": true,
-        },
-        "state": {
-          "test": /[\\/]node_modules[\\/](.*redux.*)[\\/]/,
-          "name": "c4",
-          "reuseExistingChunk": true,
-        },
-        "loader": {
-          "test": /[\\/]node_modules[\\/](.*loader.*)[\\/]/,
-          "name": "c5",
-          "reuseExistingChunk": true,
-        },
-        "http": {
-          "test": /[\\/]node_modules[\\/](.*(axios|fetch).*)[\\/]/,
-          "name": "c6",
-          "reuseExistingChunk": true,
-        },
-        "aui": {
-          "test": /[\\/]node_modules[\\/](.*antd.*)[\\/]/,
-          "name": "c7",
-          "reuseExistingChunk": true,
-        },
+        ...groups(),
       },
     },
     "runtimeChunk": {
@@ -88,12 +83,12 @@ module.exports = {
             },
           ],
         },
-        "canPrint": true,
+        "canPrint": false,
       }),
     ],
   },
   "performance": {
-    "hints": "warning",
+    "hints": false,
   },
   "externals": Externals,
 };

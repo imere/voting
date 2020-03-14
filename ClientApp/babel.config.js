@@ -3,21 +3,25 @@ const alias = {};
 if (compilerOptions) {
   const { paths } = compilerOptions;
   if (paths) {
-    Object.keys(paths).forEach((k) => alias[k] = paths[k][0]);
+    for (const k of Object.keys(paths)) {
+      alias[k] = paths[k][0];
+    }
   }
 }
 
 module.exports = {
   "presets": [
-    "typescript-vue",
     [
       "@babel/preset-env",
       {
-        "targets": {
-          "node": "current"
+        "useBuiltIns": "usage",
+        "corejs": { 
+          "version": 3,
+          "proposals": true
         }
       }
     ],
+    "typescript-vue",
     "@babel/preset-typescript",
     "@babel/preset-react"
   ],
@@ -37,7 +41,7 @@ module.exports = {
         "helpers": true,
         "regenerator": true,
         "useESModules": false,
-        "version": "^7.8.4"
+        "version": "^7.8.7"
       }
     ],
     "@babel/plugin-transform-arrow-functions",
@@ -54,6 +58,19 @@ module.exports = {
         "loose": true
       }
     ],
+    [
+      "@babel/plugin-proposal-private-methods",
+      {
+        "loose": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-object-rest-spread",
+      {
+        "useBuiltIns": true
+      }
+    ],
+    "@babel/plugin-proposal-optional-catch-binding",
     [
       "import",
       {

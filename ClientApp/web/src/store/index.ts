@@ -4,7 +4,7 @@ import { History } from "history";
 import { connectRouter, routerMiddleware } from "connected-react-router";
 
 import reducers from "@/reducers";
-import { ApplicationState } from "@/reducers/states";
+import { ApplicationState } from "@/reducers/state";
 
 export function configureStore(history: History, initialState: ApplicationState) {
   const middlewares = [

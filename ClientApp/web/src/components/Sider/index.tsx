@@ -3,7 +3,7 @@ import { Layout } from "antd";
 import { SiderTheme } from "antd/es/layout/Sider";
 import { connect } from "react-redux";
 
-import { ApplicationState } from "@/reducers/states";
+import { ApplicationState } from "@/reducers/state";
 
 import styles from "./Sider.module.scss";
 

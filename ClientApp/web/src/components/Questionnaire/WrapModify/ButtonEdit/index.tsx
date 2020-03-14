@@ -2,15 +2,17 @@ import React from "react";
 import { EditOutlined } from "@ant-design/icons";
 import { Popover, Tooltip } from "antd";
 
-import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
-
 import ButtonEditOptions from "./ButtonEditOptions";
 
-type ButtonEditProps = QuestionnaireContentType
+interface ButtonEditReceivedProps {
+  name: string
+}
 
-const ButtonEdit = (props: ButtonEditProps) => (
+type ButtonEditProps = ButtonEditReceivedProps
+
+const ButtonEdit = ({ name }: ButtonEditProps) => (
   <Popover
-    content={<ButtonEditOptions {...props} />}
+    content={<ButtonEditOptions name={name} />}
     trigger="click"
     placement="right"
   >

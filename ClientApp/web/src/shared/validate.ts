@@ -1,7 +1,7 @@
 import { RuleObject } from "rc-field-form/es/interface";
 
 import { None } from "@/types";
-import { setLengthMessage, toggleRequired } from "@/components/Questionnaire/util";
+import { setRulesLengthMessage, toggleRequired } from "@/components/Questionnaire/data-util";
 
 export function lengthGt(s: string | None, len: number): boolean {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -25,10 +25,16 @@ export function lengthLt(s: string | None, len: number): boolean {
 //   return lengthGt(username, 2) && lengthLt(username, 11);
 // }
 
-export const BuiltinRules = {
+export const BuiltInRules: {
+  [key: string]: RuleObject
+} = {
   NoSpace: {
     pattern: /^[^\s]+$/,
     message: "不能含空格",
+  },
+  NoEmptyString: {
+    whitespace: true,
+    message: "不能为空",
   },
   NoSpaceBothEnds: {
     pattern: /^[^\s]+.*[^\s]+$/,
@@ -41,7 +47,7 @@ export const BuiltinRules = {
 };
 
 
-const commonAuthRules: RuleObject[] = [BuiltinRules.AlphaNumOnly];
+const commonAuthRules: RuleObject[] = [BuiltInRules.AlphaNumOnly];
 
 export const usernameRules: RuleObject[] = [
   {
@@ -70,15 +76,10 @@ export const passwordRules: RuleObject[] = [
 ];
 
 
-const commonQRules: RuleObject[] = [
-  {
-    whitespace: true,
-    message: "不能为空",
-  }
-];
+const commonQRules: RuleObject[] = [BuiltInRules.NoEmptyString];
 
 export const titleRules: RuleObject[] = toggleRequired(
-  setLengthMessage([
+  setRulesLengthMessage([
     {
       max: 20,
     },
@@ -86,7 +87,7 @@ export const titleRules: RuleObject[] = toggleRequired(
   ])
 );
 
-export const descriptionRules: RuleObject[] = setLengthMessage([
+export const descriptionRules: RuleObject[] = setRulesLengthMessage([
   {
     max: 100,
   },

@@ -30,16 +30,18 @@ const PollList: React.FunctionComponent = () => {
     const response = await Http(API_V1_POLLS);
     if (response.ok) {
       const res: ResponseState<Array<QuestionnaireExtended>> = await response.json();
+      let i = 0;
       for (const poll of res.data) {
+        Reflect.set(poll, "key", i);
         poll.createdAt = dayjs(poll.createdAt).
           add(8, "h").
           toDate().
           toLocaleString();
+        i++;
       }
       setPolls(res.data);
-    } else {
-      toastMessageByStatus(response.status);
     }
+    toastMessageByStatus(response.status);
     setLoading(false);
   }
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PieChartOutlined } from "@ant-design/icons";
 import { LocationDescriptor } from "history";
 
 import RedirectTo from "@/components/RedirectTo";
@@ -15,7 +15,7 @@ interface PollReceivedProps extends QuestionnaireExtended {
 
 type PollProps = PollReceivedProps;
 
-const Poll = ({ id, title, description, createdAt, setPolls }: PollProps) => {
+const Polls = ({ id, title, description, createdAt, setPolls }: PollProps) => {
   const { Meta } = Card;
 
   const [
@@ -43,13 +43,18 @@ const Poll = ({ id, title, description, createdAt, setPolls }: PollProps) => {
     setLoading(false);
   }
 
+  function handleStatisticClick() {
+    // setRedirectUrl();
+  }
+
   return (
     <RedirectTo redirectUrl={redirectUrl}>
       <Card
         loading={loading}
         actions={[
-          <EditOutlined key="edit" onClick={handleEditClick} />,
-          <DeleteOutlined key="delete" onClick={handleDeleteClick} />,
+          <EditOutlined title="编辑" key="edit" onClick={handleEditClick} />,
+          <DeleteOutlined title="删除" key="delete" onClick={handleDeleteClick} />,
+          <PieChartOutlined title="统计" key="statistic" onClick={handleStatisticClick} />,
         ]}
       >
         <Meta
@@ -67,4 +72,4 @@ const Poll = ({ id, title, description, createdAt, setPolls }: PollProps) => {
   );
 };
 
-export default Poll;
+export default Polls;

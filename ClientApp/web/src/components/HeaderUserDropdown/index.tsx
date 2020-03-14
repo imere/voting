@@ -26,7 +26,7 @@ const HeaderUserDropdownComponent = ({ children, user }: HeaderUserDropdownProps
             overlay={
               <Menu>
                 {(user
-                  ? authItems(logout) : normalItems()).map((item, i) => item ? (
+                  ? authItems({ logout }) : normalItems()).map((item, i) => item ? (
                   <Menu.Item key={i} onClick={item.onClick}>
                     {item.icon}
                     <Link className={styles["item-link"]} to={item.link || "#"} rel="noopener noreferrer">{item.content}</Link>

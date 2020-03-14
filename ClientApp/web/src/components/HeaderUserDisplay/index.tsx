@@ -6,7 +6,7 @@ import { User } from "oidc-client";
 import { UserOutlined } from "@ant-design/icons";
 
 import HeaderUserDropdown from "@/components/HeaderUserDropdown";
-import { ApplicationState } from "@/reducers/states";
+import { ApplicationState } from "@/reducers/state";
 import { classnames } from "@/shared/classnames";
 import { None } from "@/types";
 import { lengthGt } from "@/shared/validate";

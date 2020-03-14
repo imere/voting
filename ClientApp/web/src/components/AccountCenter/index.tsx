@@ -11,8 +11,8 @@ import { Http } from "@/shared";
 import styles from "./AccountCenter.module.scss";
 import NewFormButton from "./NewFormButton";
 
-const PollLazy = loadable(
-  () => import("./Poll")
+const PollsLazy = loadable(
+  () => import("./Polls")
 );
 
 const AccountCenter = () => {
@@ -38,9 +38,8 @@ const AccountCenter = () => {
           toLocaleString();
       });
       setPolls(res.data);
-    } else {
-      toastMessageByStatus(response.status);
     }
+    toastMessageByStatus(response.status);
     setLoading(false);
   }
 
@@ -66,7 +65,7 @@ const AccountCenter = () => {
           dataSource={polls}
           renderItem={(item) => (
             <List.Item>
-              <PollLazy setPolls={setPolls} {...item} />
+              <PollsLazy setPolls={setPolls} {...item} />
             </List.Item>
           )}
         />

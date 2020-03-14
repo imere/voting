@@ -5,7 +5,7 @@ import { Redirect, RouteComponentProps, withRouter } from "react-router";
 
 import AppRoutes from "@/routes/AppRoutes";
 import { None } from "@/types";
-import { ApplicationState } from "@/reducers/states";
+import { ApplicationState } from "@/reducers/state";
 
 interface ProtectedReceivedProps {
   children?: React.ReactNode

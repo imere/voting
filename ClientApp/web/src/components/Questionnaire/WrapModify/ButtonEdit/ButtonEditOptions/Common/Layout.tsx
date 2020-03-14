@@ -1,30 +1,30 @@
-import React, { useContext } from "react";
-import { Checkbox, Form, Input } from "antd";
+import React from "react";
+import { Checkbox, Input } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 
-import QuestionnaireContext from "@/contexts/questionnaire";
-import { QuestionnaireContentType, TypeCheckBoxGroup } from "@/components/Questionnaire/questionnaire";
-import { getLength, isRequired, toggleRequired } from "@/components/Questionnaire/util";
+import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
+import { isRequired, toggleRequired } from "@/components/Questionnaire/data-util";
+import { QEventBus } from "@/components/Questionnaire/QEventBus";
+
+import { EditItem } from "./EditItem";
 
 type LayoutReceivedProps = {
   children?: React.ReactNode
-} &
-  QuestionnaireContentType & { options?: TypeCheckBoxGroup["options"] }
+  ctx: QEventBus
+  name: string
+}
 
 type LayoutProps = LayoutReceivedProps
 
-const Layout: React.FC<LayoutProps> = ({ children, label, name, value, options, rules }: LayoutProps) => {
-  const { getItem, updateItem, forceRender } = useContext(QuestionnaireContext);
-  const required = isRequired(rules);
+const Layout: React.FC<LayoutProps> = ({ children, ctx: { getItem, updateItem }, name }: LayoutProps) => {
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const item = getItem(name)!;
+  const item = getItem(name) as QuestionnaireContentType;
 
   function handleRequireChange({ target: { checked } }: CheckboxChangeEvent) {
     if (checked !== isRequired(item.rules)) {
       toggleRequired(item.rules);
-      forceRender();
     }
+    updateItem(item);
   }
 
   function handleLabelChange({ target: { value: label } }: React.ChangeEvent<HTMLInputElement>) {
@@ -37,33 +37,22 @@ const Layout: React.FC<LayoutProps> = ({ children, label, name, value, options, 
   }
 
   return (
-    <Form
-      initialValues={{
-        label,
-        value,
-        options,
-        required,
-        length: getLength(item.rules) ?? ({})
-      }}
-    >
-      <Form.Item
-        label="标签"
-        name="label"
-      >
+    <>
+      <EditItem label="标签">
         <Input
+          defaultValue={item.label}
           placeholder="两端空格无效"
           onChange={handleLabelChange}
         />
-      </Form.Item>
-      <Form.Item
-        label="必填"
-        name="required"
-        valuePropName="checked"
-      >
-        <Checkbox onChange={handleRequireChange} />
-      </Form.Item>
+      </EditItem>
+      <EditItem label="必填">
+        <Checkbox
+          defaultChecked={isRequired(item.rules)}
+          onChange={handleRequireChange}
+        />
+      </EditItem>
       {children}
-    </Form>
+    </>
   );
 };
 

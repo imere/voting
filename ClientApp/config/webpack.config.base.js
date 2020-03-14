@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const webpack = require("webpack");
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 // const DashboardPlugin = require("webpack-dashboard/plugin");
@@ -13,6 +14,7 @@ const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin");
 const { VueLoaderPlugin } = require("vue-loader");
 const StylelintPlugin = require("stylelint-webpack-plugin");
 // const HardSourcePlugin = require("hard-source-webpack-plugin");
+const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
@@ -112,9 +114,15 @@ const baseConfig = {
       ".jsx",
       ".js",
     ],
-    alias: {
+    "alias": {
       "vue$": "vue/dist/vue.esm.js",
+      "hoist-non-react-statics": path.resolve("./node_modules/hoist-non-react-statics"),
+      "react-is": path.resolve("./node_modules/react-is"),
     },
+    // "modules": [
+    //   path.resolve("./"),
+    //   path.resolve("./node_modules"),
+    // ],
     "plugins": [
       new TsconfigPathsPlugin({
         "configFile": "tsconfig.json"
@@ -167,17 +175,19 @@ const baseConfig = {
     //     sizeThreshold: 50 * 1024 * 1024
     //   },
     // }),
+    new DuplicatePackageCheckerPlugin(),
     new StylelintPlugin({
       configFile: undefined,
       files: ["**/*.{vue,html,css,sss,less,scss,sass}"],
       fix: false,
     }),
     new HtmlPlugin({
+      PUBLIC_PATH,
+      isProd,
+      id: "__root",
       "filename": "index.html",
       "template": "./web/public/index.html",
       "inject": true,
-      PUBLIC_PATH,
-      isProd,
       "favicon": "./web/public/favicon.ico",
       "minify": {
         "removeComments": isProd,
@@ -187,11 +197,12 @@ const baseConfig = {
       "chunksSortMode": "dependency",
     }),
     new HtmlPlugin({
-      "filename": "auth-callback.html",
-      "template": "./web/public/auth-callback.html",
-      "inject": true,
       PUBLIC_PATH,
       isProd,
+      id: "callback",
+      "filename": "auth-callback.html",
+      "template": "./web/public/index.html",
+      "inject": true,
       "favicon": "./web/public/favicon.ico",
       "minify": {
         "removeComments": isProd,

@@ -3,7 +3,7 @@ import { SiderTheme } from "antd/es/layout/Sider";
 import { connect } from "react-redux";
 
 import UserDisplay from "@/components/HeaderUserDisplay";
-import { ApplicationState } from "@/reducers/states";
+import { ApplicationState } from "@/reducers/state";
 import { classnames } from "@/shared/classnames";
 
 import styles from "./HeaderNav.module.scss";

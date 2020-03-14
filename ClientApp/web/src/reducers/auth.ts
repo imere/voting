@@ -3,7 +3,7 @@ import { Reducer } from "redux";
 import { AuthActions } from "@/constants/index";
 import { AuthAction } from "@/actions/action-auth";
 
-import { AuthState } from "./states";
+import { AuthState } from "./state";
 
 export const auth: Reducer<AuthState, AuthAction> = (state = {}, action): AuthState => {
   switch (action.type) {

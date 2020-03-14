@@ -8,6 +8,16 @@ export interface AuthContextType {
   logout: () => void
 }
 
-const { Provider, Consumer } = createContext<AuthContextType>({} as any);
+const { Provider, Consumer } = createContext<AuthContextType>({
+  register: () => {
+    throw "register not implemented";
+  },
+  login: () => {
+    throw "login not implemented";
+  },
+  logout: () => {
+    throw "logout not implemented";
+  },
+});
 
 export { Provider, Consumer };

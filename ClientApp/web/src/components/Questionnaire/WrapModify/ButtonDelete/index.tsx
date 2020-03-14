@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { MinusCircleOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 
-import QuestionnaireContext from "@/contexts/questionnaire";
+import { QuestionnaireContext } from "@/contexts/questionnaire";
 
 interface ButtonDeleteReceivedProps {
   name: string

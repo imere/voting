@@ -20,6 +20,7 @@ export const RouteNameMap: {[key: string]: string} = new Proxy({
   [Routes.ACCOUNT_SETTINGS]: "个人设置",
   [Routes.POLL_LIST]: "问卷列表",
   [Routes.POLL_NEW]: "创建问卷",
+  [Routes.POLL_EDIT.split("/:")[0]]: "编辑问卷",
 }, {
   get(target, p, receiver) {
     const value = Reflect.get(target, p, receiver);

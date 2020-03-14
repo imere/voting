@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-  "OUTPUT_PATH": path.resolve(__dirname, "../dist"),
+  "OUTPUT_PATH": path.posix.resolve(__dirname, "../dist"),
   "PUBLIC_PATH": "/",
   "DEV_HOST": process.env.HOST || "0.0.0.0",
   "DEV_PORT": process.env.PORT || 5000,
@@ -17,6 +17,7 @@ module.exports = {
       "redux": "Redux",
       "redux-thunk": "ReduxThunk",
       "antd": "antd",
+      "oidc-client": "Oidc",
     },
   ]
 };

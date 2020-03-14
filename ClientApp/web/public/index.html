@@ -22,13 +22,14 @@
     <script src="https://cdn.bootcss.com/react-router/5.1.2/react-router.min.js"></script>
     <script src="https://cdn.bootcss.com/redux/4.0.4/redux.min.js"></script>
     <script src="https://cdn.bootcss.com/redux-thunk/2.3.0/redux-thunk.min.js"></script>
-    <script src="https://cdn.bootcss.com/antd/4.0.0-rc.4/antd.min.js"></script>
+    <script src="https://cdn.bootcss.com/antd/4.0.1/antd.min.js"></script>
+    <script src="https://cdn.bootcss.com/oidc-client/1.10.1/oidc-client.min.js"></script>
     ` : "" %>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="__root"></div>
+  <div id="<%= htmlWebpackPlugin.options.id || '' %>"></div>
 </body>
 
 </html>

@@ -9,7 +9,7 @@ import { User } from "oidc-client";
 
 import Logo from "@/layouts/Logo";
 import { Routes } from "@/constants";
-import { ApplicationState } from "@/reducers/states";
+import { ApplicationState } from "@/reducers/state";
 import { None } from "@/types";
 
 const { SubMenu } = Menu;

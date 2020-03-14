@@ -23,7 +23,7 @@ export function normalItems(): MenuItem[] {
   ];
 }
 
-export function authItems(logout: () => void): MenuItem[] {
+export function authItems({ logout }: {logout: () => void}): MenuItem[] {
   return [
     {
       icon: <UserOutlined />,

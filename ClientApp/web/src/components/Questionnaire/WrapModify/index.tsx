@@ -20,7 +20,7 @@ const WrapEdit: React.FC<WrapEditProps> = ({ children, ...rest }: WrapEditProps)
     {React.createElement(children, rest)}
     <div className={styles.modify}>
       <ButtonEdit
-        {...rest}
+        name={rest.name}
       />
       <ButtonDelete
         name={rest.name}
