@@ -1,8 +1,8 @@
-import React from "react";
-import { EditOutlined } from "@ant-design/icons";
-import { Popover, Tooltip } from "antd";
+import React from 'react';
+import { EditOutlined } from '@ant-design/icons';
+import { Popover, Tooltip } from 'antd';
 
-import ButtonEditOptions from "./ButtonEditOptions";
+import ButtonEditOptions from './ButtonEditOptions';
 
 interface ButtonEditReceivedProps {
   name: string
@@ -18,7 +18,7 @@ const ButtonEdit = ({ name }: ButtonEditProps) => (
   >
     <Tooltip title="编辑">
       <EditOutlined
-        style={{ margin: "8px 8px 0" }}
+        style={{ margin: '8px 8px 0' }}
       />
     </Tooltip>
   </Popover>

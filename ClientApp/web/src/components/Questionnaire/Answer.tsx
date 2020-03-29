@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Store } from "rc-field-form/es/interface";
-import { useParams } from "react-router";
-import { LocationDescriptor } from "history";
+import React, { useContext, useEffect, useState } from 'react';
+import { Store } from 'rc-field-form/es/interface';
+import { useParams } from 'react-router';
+import { LocationDescriptor } from 'history';
 
-import QCommon, { dataSourceHolder, Info } from "@/components/Questionnaire/QCommon";
-import { ResponseState, RQuestionnaireResponse } from "@/response";
-import { toastMessageByStatus } from "@/shared/toast-message";
-import { QuestionnaireContext } from "@/contexts/questionnaire";
-import { Routes } from "@/constants";
-import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
-import { unifyQuestionnaire } from "@/components/Questionnaire/data-util";
-import { createAnswerByPollId, getPollByPollId } from "@/shared/request-util";
+import QCommon, { dataSourceHolder, Info } from '@/components/Questionnaire/QCommon';
+import { ResponseState, RQuestionnaireResponse } from '@/response';
+import { toastMessageByStatus } from '@/shared/toast-message';
+import { QuestionnaireContext } from '@/contexts/questionnaire';
+import { Routes } from '@/constants';
+import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
+import { unifyQuestionnaire } from '@/components/Questionnaire/data-util';
+import { createAnswerByPollId, getPollByPollId } from '@/shared/request-util';
 
-import { Answer } from "./questionnaire";
+import { Answer } from './questionnaire';
 
 const AnswerComponent: React.FC = () => {
   const { pollId } = useParams();
@@ -38,7 +38,7 @@ const AnswerComponent: React.FC = () => {
     setLoading(true);
     const response = await createAnswerByPollId(pollId as string, values as Array<Answer>);
     if (response.ok) {
-      setRedirectUrl("/");
+      setRedirectUrl('/');
     }
     toastMessageByStatus(response.status);
     setLoading(false);

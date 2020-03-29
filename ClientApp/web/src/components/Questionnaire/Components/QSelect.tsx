@@ -1,7 +1,7 @@
-import React from "react";
-import { Form, Select } from "antd";
+import React from 'react';
+import { Form, Select } from 'antd';
 
-import { TypeSelect } from "@/components/Questionnaire/questionnaire";
+import { TypeSelect } from '@/components/Questionnaire/questionnaire';
 
 export interface QSelectReceivedProps extends TypeSelect {}
 

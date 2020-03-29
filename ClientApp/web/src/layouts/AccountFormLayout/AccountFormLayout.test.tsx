@@ -1,12 +1,12 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
-import { Route } from "react-router";
-import { BrowserRouter } from "react-router-dom";
+import React from 'react';
+import { render } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import { Route } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 
-import AccountFormLayout from "./index";
+import AccountFormLayout from './index';
 
-test("AccountFormLayout renders Logo", () => {
+test('AccountFormLayout renders Logo', () => {
   const { getByText } = render(
     <BrowserRouter>
       <Route path="/">
@@ -14,6 +14,6 @@ test("AccountFormLayout renders Logo", () => {
       </Route>
     </BrowserRouter>
   );
-  const ele = getByText("问卷系统");
+  const ele = getByText('问卷系统');
   expect(ele).toBeInTheDocument();
 });

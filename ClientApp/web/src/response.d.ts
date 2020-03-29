@@ -1,4 +1,4 @@
-import { Questionnaire } from "@/components/Questionnaire/questionnaire";
+import { Questionnaire } from '@/components/Questionnaire/questionnaire';
 
 export interface BuiltinResponse {
   username?: string[]

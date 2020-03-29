@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const NoStat: React.FC = () => (
   <>暂无统计方式</>

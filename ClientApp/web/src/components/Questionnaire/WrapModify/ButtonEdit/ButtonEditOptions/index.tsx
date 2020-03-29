@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Radio } from "antd";
-import { RadioChangeEvent } from "antd/es/radio";
+import React, { useContext, useEffect, useState } from 'react';
+import { Radio } from 'antd';
+import { RadioChangeEvent } from 'antd/es/radio';
 
-import { QuestionnaireContext } from "@/contexts/questionnaire";
-import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
-import { ButtonEditContentMap, QItemDataFactory, QItemDefaultData } from "@/components/Questionnaire/util";
-import { isRequired } from "@/components/Questionnaire/data-util";
+import { QuestionnaireContext } from '@/contexts/questionnaire';
+import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
+import { ButtonEditContentMap, QItemDataFactory, QItemDefaultData } from '@/components/Questionnaire/util';
+import { isRequired } from '@/components/Questionnaire/data-util';
 
-import { options } from "./options";
+import { options } from './options';
 
 interface ButtonEditOptionsReceivedProps {
   name: string
@@ -23,7 +23,7 @@ const ButtonEditOptions = ({ name }: ButtonEditOptionsProps) => {
   const item = ctx.getItem(name) as QuestionnaireContentType;
 
   function handleClick({ target: { value } }: RadioChangeEvent) {
-    const typename = value as QuestionnaireContentType["typename"];
+    const typename = value as QuestionnaireContentType['typename'];
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { label: _, name: __, rules: ___, ...prop } = QItemDefaultData[typename]();
     ctx.updateItem(

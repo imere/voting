@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-import { useSetStateIfTrue } from "./useSetStateIfTrue";
+import { useSetStateIfTrue } from './useSetStateIfTrue';
 
 /**
  * `setState` only take effect before unmount

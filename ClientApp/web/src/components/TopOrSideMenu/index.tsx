@@ -1,16 +1,16 @@
-import React from "react";
-import { Menu } from "antd";
-import { TableOutlined, UserOutlined } from "@ant-design/icons";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { MenuTheme } from "antd/es/menu/MenuContext";
-import { connect } from "react-redux";
-import { MenuMode } from "antd/es/menu";
-import { User } from "oidc-client";
+import React from 'react';
+import { Menu } from 'antd';
+import { TableOutlined, UserOutlined } from '@ant-design/icons';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { MenuTheme } from 'antd/es/menu/MenuContext';
+import { connect } from 'react-redux';
+import { MenuMode } from 'antd/es/menu';
+import { User } from 'oidc-client';
 
-import Logo from "@/layouts/Logo";
-import { Routes } from "@/constants";
-import { ApplicationState } from "@/reducers/state";
-import { None } from "@/types";
+import Logo from '@/layouts/Logo';
+import { Routes } from '@/constants';
+import { ApplicationState } from '@/reducers/state';
+import { None } from '@/types';
 
 const { SubMenu } = Menu;
 
@@ -29,7 +29,7 @@ type TopOrSideMenuProps =
   RouteComponentProps
 
 const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, user }: TopOrSideMenuProps) => {
-  mode = mode.startsWith("vertical") ? "inline" : mode;
+  mode = mode.startsWith('vertical') ? 'inline' : mode;
   import(`./${mode}.scss`);
 
   return (

@@ -1,18 +1,18 @@
-import loadable from "@loadable/component";
-import React, { useEffect } from "react";
-import { List } from "antd";
+import loadable from '@loadable/component';
+import React, { useEffect } from 'react';
+import { List } from 'antd';
 
-import { ResponseState, RQuestionnaireResponse } from "@/response";
-import { toastMessageByStatus } from "@/shared/toast-message";
-import { unifyQuestionnaire } from "@/components/Questionnaire/data-util";
-import { getAllPollsByCurrentUser } from "@/shared/request-util";
-import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
+import { ResponseState, RQuestionnaireResponse } from '@/response';
+import { toastMessageByStatus } from '@/shared/toast-message';
+import { unifyQuestionnaire } from '@/components/Questionnaire/data-util';
+import { getAllPollsByCurrentUser } from '@/shared/request-util';
+import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 
-import styles from "./AccountCenter.module.scss";
-import NewFormButton from "./NewFormButton";
+import styles from './AccountCenter.module.scss';
+import NewFormButton from './NewFormButton';
 
 const PollLazy = loadable(
-  () => import("./Poll")
+  () => import('./Poll')
 );
 
 const AccountCenter = () => {
@@ -45,7 +45,7 @@ const AccountCenter = () => {
   }, []);
 
   return (
-    <div className={styles["account-center"]}>
+    <div className={styles['account-center']}>
       <NewFormButton />
       <div>
         <List

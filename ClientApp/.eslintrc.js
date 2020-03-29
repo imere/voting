@@ -71,7 +71,7 @@ module.exports = {
     "eqeqeq": "error",
     "quotes": [
       "error",
-      "double"
+      "single"
     ],
     "indent": [
       "error",

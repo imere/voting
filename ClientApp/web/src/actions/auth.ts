@@ -1,9 +1,9 @@
-import { User, UserManager, UserManagerSettings, WebStorageStateStore } from "oidc-client";
+import { User, UserManager, UserManagerSettings, WebStorageStateStore } from 'oidc-client';
 
-import { AuthActions, Routes } from "@/constants";
-import { AppThunkAction, None } from "@/types";
-import { API_ORIGIN, HOST } from "@/shared/conf";
-import { createUser, loginUser, logoutUser } from "@/shared/request-util";
+import { AuthActions, Routes } from '@/constants';
+import { AppThunkAction, None } from '@/types';
+import { API_ORIGIN, HOST } from '@/shared/conf';
+import { createUser, loginUser, logoutUser } from '@/shared/request-util';
 
 import {
   AuthAction,
@@ -20,17 +20,17 @@ import {
   RequestRegisterErrAction,
   RequestRegisterSucAction,
   UserAuthentication,
-} from "./action-auth";
+} from './action-auth';
 
 class IdentityService {
   private _manager: UserManager;
   private CLIENT_SETTINGS: UserManagerSettings = {
-    "authority": `${API_ORIGIN}`,
-    "client_id": "js",
-    "redirect_uri": `${HOST}${Routes.AUTH_CALLBACK}`,
-    "post_logout_redirect_uri": `${HOST}`,
-    "response_type": "id_token token",
-    "scope": "openid profile api1",
+    'authority': `${API_ORIGIN}`,
+    'client_id': 'js',
+    'redirect_uri': `${HOST}${Routes.AUTH_CALLBACK}`,
+    'post_logout_redirect_uri': `${HOST}`,
+    'response_type': 'id_token token',
+    'scope': 'openid profile api1',
     userStore: new WebStorageStateStore({
       store: window.localStorage
     })
@@ -42,15 +42,15 @@ class IdentityService {
   }
 
   requestRegister = (): RequestRegisterAction => ({
-    "type": AuthActions.REGISTER,
+    'type': AuthActions.REGISTER,
   })
 
   requestRegisterSuc = (): RequestRegisterSucAction => ({
-    "type": AuthActions.REGISTER_SUC,
+    'type': AuthActions.REGISTER_SUC,
   })
 
   requestRegisterErr = (): RequestRegisterErrAction => ({
-    "type": AuthActions.REGISTER_ERR,
+    'type': AuthActions.REGISTER_ERR,
   })
 
   register = (user: UserAuthentication, cb?: RegisterCallback): AppThunkAction<AuthAction> => async (dispatch) => {
@@ -71,16 +71,16 @@ class IdentityService {
   }
 
   requestLogin = (): RequestLoginAction => ({
-    "type": AuthActions.LOGIN,
+    'type': AuthActions.LOGIN,
   })
 
   requestLoginSuc = (user: User | None): RequestLoginSucAction => ({
-    "type": AuthActions.LOGIN_SUC,
-    "user": user,
+    'type': AuthActions.LOGIN_SUC,
+    'user': user,
   })
 
   requestLoginErr = (): RequestLoginErrAction => ({
-    "type": AuthActions.LOGIN_ERR,
+    'type': AuthActions.LOGIN_ERR,
   })
 
   login = (user: UserAuthentication, cb?: LoginCallback): AppThunkAction<AuthAction> => async (dispatch) => {
@@ -88,7 +88,7 @@ class IdentityService {
     try {
       await loginUser(user);
       const result = await this._manager.getUser();
-      await this._manager.signinPopup().then(() => location.href = "/");
+      await this._manager.signinPopup().then(() => location.href = '/');
       return dispatch(this.requestLoginSuc(result));
     } catch (ex) {
       ex instanceof Response
@@ -107,7 +107,7 @@ class IdentityService {
         // eslint-disable-next-line callback-return
         cb && cb(null);
         dispatch(this.requestLoginSuc(user));
-        location.href = "/";
+        location.href = '/';
       });
     } catch (ex) {
       cb && cb(ex);
@@ -116,11 +116,11 @@ class IdentityService {
   }
 
   requestLogout = (): RequestLogoutAction => ({
-    "type": AuthActions.LOGOUT
+    'type': AuthActions.LOGOUT
   })
 
   requestLogoutComplete = (): RequestLogoutCompleteAction => ({
-    "type": AuthActions.LOGOUT_COMPLETE
+    'type': AuthActions.LOGOUT_COMPLETE
   })
 
   logout = (cb?: LogoutCallback): AppThunkAction<AuthAction> => async (dispatch) => {

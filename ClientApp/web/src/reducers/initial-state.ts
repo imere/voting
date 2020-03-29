@@ -1,8 +1,8 @@
-import { ApplicationState } from "./state";
+import { ApplicationState } from './state';
 
 export const initialState: ApplicationState = {
   context: {
-    theme: "dark",
+    theme: 'dark',
   },
   auth: {
     user: null,

@@ -1,13 +1,13 @@
-import React from "react";
-import { Input } from "antd";
+import React from 'react';
+import { Input } from 'antd';
 
-import { TypeInput } from "@/components/Questionnaire/questionnaire";
-import { QEventBus } from "@/components/Questionnaire/QEventBus";
-import { EditItem } from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/EditItem";
+import { TypeInput } from '@/components/Questionnaire/questionnaire';
+import { QEventBus } from '@/components/Questionnaire/QEventBus';
+import { EditItem } from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/EditItem';
 
 interface DefaultValueReceivedProps {
   ctx: QEventBus
-  name: TypeInput["name"]
+  name: TypeInput['name']
 }
 
 type DefaultValueProps = DefaultValueReceivedProps

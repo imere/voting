@@ -1,4 +1,4 @@
-import { loadingBarReducer } from "react-redux-loading-bar";
+import { loadingBarReducer } from 'react-redux-loading-bar';
 
 const loadingBar = loadingBarReducer;
 

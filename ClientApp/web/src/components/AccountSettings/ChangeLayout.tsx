@@ -1,8 +1,8 @@
-import React from "react";
-import { Switch } from "antd";
+import React from 'react';
+import { Switch } from 'antd';
 
-import SessionStates from "@/hooks/SessionStates";
-import { useSessionState } from "@/hooks/useSessionState";
+import SessionStates from '@/hooks/SessionStates';
+import { useSessionState } from '@/hooks/useSessionState';
 
 const ChangeLayout: React.FC = () => {
   const [

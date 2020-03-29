@@ -1,42 +1,42 @@
-import Loadable from "@loadable/component";
+import Loadable from '@loadable/component';
 
-import { Routes } from "@/constants";
-import { defaultLoadableOption } from "@/shared/conf";
+import { Routes } from '@/constants';
+import { defaultLoadableOption } from '@/shared/conf';
 
-import { RouteArrayType } from "./routes";
+import { RouteArrayType } from './routes';
 
 const PollListLazy = Loadable(
-  () => import("@/components/PollList"),
+  () => import('@/components/PollList'),
   defaultLoadableOption
 );
 
 const QuestionnaireNewLazy = Loadable(
-  () => import("@/components/Questionnaire/New"),
+  () => import('@/components/Questionnaire/New'),
   defaultLoadableOption
 );
 
 const QuestionnaireEditLazy = Loadable(
-  () => import("@/components/Questionnaire/Edit"),
+  () => import('@/components/Questionnaire/Edit'),
   defaultLoadableOption
 );
 
 const QuestionnaireAnswerLazy = Loadable(
-  () => import("@/components/Questionnaire/Answer"),
+  () => import('@/components/Questionnaire/Answer'),
   defaultLoadableOption
 );
 
 const QuestionnaireStatisticLazy = Loadable(
-  () => import("@/components/Questionnaire/Statistic"),
+  () => import('@/components/Questionnaire/Statistic'),
   defaultLoadableOption
 );
 
 const AccountCenterLazy = Loadable(
-  () => import("@/components/AccountCenter"),
+  () => import('@/components/AccountCenter'),
   defaultLoadableOption
 );
 
 const AccountSettingsLazy = Loadable(
-  () => import("@/components/AccountSettings"),
+  () => import('@/components/AccountSettings'),
   defaultLoadableOption
 );
 

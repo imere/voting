@@ -1,7 +1,7 @@
-import React from "react";
-import { Form, Input } from "antd";
+import React from 'react';
+import { Form, Input } from 'antd';
 
-import { TypeTextArea } from "@/components/Questionnaire/questionnaire";
+import { TypeTextArea } from '@/components/Questionnaire/questionnaire';
 
 export interface QTextAreaReceivedProps extends TypeTextArea {}
 

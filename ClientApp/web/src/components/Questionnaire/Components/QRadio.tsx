@@ -1,7 +1,7 @@
-import React from "react";
-import { Form, Radio } from "antd";
+import React from 'react';
+import { Form, Radio } from 'antd';
 
-import { TypeRadio } from "@/components/Questionnaire/questionnaire";
+import { TypeRadio } from '@/components/Questionnaire/questionnaire';
 
 export interface QRadioReceivedProps extends TypeRadio {}
 
@@ -13,7 +13,7 @@ const QRadio = ({ name, label, extra, rules = [], type, options, ...rest }: QRad
     extra={extra}
   >
     {
-      !type || "outline" === type || "solid" === type
+      !type || 'outline' === type || 'solid' === type
         ? <Radio.Group options={options} buttonStyle={type} {...rest} />
         : (
           <Radio.Group {...rest}>

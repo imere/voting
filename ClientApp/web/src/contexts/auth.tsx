@@ -1,6 +1,6 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
-import { UserAuthentication } from "@/actions/action-auth";
+import { UserAuthentication } from '@/actions/action-auth';
 
 export interface AuthContextType {
   register: (user: UserAuthentication) => void
@@ -10,13 +10,13 @@ export interface AuthContextType {
 
 const { Provider, Consumer } = createContext<AuthContextType>({
   register: () => {
-    throw "register not implemented";
+    throw 'register not implemented';
   },
   login: () => {
-    throw "login not implemented";
+    throw 'login not implemented';
   },
   logout: () => {
-    throw "logout not implemented";
+    throw 'logout not implemented';
   },
 });
 

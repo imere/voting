@@ -1,10 +1,10 @@
-import React from "react";
-import { Layout } from "antd";
+import React from 'react';
+import { Layout } from 'antd';
 
-import AccountFormLogo from "@/layouts/AccountFormLogo";
-import FooterComponent from "@/layouts/Footer";
+import AccountFormLogo from '@/layouts/AccountFormLogo';
+import FooterComponent from '@/layouts/Footer';
 
-import styles from "./AccountFormLayout.module.scss";
+import styles from './AccountFormLayout.module.scss';
 
 const { Content } = Layout;
 
@@ -15,9 +15,9 @@ interface AccountLayoutReceivedProps {
 type AccountLayoutProps = AccountLayoutReceivedProps;
 
 const AccountFormLayout: React.FC<AccountLayoutProps> = ({ children }: AccountLayoutProps) => (
-  <Layout style={{ "minHeight": "100vh" }}>
+  <Layout style={{ 'minHeight': '100vh' }}>
 
-    <Content className={styles["account-form-content"]}>
+    <Content className={styles['account-form-content']}>
       <AccountFormLogo />
       {children}
     </Content>

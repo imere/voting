@@ -1,4 +1,4 @@
-import { QuestionnaireAnswer, QuestionnaireContentType } from "../questionnaire";
+import { QuestionnaireAnswer, QuestionnaireContentType } from '../questionnaire';
 
 export interface ChartReceivedProps {
   item: QuestionnaireContentType

@@ -1,7 +1,7 @@
-import React from "react";
-import { Cascader, Form } from "antd";
+import React from 'react';
+import { Cascader, Form } from 'antd';
 
-import { TypeCascade } from "@/components/Questionnaire/questionnaire";
+import { TypeCascade } from '@/components/Questionnaire/questionnaire';
 
 export interface QCascadeReceivedProps extends TypeCascade {}
 

@@ -1,6 +1,6 @@
-import { SetStateAction } from "react";
+import { SetStateAction } from 'react';
 
-import { QuestionnaireContentType } from "./questionnaire";
+import { QuestionnaireContentType } from './questionnaire';
 
 interface EventBus {
   getItem: (name: string) => QuestionnaireContentType | undefined

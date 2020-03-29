@@ -1,12 +1,12 @@
-import React from "react";
-import { Options } from "@loadable/component";
+import React from 'react';
+import { Options } from '@loadable/component';
 
-import Fallback from "@/components/Fallback";
-import { HttpMethod } from "@/types";
+import Fallback from '@/components/Fallback';
+import { HttpMethod } from '@/types';
 
-export const HOST = "http://localhost:5000";
+export const HOST = 'http://localhost:5000';
 
-export const API_ORIGIN = "http://localhost:61598";
+export const API_ORIGIN = 'http://localhost:61598';
 
 /**
  * [put] create
@@ -64,9 +64,9 @@ interface UrlControl {
 export const AUTHORIZATION_ALLOWED_URLS: Array<UrlControl> = [
   {
     methods: [
-      "POST",
-      "PUT",
-      "DELETE",
+      'POST',
+      'PUT',
+      'DELETE',
     ],
     matchers: [API_ORIGIN],
   }
@@ -78,9 +78,9 @@ export const AUTHORIZATION_ALLOWED_URLS: Array<UrlControl> = [
 export const CREDENTIAL_ALLOWED_URLS: Array<UrlControl> = [
   {
     methods: [
-      "POST",
-      "PUT",
-      "DELETE",
+      'POST',
+      'PUT',
+      'DELETE',
     ],
     matchers: [API_ORIGIN],
   }

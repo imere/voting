@@ -3,13 +3,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class AuthCallback extends Vue {
   beforeCreate() {
-    console.log("vc");
-    import("@/actions").then(({ iu }) =>
+    console.log('vc');
+    import('@/actions').then(({ iu }) =>
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       iu.completeAuthentication()(function() {}, undefined as any)
     );

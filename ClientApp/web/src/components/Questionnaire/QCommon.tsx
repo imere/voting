@@ -1,33 +1,33 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Button, Card, Form, Tag } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { Store } from "rc-field-form/es/interface";
-import { Redirect } from "react-router-dom";
-import { LocationDescriptor } from "history";
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, Card, Form, Tag } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Store } from 'rc-field-form/es/interface';
+import { Redirect } from 'react-router-dom';
+import { LocationDescriptor } from 'history';
 
-import { QuestionnaireContext } from "@/contexts/questionnaire";
-import { Questionnaire } from "@/components/Questionnaire/questionnaire";
-import { Routes } from "@/constants";
-import { QItemDataFactory, QItemDefaultData, renderQItems } from "@/components/Questionnaire/util";
-import { getItemsValues } from "@/components/Questionnaire/data-util";
-import { RQuestionnaireResponse } from "@/response";
-import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
+import { QuestionnaireContext } from '@/contexts/questionnaire';
+import { Questionnaire } from '@/components/Questionnaire/questionnaire';
+import { Routes } from '@/constants';
+import { QItemDataFactory, QItemDefaultData, renderQItems } from '@/components/Questionnaire/util';
+import { getItemsValues } from '@/components/Questionnaire/data-util';
+import { RQuestionnaireResponse } from '@/response';
+import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 
-import RedirectTo from "../RedirectTo";
+import RedirectTo from '../RedirectTo';
 
 export function dataSourceHolder(): RQuestionnaireResponse {
   return {
     id: NaN,
-    title: "Loading...",
+    title: 'Loading...',
     content: [],
     createdAt: Date.now().toLocaleString(),
   };
 }
 
 export interface Info {
-  title: Questionnaire["title"]
-  description?: Questionnaire["description"]
-  isPublic?: Questionnaire["isPublic"]
+  title: Questionnaire['title']
+  description?: Questionnaire['description']
+  isPublic?: Questionnaire['isPublic']
 }
 
 interface QuestionnaireReceivedProps {
@@ -139,7 +139,7 @@ const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelC
           {
             isEditing && (
               <Form.Item>
-                <Button type="dashed" onClick={add} style={{ width: "50%" }}>
+                <Button type="dashed" onClick={add} style={{ width: '50%' }}>
                   <PlusOutlined /> 添加
                 </Button>
               </Form.Item>
@@ -149,7 +149,7 @@ const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelC
             <Button
               type="primary"
               loading={processing}
-              htmlType={isEditing ? "button" : "submit"}
+              htmlType={isEditing ? 'button' : 'submit'}
               onClick={handleConfirmClick}
             >
               确认

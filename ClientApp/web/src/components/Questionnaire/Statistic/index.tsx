@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
-import { Card, Collapse } from "antd";
-import { useParams } from "react-router";
+import React, { useEffect } from 'react';
+import { Card, Collapse } from 'antd';
+import { useParams } from 'react-router';
 
-import { toastMessageByStatus } from "@/shared/toast-message";
-import { ResponseState, RQuestionnaireWithAnswer } from "@/response";
-import { getAnswersByPollId } from "@/shared/request-util";
-import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
-import { unifyQuestionnaireWithAnswer } from "@/components/Questionnaire/data-util";
-import { None } from "@/types";
-import { QuestionnaireWithAnswer } from "@/components/Questionnaire/questionnaire";
+import { toastMessageByStatus } from '@/shared/toast-message';
+import { ResponseState, RQuestionnaireWithAnswer } from '@/response';
+import { getAnswersByPollId } from '@/shared/request-util';
+import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
+import { unifyQuestionnaireWithAnswer } from '@/components/Questionnaire/data-util';
+import { None } from '@/types';
+import { QuestionnaireWithAnswer } from '@/components/Questionnaire/questionnaire';
 
-import { statByTypename } from "./util";
+import { statByTypename } from './util';
 
 const { Panel } = Collapse;
 const { Meta } = Card;

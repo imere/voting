@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { sget, sremove, sset } from "@/shared/storage";
+import { sget, sremove, sset } from '@/shared/storage';
 
 const keySet = new Set();
 
@@ -38,7 +38,7 @@ function useSessionState<T = any>(key: string, value: T): [T, React.Dispatch<Rea
 
   const set: React.Dispatch<React.SetStateAction<any>> = function (value) {
     let v = value;
-    if (typeof value === "function") {
+    if (typeof value === 'function') {
       setState((prev: any) => v = value(prev));
     } else {
       setState(value);

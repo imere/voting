@@ -1,11 +1,11 @@
-import React from "react";
-import { Layout } from "antd";
-import { SiderTheme } from "antd/es/layout/Sider";
-import { connect } from "react-redux";
+import React from 'react';
+import { Layout } from 'antd';
+import { SiderTheme } from 'antd/es/layout/Sider';
+import { connect } from 'react-redux';
 
-import { ApplicationState } from "@/reducers/state";
+import { ApplicationState } from '@/reducers/state';
 
-import styles from "./Sider.module.scss";
+import styles from './Sider.module.scss';
 
 interface SiderComponentReceivedProps {
   children?: React.ReactNode;

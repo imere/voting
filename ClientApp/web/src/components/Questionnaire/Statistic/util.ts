@@ -1,15 +1,15 @@
-import { createElement } from "react";
+import { createElement } from 'react';
 
-import { holdOn } from "@/shared/holdOn";
-import { QuestionnaireAnswer, QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
+import { holdOn } from '@/shared/holdOn';
+import { QuestionnaireAnswer, QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
 
-import { BarChart } from "./BarChart";
-import { NoStat } from "./NoStat";
-import { ObjectData, ArrayData, ChartReceivedProps } from "./statistic";
+import { BarChart } from './BarChart';
+import { NoStat } from './NoStat';
+import { ObjectData, ArrayData, ChartReceivedProps } from './statistic';
 
-function extractor(typename: QuestionnaireContentType["typename"]): (item: QuestionnaireContentType, answers: Array<QuestionnaireAnswer>) => Array<any> {
+function extractor(typename: QuestionnaireContentType['typename']): (item: QuestionnaireContentType, answers: Array<QuestionnaireAnswer>) => Array<any> {
   switch (typename) {
-  case "checkboxgroup":
+  case 'checkboxgroup':
     return ({ name }, answers) => {
       const res: Array<string[]> = [];
       for (const { answer } of answers) {
@@ -22,18 +22,18 @@ function extractor(typename: QuestionnaireContentType["typename"]): (item: Quest
   }
 }
 
-export function extractAnswersToArray(item : QuestionnaireContentType, answers: Array<QuestionnaireAnswer>): Array<QuestionnaireContentType["value"]> {
+export function extractAnswersToArray(item : QuestionnaireContentType, answers: Array<QuestionnaireAnswer>): Array<QuestionnaireContentType['value']> {
   const { typename } = item;
   const fn = extractor(typename);
   const res = fn && fn(item, answers);
   return res;
 }
 
-export function transformToObjectData(values: Array<QuestionnaireContentType["value"]>): ObjectData {
-  if (typeof values[0] === "string") {
+export function transformToObjectData(values: Array<QuestionnaireContentType['value']>): ObjectData {
+  if (typeof values[0] === 'string') {
     const res: ReturnType<typeof transformToObjectData> = {};
     for (const value of values as string[]) {
-      if (typeof res[value] === "undefined") {
+      if (typeof res[value] === 'undefined') {
         res[value] = 0;
       }
       res[value]++;
@@ -45,7 +45,7 @@ export function transformToObjectData(values: Array<QuestionnaireContentType["va
     const res: ReturnType<typeof transformToObjectData> = {};
     for (const value of values as string[][]) {
       for (const inner of value) {
-        if (typeof res[inner] === "undefined") {
+        if (typeof res[inner] === 'undefined') {
           res[inner] = 0;
         }
         res[inner]++;
@@ -73,9 +73,9 @@ export function transformObjectToArrayData(data: ReturnType<typeof transformToOb
  * @param {ChartReceivedProps} props
  * @returns
  */
-export function statByTypename(typename: QuestionnaireContentType["typename"], props: ChartReceivedProps) {
+export function statByTypename(typename: QuestionnaireContentType['typename'], props: ChartReceivedProps) {
   switch (typename) {
-  case "checkboxgroup":
+  case 'checkboxgroup':
     return createElement(BarChart, props);
   default:
     return createElement(NoStat);

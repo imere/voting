@@ -1,5 +1,5 @@
-import { User } from "oidc-client";
-import { Action } from "redux";
+import { User } from 'oidc-client';
+import { Action } from 'redux';
 
 import {
   ActionLogin,
@@ -10,8 +10,8 @@ import {
   ActionRegister,
   ActionRegisterErr,
   ActionRegisterSuc,
-} from "@/constants/AuthActions";
-import { None } from "@/types";
+} from '@/constants/AuthActions';
+import { None } from '@/types';
 
 export interface UserAuthentication {
   username: string

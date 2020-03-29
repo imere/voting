@@ -1,12 +1,12 @@
-import dayjs from "dayjs";
-import { MD5 } from "object-hash";
-import { RuleObject } from "rc-field-form/es/interface";
-import { message } from "antd";
+import dayjs from 'dayjs';
+import { MD5 } from 'object-hash';
+import { RuleObject } from 'rc-field-form/es/interface';
+import { message } from 'antd';
 
-import { Answer, QuestionnaireContentType, QuestionnaireWithAnswer } from "@/components/Questionnaire/questionnaire";
-import { RQuestionnaireResponse, RQuestionnaireWithAnswer } from "@/response";
+import { Answer, QuestionnaireContentType, QuestionnaireWithAnswer } from '@/components/Questionnaire/questionnaire';
+import { RQuestionnaireResponse, RQuestionnaireWithAnswer } from '@/response';
 
-export function hashItemId(id: string, salt = "") {
+export function hashItemId(id: string, salt = '') {
   return MD5(id + salt).slice(0, 7);
 }
 
@@ -18,7 +18,7 @@ export function hashItemId(id: string, salt = "") {
  * @returns
  */
 export function hashName(id: string) {
-  return "_" + hashItemId(id, Math.random().toFixed(15));
+  return '_' + hashItemId(id, Math.random().toFixed(15));
 }
 
 export function isRequired(rules: RuleObject[]): boolean {
@@ -26,7 +26,7 @@ export function isRequired(rules: RuleObject[]): boolean {
 }
 
 export function getLengthObject(rules: RuleObject[]): RuleObject | undefined {
-  const lengthObject = rules.find((rule) => typeof rule.max !== "undefined" || typeof rule.min !== "undefined");
+  const lengthObject = rules.find((rule) => typeof rule.max !== 'undefined' || typeof rule.min !== 'undefined');
   if (!lengthObject) {
     return;
   }
@@ -35,7 +35,7 @@ export function getLengthObject(rules: RuleObject[]): RuleObject | undefined {
 
 export function stripRulesLengthMessage(rules: RuleObject[]): RuleObject[] {
   for (const rule of rules) {
-    if (typeof rule.min !== "undefined" || typeof rule.max !== "undefined") {
+    if (typeof rule.min !== 'undefined' || typeof rule.max !== 'undefined') {
       delete rule.message;
       break;
     }
@@ -50,15 +50,15 @@ export function stripItemsLengthMessage(items: QuestionnaireContentType[]): Ques
   return items;
 }
 
-export function setRuleLengthMessage(rule: RuleObject, name = "长度"): RuleObject | undefined {
-  if (typeof rule.min === "undefined" && typeof rule.max === "undefined") {
+export function setRuleLengthMessage(rule: RuleObject, name = '长度'): RuleObject | undefined {
+  if (typeof rule.min === 'undefined' && typeof rule.max === 'undefined') {
     return;
   }
-  if (typeof rule.min === "undefined") {
+  if (typeof rule.min === 'undefined') {
     rule.message = `${name}不能大于${rule.max}`;
     return rule;
   }
-  if (typeof rule.max === "undefined") {
+  if (typeof rule.max === 'undefined') {
     rule.message = `${name}不能小于${rule.min}`;
     return rule;
   }
@@ -70,7 +70,7 @@ export function setRuleLengthMessage(rule: RuleObject, name = "长度"): RuleObj
   return rule;
 }
 
-export function setRulesLengthMessage(rules: RuleObject[], name = "长度"): RuleObject[] {
+export function setRulesLengthMessage(rules: RuleObject[], name = '长度'): RuleObject[] {
   for (const rule of rules) {
     if (setRuleLengthMessage(rule, name)) {
       break;
@@ -81,16 +81,16 @@ export function setRulesLengthMessage(rules: RuleObject[], name = "长度"): Rul
 
 export function setItemsLengthMessage(items: QuestionnaireContentType[]): void {
   const map: {
-    [K in QuestionnaireContentType["typename"]]?: string
+    [K in QuestionnaireContentType['typename']]?: string
   } = {
-    checkboxgroup: "选项数",
+    checkboxgroup: '选项数',
   };
   for (const item of items) {
     setRulesLengthMessage(item.rules, map[item.typename]);
   }
 }
 
-export function setRequiredMessage(rules: RuleObject[], message = "必填项"): RuleObject[] {
+export function setRequiredMessage(rules: RuleObject[], message = '必填项'): RuleObject[] {
   for (const rule of rules) {
     if (rule.required) {
       rule.message = message;
@@ -103,7 +103,7 @@ export function setRequiredMessage(rules: RuleObject[], message = "必填项"): 
 
 export function toggleRequired(rules: RuleObject[]): RuleObject[] {
   const hasRequireSet = rules.some((rule) => {
-    if (typeof rule.required === "undefined") {
+    if (typeof rule.required === 'undefined') {
       return false;
     }
     rule.required = !rule.required;
@@ -112,7 +112,7 @@ export function toggleRequired(rules: RuleObject[]): RuleObject[] {
   if (!hasRequireSet) {
     rules.unshift({
       required: true,
-      message: "必填项",
+      message: '必填项',
     });
   }
   return rules;
@@ -120,12 +120,12 @@ export function toggleRequired(rules: RuleObject[]): RuleObject[] {
 
 export function checkQuestionnaireValid(content: Array<QuestionnaireContentType>): void {
   if (!Array.isArray(content)) {
-    throw "Error";
+    throw 'Error';
   }
 }
 
 export function getRegExpFromString(reg?: string | RegExp): RegExp | undefined {
-  if (typeof reg === "string" && reg.startsWith("/") && reg.endsWith("/")) {
+  if (typeof reg === 'string' && reg.startsWith('/') && reg.endsWith('/')) {
     reg = reg.slice(1, reg.length - 1);
   }
   return reg ? RegExp(reg) : undefined;
@@ -133,7 +133,7 @@ export function getRegExpFromString(reg?: string | RegExp): RegExp | undefined {
 
 export function addHour(d: string, hour: number): string {
   return dayjs(d).
-    add(hour, "h").
+    add(hour, 'h').
     toDate().
     toLocaleString();
 }
@@ -143,22 +143,22 @@ export function addHour(d: string, hour: number): string {
  */
 export function unifyQuestionnaire(questionnaire: RQuestionnaireResponse): RQuestionnaireResponse {
   try {
-    questionnaire.content = typeof questionnaire.content === "string"
+    questionnaire.content = typeof questionnaire.content === 'string'
       ? JSON.parse(questionnaire.content)
       : questionnaire.content;
-    questionnaire.createdAt = typeof questionnaire.createdAt === "string"
+    questionnaire.createdAt = typeof questionnaire.createdAt === 'string'
       ? addHour(questionnaire.createdAt, 8)
       : questionnaire.createdAt;
     for (const item of (questionnaire.content || [])) {
       for (const rule of item.rules) {
         setRuleLengthMessage(rule);
-        if (rule.pattern && typeof rule.pattern === "string") {
+        if (rule.pattern && typeof rule.pattern === 'string') {
           rule.pattern = getRegExpFromString(rule.pattern);
         }
       }
     }
   } catch {
-    message.error("问卷错误", 3);
+    message.error('问卷错误', 3);
     questionnaire.content = [];
   }
   return questionnaire;
@@ -171,7 +171,7 @@ export function unifyQuestionnaireWithAnswer(questionnaire: RQuestionnaireWithAn
   }
   for (const pollAnswer of questionnaire.pollAnswers) {
     const { answer } = pollAnswer;
-    if (typeof answer === "string") {
+    if (typeof answer === 'string') {
       try {
         pollAnswer.answer = JSON.parse(answer);
       } catch {

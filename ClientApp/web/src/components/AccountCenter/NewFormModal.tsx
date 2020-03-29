@@ -1,8 +1,8 @@
-import React from "react";
-import { Form, Input, Modal, Switch } from "antd";
-import { Store } from "rc-field-form/es/interface";
+import React from 'react';
+import { Form, Input, Modal, Switch } from 'antd';
+import { Store } from 'rc-field-form/es/interface';
 
-import { descriptionRules, titleRules } from "@/shared/validate";
+import { descriptionRules, titleRules } from '@/shared/validate';
 
 interface NewFormModalReceivedProps {
   visible?: boolean
@@ -30,7 +30,7 @@ const NewFormModal = ({ visible, onCancel, onCreate }: NewFormModalProps) => {
             onCreate(values);
           }).
           catch((info) => {
-            console.log("Validate Failed:", info);
+            console.log('Validate Failed:', info);
           });
       }}
     >

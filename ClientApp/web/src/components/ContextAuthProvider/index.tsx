@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
-import { connect } from "react-redux";
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
 
-import { AuthContextType, Provider } from "@/contexts/auth";
-import { Disp } from "@/types";
-import { ApplicationState } from "@/reducers/state";
-import { AuthAction } from "@/actions/action-auth";
+import { AuthContextType, Provider } from '@/contexts/auth';
+import { Disp } from '@/types';
+import { ApplicationState } from '@/reducers/state';
+import { AuthAction } from '@/actions/action-auth';
 
 type ContextAuthProviderDispatch = Disp<ApplicationState, null, AuthAction>
 
@@ -36,9 +36,9 @@ const ContextAuthProvider = ({ children, register, login, logout }: ContextAuthP
 };
 
 const mapDispatchToProps = (dispatch: ContextAuthProviderDispatch): ContextAuthProviderOwnDispatchProps => ({
-  register: (user) => import("@/actions").then(({ iu }) => dispatch(iu.register(user))),
-  login: (user) => import("@/actions").then(({ iu }) => dispatch(iu.login(user))),
-  logout: () => import("@/actions").then(({ iu }) => dispatch(iu.logout())),
+  register: (user) => import('@/actions').then(({ iu }) => dispatch(iu.register(user))),
+  login: (user) => import('@/actions').then(({ iu }) => dispatch(iu.login(user))),
+  logout: () => import('@/actions').then(({ iu }) => dispatch(iu.logout())),
 });
 
 export default connect(null, mapDispatchToProps)(ContextAuthProvider);

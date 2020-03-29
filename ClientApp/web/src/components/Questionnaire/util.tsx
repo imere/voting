@@ -1,21 +1,21 @@
-import React from "react";
+import React from 'react';
 
-import QCheckBoxGroup from "@/components/Questionnaire/Components/QCheckBoxGroup";
-import QInput from "@/components/Questionnaire/Components/QInput";
-import WrapModify from "@/components/Questionnaire/WrapModify";
-import EditQCheckBoxGroup from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQCheckBoxGroup";
-import EditQInput from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQInput";
-import WrapNormal from "@/components/Questionnaire/WrapNormal";
-import { QuestionnaireContentType, TypeCheckBoxGroup, TypeInput } from "@/components/Questionnaire/questionnaire";
+import QCheckBoxGroup from '@/components/Questionnaire/Components/QCheckBoxGroup';
+import QInput from '@/components/Questionnaire/Components/QInput';
+import WrapModify from '@/components/Questionnaire/WrapModify';
+import EditQCheckBoxGroup from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQCheckBoxGroup';
+import EditQInput from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQInput';
+import WrapNormal from '@/components/Questionnaire/WrapNormal';
+import { QuestionnaireContentType, TypeCheckBoxGroup, TypeInput } from '@/components/Questionnaire/questionnaire';
 
-import { hashName, setRulesLengthMessage, toggleRequired } from "./data-util";
+import { hashName, setRulesLengthMessage, toggleRequired } from './data-util';
 
 type QItemMapType = {
-  [K in QuestionnaireContentType["typename"]]: React.ComponentType<any>;
+  [K in QuestionnaireContentType['typename']]: React.ComponentType<any>;
 };
 export const QItemMap: QItemMapType = {
-  "input": QInput,
-  "checkboxgroup": QCheckBoxGroup,
+  'input': QInput,
+  'checkboxgroup': QCheckBoxGroup,
 };
 
 export function renderQItems(edit: boolean, items: Array<QuestionnaireContentType>): any[] {
@@ -40,26 +40,26 @@ export function renderQItems(edit: boolean, items: Array<QuestionnaireContentTyp
 }
 
 type QItemDefaultDataType = {
-  [K in QuestionnaireContentType["typename"]]: () => QuestionnaireContentType
+  [K in QuestionnaireContentType['typename']]: () => QuestionnaireContentType
 }
 export const QItemDefaultData: QItemDefaultDataType = {
-  "input": () => ({
-    typename: "input",
-    label: "label",
-    name: hashName("input"),
+  'input': () => ({
+    typename: 'input',
+    label: 'label',
+    name: hashName('input'),
     rules: toggleRequired(
       setRulesLengthMessage([
-        { whitespace: true, message: "不能为空" },
+        { whitespace: true, message: '不能为空' },
         { min: 0 },
       ])
     ),
   }),
-  "checkboxgroup": () => ({
-    typename: "checkboxgroup",
-    label: "label",
-    name: hashName("checkboxgroup"),
+  'checkboxgroup': () => ({
+    typename: 'checkboxgroup',
+    label: 'label',
+    name: hashName('checkboxgroup'),
     value: [],
-    options: ["default"],
+    options: ['default'],
     rules: toggleRequired([]),
   }),
 };
@@ -67,16 +67,16 @@ export const QItemDefaultData: QItemDefaultDataType = {
 // type QItemDataFactoryType = {
 //   [K in QuestionnaireContentType["typename"]]: (prop: any) => any
 // }
-type QItemDataParam<T> = Omit<T, "typename" | "name"> & { name?: string }
+type QItemDataParam<T> = Omit<T, 'typename' | 'name'> & { name?: string }
 export const QItemDataFactory = {
-  "input": ({ label, ...rest }: QItemDataParam<TypeInput>): TypeInput => ({
-    typename: "input",
+  'input': ({ label, ...rest }: QItemDataParam<TypeInput>): TypeInput => ({
+    typename: 'input',
     label,
     name: hashName(label),
     ...rest,
   }),
-  "checkboxgroup": ({ label, ...rest }: QItemDataParam<TypeCheckBoxGroup>): TypeCheckBoxGroup => ({
-    typename: "checkboxgroup",
+  'checkboxgroup': ({ label, ...rest }: QItemDataParam<TypeCheckBoxGroup>): TypeCheckBoxGroup => ({
+    typename: 'checkboxgroup',
     label,
     name: hashName(label),
     ...rest,
@@ -85,6 +85,6 @@ export const QItemDataFactory = {
 
 type ButtonEditContentType = QItemMapType
 export const ButtonEditContentMap: ButtonEditContentType = {
-  "input": EditQInput,
-  "checkboxgroup": EditQCheckBoxGroup,
+  'input': EditQInput,
+  'checkboxgroup': EditQCheckBoxGroup,
 };

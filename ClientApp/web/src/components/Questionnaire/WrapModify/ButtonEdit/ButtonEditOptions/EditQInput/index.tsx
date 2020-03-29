@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 
-import Layout from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/Layout";
-import LengthRange from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/LengthRange";
-import { TypeInput } from "@/components/Questionnaire/questionnaire";
-import { QEventBus } from "@/components/Questionnaire/QEventBus";
+import Layout from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/Layout';
+import LengthRange from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/LengthRange';
+import { TypeInput } from '@/components/Questionnaire/questionnaire';
+import { QEventBus } from '@/components/Questionnaire/QEventBus';
 
-import DefaultValue from "./DefaultValue";
+import DefaultValue from './DefaultValue';
 
 interface EditQInputReceivedProps {
   ctx: QEventBus
-  name: TypeInput["name"]
+  name: TypeInput['name']
 }
 
 type EditQInputProps = EditQInputReceivedProps

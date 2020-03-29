@@ -1,10 +1,10 @@
-import React from "react";
-import { Layout } from "antd";
+import React from 'react';
+import { Layout } from 'antd';
 
-import ContentComponent from "@/components/Content";
-import HeaderComponent from "@/components/Header";
-import TopOrSideMenu from "@/components/TopOrSideMenu";
-import FooterComponent from "@/layouts/Footer";
+import ContentComponent from '@/components/Content';
+import HeaderComponent from '@/components/Header';
+import TopOrSideMenu from '@/components/TopOrSideMenu';
+import FooterComponent from '@/layouts/Footer';
 
 interface TopMenuLayoutReceivedProps {
   header: React.ReactNode;
@@ -14,7 +14,7 @@ interface TopMenuLayoutReceivedProps {
 type TopMenuLayoutProps = TopMenuLayoutReceivedProps;
 
 const TopMenuLayout: React.FC<TopMenuLayoutProps> = ({ header, content }: TopMenuLayoutProps) => (
-  <Layout style={{ "minHeight": "100vh" }}>
+  <Layout style={{ 'minHeight': '100vh' }}>
 
     <HeaderComponent mode="horizontal">
       <TopOrSideMenu mode="horizontal" />

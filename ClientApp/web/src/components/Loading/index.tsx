@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import Fallback from "../Fallback";
+import Fallback from '../Fallback';
 
 interface LoadingReceivedProps {
   children: React.ReactElement

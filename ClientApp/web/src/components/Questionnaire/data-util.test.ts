@@ -1,4 +1,4 @@
-import { hashItemId } from "./data-util";
+import { hashItemId } from './data-util';
 
 let source: number[];
 let salt: string;
@@ -8,7 +8,7 @@ beforeAll(() => {
   salt = Math.random().toString();
 });
 
-test("Function: hashItemId get same hash with same salt", () => {
+test('Function: hashItemId get same hash with same salt', () => {
   expect(
     source.length
   ).toEqual(
@@ -16,7 +16,7 @@ test("Function: hashItemId get same hash with same salt", () => {
   );
 });
 
-test("Function: hashItemId get different hashes with different salt", () => {
+test('Function: hashItemId get different hashes with different salt', () => {
   expect(
     source.every((s) => hashItemId(s as any) !== hashItemId(s as any, salt))
   ).toBe(true);

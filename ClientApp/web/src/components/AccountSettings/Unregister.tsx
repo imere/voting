@@ -1,12 +1,12 @@
-import React from "react";
-import { Button } from "antd";
-import { connect } from "react-redux";
+import React from 'react';
+import { Button } from 'antd';
+import { connect } from 'react-redux';
 
-import { toastMessageByStatus } from "@/shared/toast-message";
-import { Disp } from "@/types";
-import { ApplicationState } from "@/reducers/state";
-import { AuthAction } from "@/actions/action-auth";
-import { deleteUser } from "@/shared/request-util";
+import { toastMessageByStatus } from '@/shared/toast-message';
+import { Disp } from '@/types';
+import { ApplicationState } from '@/reducers/state';
+import { AuthAction } from '@/actions/action-auth';
+import { deleteUser } from '@/shared/request-util';
 
 type UnregisterDispatch = Disp<ApplicationState, null, AuthAction>
 
@@ -56,7 +56,7 @@ class Unregister extends React.PureComponent<UnregisterProps, UnregisterState> {
 }
 
 const mapDispatchToProps = (dispatch: UnregisterDispatch): UnregisterOwnDispatchProps => ({
-  logout: () => import("@/actions").then(({ iu }) => dispatch(iu.logout())),
+  logout: () => import('@/actions').then(({ iu }) => dispatch(iu.logout())),
 });
 
 const UnregisterComponent = connect(null, mapDispatchToProps)(Unregister);

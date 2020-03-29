@@ -1,20 +1,20 @@
-import React from "react";
-import { Switch } from "react-router";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { SiderTheme } from "antd/es/layout/Sider";
-import { connect } from "react-redux";
+import React from 'react';
+import { Switch } from 'react-router';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { SiderTheme } from 'antd/es/layout/Sider';
+import { connect } from 'react-redux';
 
-import HeaderNavComponent from "@/components/HeaderNav";
-import SessionStates from "@/hooks/SessionStates";
-import SideMenuLayout from "@/layouts/SideMenuLayout";
-import TopMenuLayout from "@/layouts/TopMenuLayout";
-import AppRoutes from "@/routes/AppRoutes";
-import { useSessionState } from "@/hooks/useSessionState";
-import { ApplicationState } from "@/reducers/state";
-import { classnames } from "@/shared/classnames";
-import { renderRoutes } from "@/routes/util";
+import HeaderNavComponent from '@/components/HeaderNav';
+import SessionStates from '@/hooks/SessionStates';
+import SideMenuLayout from '@/layouts/SideMenuLayout';
+import TopMenuLayout from '@/layouts/TopMenuLayout';
+import AppRoutes from '@/routes/AppRoutes';
+import { useSessionState } from '@/hooks/useSessionState';
+import { ApplicationState } from '@/reducers/state';
+import { classnames } from '@/shared/classnames';
+import { renderRoutes } from '@/routes/util';
 
-import styles from "./App.module.scss";
+import styles from './App.module.scss';
 
 interface AppOwnStateProps {
   theme: SiderTheme
@@ -38,7 +38,7 @@ function App({ theme }: AppProps) {
 
   const iconProps = {
     className: classnames(
-      styles["header-sider-trigger"],
+      styles['header-sider-trigger'],
       Reflect.get(styles, `header-sider-trigger-${theme}`),
     ),
     onClick: () => toggleCollapsed((v) => !v)

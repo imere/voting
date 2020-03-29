@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { Button, Checkbox, Form, Input } from "antd";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Store, ValidateErrorEntity } from "rc-field-form/es/interface";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import React, { useState } from 'react';
+import { Button, Checkbox, Form, Input } from 'antd';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Store, ValidateErrorEntity } from 'rc-field-form/es/interface';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { Routes } from "@/constants";
-import { AuthAction, RegisterCallback, UserAuthentication } from "@/actions/action-auth";
-import { iu } from "@/actions";
-import { ApplicationState } from "@/reducers/state";
-import { Disp, None, ValidateStatus } from "@/types";
-import { ResponseState } from "@/response";
-import { passwordRules, usernameRules } from "@/shared/validate";
-import { toastMessageByStatus } from "@/shared/toast-message";
+import { Routes } from '@/constants';
+import { AuthAction, RegisterCallback, UserAuthentication } from '@/actions/action-auth';
+import { iu } from '@/actions';
+import { ApplicationState } from '@/reducers/state';
+import { Disp, None, ValidateStatus } from '@/types';
+import { ResponseState } from '@/response';
+import { passwordRules, usernameRules } from '@/shared/validate';
+import { toastMessageByStatus } from '@/shared/toast-message';
 
-import styles from "./AccountRegister.module.scss";
+import styles from './AccountRegister.module.scss';
 
 type AccountRegisterDispatch = Disp<ApplicationState, null, AuthAction>
 
@@ -70,15 +70,15 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
     if (response?.status === 400) {
       response.json().then((res: ResponseState) => {
         if (res.username) {
-          setUsernameStatus("error");
+          setUsernameStatus('error');
           setUsernameHelp(res.username);
         }
         if (res.password) {
-          setPasswordStatus("error");
+          setPasswordStatus('error');
           setPasswordHelp(res.password);
         }
         if (res.data?.username) {
-          setUsernameStatus("error");
+          setUsernameStatus('error');
           setUsernameHelp(res.data.username);
         }
       });
@@ -107,7 +107,7 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
 
   return (
     <Form
-      className={styles["register-form"]}
+      className={styles['register-form']}
       form={form}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
@@ -121,7 +121,7 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
       >
         <Input
           placeholder="用户名"
-          prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
         />
       </Form.Item>
 
@@ -134,7 +134,7 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
         <Input
           type="password"
           placeholder="密码"
-          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
         />
       </Form.Item>
 
@@ -145,14 +145,14 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
         rules={[
           {
             required: true,
-            message: "请再输入一次密码",
+            message: '请再输入一次密码',
           },
           ({ getFieldValue }) => ({
             validator(_rule, value) {
-              if (!value || getFieldValue("password") === value) {
+              if (!value || getFieldValue('password') === value) {
                 return Promise.resolve();
               }
-              return Promise.reject("两次密码不一致");
+              return Promise.reject('两次密码不一致');
             },
           }),
         ]}
@@ -160,7 +160,7 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
         <Input
           type="password"
           placeholder="确认密码"
-          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+          prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
         />
       </Form.Item>
 
@@ -171,17 +171,17 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
           valuePropName="checked"
           rules={[
             (({ getFieldValue }) => ({
-              validateTrigger: ["onChange"],
+              validateTrigger: ['onChange'],
               validator(_, value) {
                 if (value) {
                   return Promise.resolve();
                 }
                 if (
-                  getFieldValue("username") &&
-                  getFieldValue("password") &&
-                  getFieldValue("confirm")
+                  getFieldValue('username') &&
+                  getFieldValue('password') &&
+                  getFieldValue('confirm')
                 ) {
-                  return Promise.reject("需要同意协议");
+                  return Promise.reject('需要同意协议');
                 }
                 return Promise.resolve();
               }
@@ -192,7 +192,7 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
         </Form.Item>
         <a>服务协议</a>
         <Link
-          className={styles["register-form-registered"]}
+          className={styles['register-form-registered']}
           to={Routes.USER_LOGIN}
         >
           已注册?
@@ -201,7 +201,7 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
 
       <Form.Item>
         <Button
-          className={styles["register-form-button"]}
+          className={styles['register-form-button']}
           type="primary"
           htmlType="submit"
           loading={pending || registering}

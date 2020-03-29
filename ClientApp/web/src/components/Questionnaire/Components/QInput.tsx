@@ -1,7 +1,7 @@
-import React from "react";
-import { Input, Form } from "antd";
+import React from 'react';
+import { Input, Form } from 'antd';
 
-import { TypeInput } from "@/components/Questionnaire/questionnaire";
+import { TypeInput } from '@/components/Questionnaire/questionnaire';
 
 export interface QInputReceivedProps extends TypeInput {}
 

@@ -1,11 +1,11 @@
-import React from "react";
-import { Input, InputNumber } from "antd";
+import React from 'react';
+import { Input, InputNumber } from 'antd';
 
-import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
-import { getLengthObject, setRulesLengthMessage } from "@/components/Questionnaire/data-util";
-import { QEventBus } from "@/components/Questionnaire/QEventBus";
+import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
+import { getLengthObject, setRulesLengthMessage } from '@/components/Questionnaire/data-util';
+import { QEventBus } from '@/components/Questionnaire/QEventBus';
 
-import { EditItem } from "./EditItem";
+import { EditItem } from './EditItem';
 
 type LengthRangeReceivedProps = {
   ctx: QEventBus
@@ -19,8 +19,8 @@ const LengthRange = ({ ctx: { getItem, updateItem }, name, lengthName }: LengthR
 
   const item = getItem(name) as QuestionnaireContentType;
 
-  function handleLengthChange(num: number | undefined, minmax: "min" | "max") {
-    if (typeof num === "undefined") {
+  function handleLengthChange(num: number | undefined, minmax: 'min' | 'max') {
+    if (typeof num === 'undefined') {
       return;
     }
 
@@ -28,14 +28,14 @@ const LengthRange = ({ ctx: { getItem, updateItem }, name, lengthName }: LengthR
     if (!length) {
       item.rules.push(length = {});
     }
-    if (minmax === "min") {
+    if (minmax === 'min') {
       length.min = Number(num);
     } else {
       length.max = Number(num);
     }
 
-    if (item.typename === "checkboxgroup") {
-      length.type = "array";
+    if (item.typename === 'checkboxgroup') {
+      length.type = 'array';
     }
 
     setRulesLengthMessage([length], lengthName);
@@ -46,30 +46,30 @@ const LengthRange = ({ ctx: { getItem, updateItem }, name, lengthName }: LengthR
     <EditItem label={lengthName}>
       <Input.Group compact>
         <InputNumber
-          style={{ width: 100, textAlign: "center" }}
+          style={{ width: 100, textAlign: 'center' }}
           type="number"
           placeholder="最小"
           min={0}
           defaultValue={getLengthObject(item.rules)?.min}
-          onChange={(min) => handleLengthChange(min, "min")}
+          onChange={(min) => handleLengthChange(min, 'min')}
         />
         <Input
           style={{
             width: 30,
             borderLeft: 0,
             borderRight: 0,
-            pointerEvents: "none",
+            pointerEvents: 'none',
           }}
           placeholder="~"
           disabled
         />
         <InputNumber
-          style={{ width: 100, textAlign: "center", borderLeft: 0 }}
+          style={{ width: 100, textAlign: 'center', borderLeft: 0 }}
           type="number"
           placeholder="最大"
           min={0}
           defaultValue={getLengthObject(item.rules)?.max}
-          onChange={(max) => handleLengthChange(max, "max")}
+          onChange={(max) => handleLengthChange(max, 'max')}
         />
       </Input.Group>
     </EditItem>

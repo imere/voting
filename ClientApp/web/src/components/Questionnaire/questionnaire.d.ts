@@ -1,8 +1,8 @@
-import { CascaderOptionType } from "antd/es/cascader";
-import { RuleObject } from "rc-field-form/es/interface";
-import { CheckboxOptionType } from "antd/es/checkbox";
-import { RadioGroupButtonStyle } from "antd/es/radio";
-import { OptionCoreData } from "rc-select/es/interface";
+import { CascaderOptionType } from 'antd/es/cascader';
+import { RuleObject } from 'rc-field-form/es/interface';
+import { CheckboxOptionType } from 'antd/es/checkbox';
+import { RadioGroupButtonStyle } from 'antd/es/radio';
+import { OptionCoreData } from 'rc-select/es/interface';
 
 export interface BaseType {
   label: string
@@ -12,24 +12,24 @@ export interface BaseType {
 }
 
 export interface TypeNumber extends BaseType {
-  typename: "number"
+  typename: 'number'
   value?: number
   min?: number
   max?: number
 }
 
 export interface TypeInput extends BaseType {
-  typename: "input"
+  typename: 'input'
   value?: string
 }
 
 export interface TypeTextArea extends BaseType {
-  typename: "textarea"
+  typename: 'textarea'
   value?: string
 }
 
 export interface TypeSwitch extends BaseType {
-  typename: "switch"
+  typename: 'switch'
   value?: boolean
 }
 
@@ -37,73 +37,73 @@ type SliderMarkType = {
   [key: number]: string
 }
 export interface TypeSlider extends BaseType {
-  typename: "slider"
+  typename: 'slider'
   value?: number
   options: SliderMarkType[]
 }
 
 export interface TypeRadio extends BaseType {
-  typename: "radio"
-  type?: "button" | RadioGroupButtonStyle
+  typename: 'radio'
+  type?: 'button' | RadioGroupButtonStyle
   value?: string
   options: CheckboxOptionType[]
 }
 
 export interface TypeCheckBox extends BaseType {
-  typename: "checkbox"
+  typename: 'checkbox'
   value?: boolean
 }
 
 export interface TypeCheckBoxGroup extends BaseType {
-  typename: "checkboxgroup"
+  typename: 'checkboxgroup'
   value: string[]
   options: (CheckboxOptionType | string)[]
 }
 
 export interface TypeRate extends BaseType {
-  typename: "rate"
+  typename: 'rate'
   value?: number
 }
 
 type SelectOptionType = {
-  label: OptionCoreData["label"]
-  value: OptionCoreData["value"]
+  label: OptionCoreData['label']
+  value: OptionCoreData['value']
 }
 export interface TypeSelect extends BaseType {
-  typename: "select"
+  typename: 'select'
   value?: string
   options: SelectOptionType[]
 }
 
 export interface TypeSelectMultiple extends BaseType {
-  typename: "selectmultiple"
+  typename: 'selectmultiple'
   value: string[]
   options: string[]
 }
 
 export interface TypeCascade extends BaseType {
-  typename: "cascade"
+  typename: 'cascade'
   value: string[]
   options: CascaderOptionType[]
 }
 
 export interface TypeDate extends BaseType {
-  typename: "date"
+  typename: 'date'
   value?: string
 }
 
 export interface TypeDateRange extends BaseType {
-  typename: "daterange"
+  typename: 'daterange'
   value: string[]
 }
 
 export interface TypeTime extends BaseType {
-  typename: "time"
+  typename: 'time'
   value?: string
 }
 
 export interface TypeTimeRange extends BaseType {
-  typename: "timerange"
+  typename: 'timerange'
   value: string[]
 }
 
@@ -142,7 +142,7 @@ export interface QuestionnaireResponse extends Questionnaire {
 }
 
 export interface Answer {
-  [name: string]: QuestionnaireContentType["value"]
+  [name: string]: QuestionnaireContentType['value']
 }
 
 export interface QuestionnaireAnswer {

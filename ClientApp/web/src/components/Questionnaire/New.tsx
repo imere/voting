@@ -1,24 +1,24 @@
-import React, { useContext, useState } from "react";
-import { Redirect, useLocation } from "react-router-dom";
-import { LocationDescriptor } from "history";
+import React, { useContext, useState } from 'react';
+import { Redirect, useLocation } from 'react-router-dom';
+import { LocationDescriptor } from 'history';
 
-import { QuestionnaireContext } from "@/contexts/questionnaire";
-import { Questionnaire } from "@/components/Questionnaire/questionnaire";
-import { Routes } from "@/constants";
-import { toastMessageByStatus } from "@/shared/toast-message";
-import { createPoll } from "@/shared/request-util";
+import { QuestionnaireContext } from '@/contexts/questionnaire';
+import { Questionnaire } from '@/components/Questionnaire/questionnaire';
+import { Routes } from '@/constants';
+import { toastMessageByStatus } from '@/shared/toast-message';
+import { createPoll } from '@/shared/request-util';
 
-import QCommon, { Info } from "./QCommon";
-import { stripRulesLengthMessage } from "./data-util";
+import QCommon, { Info } from './QCommon';
+import { stripRulesLengthMessage } from './data-util';
 
 const New: React.FC = () => {
   function getInfo() {
     const params = new URLSearchParams(useLocation().search);
 
     const res = {
-      title: params.get("title"),
-      description: params.get("description") || undefined,
-      isPublic: params.get("public")
+      title: params.get('title'),
+      description: params.get('description') || undefined,
+      isPublic: params.get('public')
     };
 
     try {
@@ -75,7 +75,7 @@ const New: React.FC = () => {
       info={{
         title: info.title,
         description: info.description,
-        isPublic: info.isPublic as any as Info["isPublic"]
+        isPublic: info.isPublic as any as Info['isPublic']
       }}
       onConfirmClick={handleConfirmClick}
       onCancelClick={onCancelClick}

@@ -1,9 +1,9 @@
-import React from "react";
-import { Checkbox, Form } from "antd";
+import React from 'react';
+import { Checkbox, Form } from 'antd';
 
-import { TypeCheckBoxGroup } from "@/components/Questionnaire/questionnaire";
+import { TypeCheckBoxGroup } from '@/components/Questionnaire/questionnaire';
 
-import styels from "./QCheckBoxGroup.module.scss";
+import styels from './QCheckBoxGroup.module.scss';
 
 export interface QCheckBoxGroupReceivedProps extends TypeCheckBoxGroup {}
 

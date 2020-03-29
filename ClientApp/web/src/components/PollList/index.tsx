@@ -1,35 +1,35 @@
-import "./PollList.scss";
+import './PollList.scss';
 
-import React, { useEffect } from "react";
-import { Table } from "antd";
-import { ColumnsType } from "antd/es/table";
-import { GetComponentProps } from "rc-table/es/interface";
-import { useHistory } from "react-router";
+import React, { useEffect } from 'react';
+import { Table } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import { GetComponentProps } from 'rc-table/es/interface';
+import { useHistory } from 'react-router';
 
-import { ResponseState, RQuestionnaireResponse } from "@/response";
-import { Routes } from "@/constants";
-import { toastMessageByStatus } from "@/shared/toast-message";
-import { unifyQuestionnaire } from "@/components/Questionnaire/data-util";
-import { getAllPolls } from "@/shared/request-util";
-import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
+import { ResponseState, RQuestionnaireResponse } from '@/response';
+import { Routes } from '@/constants';
+import { toastMessageByStatus } from '@/shared/toast-message';
+import { unifyQuestionnaire } from '@/components/Questionnaire/data-util';
+import { getAllPolls } from '@/shared/request-util';
+import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 
 const columns: ColumnsType<RQuestionnaireResponse> = [
   {
-    title: "Title",
-    dataIndex: "title",
-    key: "title",
+    title: 'Title',
+    dataIndex: 'title',
+    key: 'title',
     ellipsis: true,
   },
   {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description',
     ellipsis: true,
   },
   {
-    title: "Time",
-    dataIndex: "createdAt",
-    key: "createdAt",
+    title: 'Time',
+    dataIndex: 'createdAt',
+    key: 'createdAt',
   },
 ];
 
@@ -54,7 +54,7 @@ const PollList: React.FunctionComponent = () => {
       const { data } = res;
       const { length } = data;
       for (let i = 0; i < length; i++) {
-        Reflect.set(data[i], "key", i);
+        Reflect.set(data[i], 'key', i);
         unifyQuestionnaire(data[i]);
       }
       setPolls(res.data);
@@ -70,7 +70,7 @@ const PollList: React.FunctionComponent = () => {
   const onRow: GetComponentProps<RQuestionnaireResponse> = (record) => ({
     onClick: () => {
       history.push({
-        pathname: `${Routes.POLL_ANSWER.split(":")[0]}${record.id}`
+        pathname: `${Routes.POLL_ANSWER.split(':')[0]}${record.id}`
       });
     },
   });
@@ -82,7 +82,7 @@ const PollList: React.FunctionComponent = () => {
       showHeader={false}
       columns={columns}
       onRow={onRow}
-      pagination={polls?.length ? { position: "bottom" } : false}
+      pagination={polls?.length ? { position: 'bottom' } : false}
       dataSource={polls}
     />
   );

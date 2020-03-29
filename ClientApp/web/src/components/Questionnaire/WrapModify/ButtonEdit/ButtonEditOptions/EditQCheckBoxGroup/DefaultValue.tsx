@@ -1,16 +1,16 @@
-import React from "react";
-import { Select } from "antd";
-import { SelectValue } from "antd/es/select";
+import React from 'react';
+import { Select } from 'antd';
+import { SelectValue } from 'antd/es/select';
 
-import { TypeCheckBoxGroup } from "@/components/Questionnaire/questionnaire";
-import { QEventBus } from "@/components/Questionnaire/QEventBus";
-import { EditItem } from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/EditItem";
+import { TypeCheckBoxGroup } from '@/components/Questionnaire/questionnaire';
+import { QEventBus } from '@/components/Questionnaire/QEventBus';
+import { EditItem } from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/EditItem';
 
 const { Option } = Select;
 
 interface DefaultValueReceivedProps {
   ctx: QEventBus
-  name: TypeCheckBoxGroup["name"]
+  name: TypeCheckBoxGroup['name']
 }
 
 type DefaultValueProps = DefaultValueReceivedProps

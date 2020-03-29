@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { LocationDescriptor } from "history";
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { LocationDescriptor } from 'history';
 
-import { QuestionnaireContext } from "@/contexts/questionnaire";
-import { ResponseState, RQuestionnaireResponse } from "@/response";
-import { toastMessageByStatus } from "@/shared/toast-message";
-import { Routes } from "@/constants";
-import { getPollByPollId, updatePoll } from "@/shared/request-util";
-import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
+import { QuestionnaireContext } from '@/contexts/questionnaire';
+import { ResponseState, RQuestionnaireResponse } from '@/response';
+import { toastMessageByStatus } from '@/shared/toast-message';
+import { Routes } from '@/constants';
+import { getPollByPollId, updatePoll } from '@/shared/request-util';
+import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 
-import QCommon, { dataSourceHolder, Info } from "./QCommon";
-import { stripItemsLengthMessage, unifyQuestionnaire } from "./data-util";
-import { Questionnaire } from "./questionnaire";
+import QCommon, { dataSourceHolder, Info } from './QCommon';
+import { stripItemsLengthMessage, unifyQuestionnaire } from './data-util';
+import { Questionnaire } from './questionnaire';
 
 interface EditReceivedProps {
   dataSource?: Array<RQuestionnaireResponse>

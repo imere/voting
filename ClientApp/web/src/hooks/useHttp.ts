@@ -1,4 +1,4 @@
-import useFetch, { UseFetch } from "use-http";
+import useFetch, { UseFetch } from 'use-http';
 
 import {
   addAuthorization,
@@ -7,7 +7,7 @@ import {
   shouldAddAuthorization,
   shouldAddCredentials,
   shouldCORS,
-} from "@/shared/request";
+} from '@/shared/request';
 
 // type CustomFetchType = (input: string, init?: RequestInit | undefined) => UseFetch<any>;
 

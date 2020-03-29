@@ -1,14 +1,14 @@
-import { classnames } from "./classnames";
+import { classnames } from './classnames';
 
-test("clasnames", () => {
+test('clasnames', () => {
   const names = [
-    "1",
-    "q",
-    "",
+    '1',
+    'q',
+    '',
     undefined,
-    "2",
-    "3",
+    '2',
+    '3',
     null,
   ];
-  expect(classnames(...names)).toBe("1 q 2 3");
+  expect(classnames(...names)).toBe('1 q 2 3');
 });

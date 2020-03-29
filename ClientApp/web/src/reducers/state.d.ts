@@ -1,7 +1,7 @@
-import { User } from "oidc-client";
-import { SiderTheme } from "antd/es/layout/Sider";
+import { User } from 'oidc-client';
+import { SiderTheme } from 'antd/es/layout/Sider';
 
-import { None } from "@/types";
+import { None } from '@/types';
 
 export interface AuthState {
   pending?: boolean;

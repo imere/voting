@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { Card } from "antd";
-import { DeleteOutlined, EditOutlined, PieChartOutlined } from "@ant-design/icons";
-import { LocationDescriptor } from "history";
+import React, { useState } from 'react';
+import { Card } from 'antd';
+import { DeleteOutlined, EditOutlined, PieChartOutlined } from '@ant-design/icons';
+import { LocationDescriptor } from 'history';
 
-import RedirectTo from "@/components/RedirectTo";
-import { RQuestionnaireResponse } from "@/response";
-import { Routes } from "@/constants";
-import { deletePollById } from "@/shared/request-util";
-import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
+import RedirectTo from '@/components/RedirectTo';
+import { RQuestionnaireResponse } from '@/response';
+import { Routes } from '@/constants';
+import { deletePollById } from '@/shared/request-util';
+import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 
 interface PollReceivedProps extends RQuestionnaireResponse {
   setPolls: React.Dispatch<React.SetStateAction<Array<RQuestionnaireResponse>>>
@@ -29,7 +29,7 @@ const Polls = ({ id, title, description, createdAt, setPolls }: PollProps) => {
   ] = useState<LocationDescriptor<any> | undefined>(undefined);
 
   function handleEditClick() {
-    setRedirectUrl(`${Routes.POLL_EDIT.split(":")[0]}${id}`);
+    setRedirectUrl(`${Routes.POLL_EDIT.split(':')[0]}${id}`);
   }
 
   async function handleDeleteClick() {
@@ -42,7 +42,7 @@ const Polls = ({ id, title, description, createdAt, setPolls }: PollProps) => {
   }
 
   function handleStatisticClick() {
-    setRedirectUrl(`${Routes.POLL_STATISTIC.split(":")[0]}${id}`);
+    setRedirectUrl(`${Routes.POLL_STATISTIC.split(':')[0]}${id}`);
   }
 
   return (

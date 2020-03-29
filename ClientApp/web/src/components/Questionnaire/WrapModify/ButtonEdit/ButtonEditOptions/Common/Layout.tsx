@@ -1,12 +1,12 @@
-import React from "react";
-import { Checkbox, Input } from "antd";
-import { CheckboxChangeEvent } from "antd/es/checkbox";
+import React from 'react';
+import { Checkbox, Input } from 'antd';
+import { CheckboxChangeEvent } from 'antd/es/checkbox';
 
-import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
-import { isRequired, toggleRequired } from "@/components/Questionnaire/data-util";
-import { QEventBus } from "@/components/Questionnaire/QEventBus";
+import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
+import { isRequired, toggleRequired } from '@/components/Questionnaire/data-util';
+import { QEventBus } from '@/components/Questionnaire/QEventBus';
 
-import { EditItem } from "./EditItem";
+import { EditItem } from './EditItem';
 
 type LayoutReceivedProps = {
   children?: React.ReactNode

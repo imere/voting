@@ -1,6 +1,6 @@
-const siderCollapse = "siderCollapse";
+const siderCollapse = 'siderCollapse';
 
-const useTML = "useTML";
+const useTML = 'useTML';
 
 export default {
   siderCollapse,
