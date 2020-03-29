@@ -13,32 +13,32 @@ import {
 } from "@/constants/AuthActions";
 import { None } from "@/types";
 
-declare interface UserAuthentication {
+export interface UserAuthentication {
   username: string
   password: string
   persist?: boolean
 }
 
 
-declare interface RequestRegisterAction extends Action<ActionRegister> { }
-declare interface RequestRegisterSucAction extends Action<ActionRegisterSuc> { }
-declare interface RequestRegisterErrAction extends Action<ActionRegisterErr> { }
-declare type RequestRegisterCompleteAction = RequestRegisterSucAction | RequestRegisterErrAction
+export interface RequestRegisterAction extends Action<ActionRegister> { }
+export interface RequestRegisterSucAction extends Action<ActionRegisterSuc> { }
+export interface RequestRegisterErrAction extends Action<ActionRegisterErr> { }
+export type RequestRegisterCompleteAction = RequestRegisterSucAction | RequestRegisterErrAction
 
 
-declare interface RequestLoginAction extends Action<ActionLogin> { }
-declare interface RequestLoginSucAction extends Action<ActionLoginSuc> {
+export interface RequestLoginAction extends Action<ActionLogin> { }
+export interface RequestLoginSucAction extends Action<ActionLoginSuc> {
   user: User | None;
 }
-declare interface RequestLoginErrAction extends Action<ActionLoginErr> { }
-declare type RequestLoginCompleteAction = RequestLoginSucAction | RequestLoginErrAction
+export interface RequestLoginErrAction extends Action<ActionLoginErr> { }
+export type RequestLoginCompleteAction = RequestLoginSucAction | RequestLoginErrAction
 
 
-declare interface RequestLogoutAction extends Action<ActionLogout> { }
-declare interface RequestLogoutCompleteAction extends Action<ActionLogoutComplete> { }
+export interface RequestLogoutAction extends Action<ActionLogout> { }
+export interface RequestLogoutCompleteAction extends Action<ActionLogoutComplete> { }
 
 
-declare type AuthAction =
+export type AuthAction =
   RequestRegisterAction |
   RequestRegisterCompleteAction |
   RequestLoginAction |
@@ -47,7 +47,7 @@ declare type AuthAction =
   RequestLogoutCompleteAction
 
 
-declare type RegisterCallback = (err: Error | None, res?: Response | None) => any
-declare type LoginCallback = RegisterCallback
-declare type LogoutCallback = (arg: Error | None) => any
-declare type CompleteAuthenticationCallback = (err: Error | None, arg?: User | None) => any
+export type RegisterCallback = (err: Error | None, res?: Response | None) => any
+export type LoginCallback = RegisterCallback
+export type LogoutCallback = (arg: Error | None) => any
+export type CompleteAuthenticationCallback = (err: Error | None, arg?: User | None) => any

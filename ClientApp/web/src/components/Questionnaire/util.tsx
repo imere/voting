@@ -59,7 +59,7 @@ export const QItemDefaultData: QItemDefaultDataType = {
     label: "label",
     name: hashName("checkboxgroup"),
     value: [],
-    options: ["AAAAAA"],
+    options: ["default"],
     rules: toggleRequired([]),
   }),
 };

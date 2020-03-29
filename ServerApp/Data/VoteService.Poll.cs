@@ -57,7 +57,6 @@ namespace vote.Data
         {
             var chain = _context.Poll
                 .Include(p => p.PollProp)
-                .Include(p => p.PollAnswers)
                 .Where(p => p.Id >= startId);
 
             if (null != count)
@@ -88,7 +87,6 @@ namespace vote.Data
         {
             return await _context.Poll
                 .Include(p => p.PollProp)
-                .Include(p => p.PollAnswers)
                 .Where(p => p.Id == pollId)
                 .AsNoTracking()
                 .SingleOrDefaultAsync();
@@ -105,7 +103,6 @@ namespace vote.Data
         {
             return await _context.Poll
                 .Include(p => p.PollProp)
-                .Include(p => p.PollAnswers)
                 .Where(p => p.User.Id == userId)
                 .AsNoTracking()
                 .ToListAsync();
@@ -178,13 +175,23 @@ namespace vote.Data
             return result.Entity;
         }
 
-        public async Task<Poll> DeletePollByIdAndUser(long userId, Poll poll)
+        public async Task<Poll> DeletePollByUserAndId(long userId, Poll poll)
         {
             var result = await _context.Poll.Where(p => p.User.Id == userId).Where(p => p.Id == poll.Id).SingleOrDefaultAsync();
 
             if (null == result) return null;
 
             return await DeletePollById(result);
+        }
+
+        public async Task<Poll> GetPollAndAnswersByPollId(long pollId)
+        {
+            var result = await _context.Poll.AsNoTracking()
+                .Include(p => p.PollProp)
+                .Include(p => p.PollAnswers)
+                .Where(predicate => predicate.Id == pollId)
+                .SingleOrDefaultAsync();
+            return result;
         }
     }
 }

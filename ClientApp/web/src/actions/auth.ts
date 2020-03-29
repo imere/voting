@@ -2,8 +2,8 @@ import { User, UserManager, UserManagerSettings, WebStorageStateStore } from "oi
 
 import { AuthActions, Routes } from "@/constants";
 import { AppThunkAction, None } from "@/types";
-import { Http } from "@/shared";
-import { API_ORIGIN, API_V1_USER, API_V1_USER_LOGIN, API_V1_USER_LOGOUT, HOST } from "@/shared/conf";
+import { API_ORIGIN, HOST } from "@/shared/conf";
+import { createUser, loginUser, logoutUser } from "@/shared/request-util";
 
 import {
   AuthAction,
@@ -56,17 +56,7 @@ class IdentityService {
   register = (user: UserAuthentication, cb?: RegisterCallback): AppThunkAction<AuthAction> => async (dispatch) => {
     dispatch(this.requestRegister());
     try {
-      await Http(API_V1_USER, {
-        "method": "PUT",
-        "body": new Blob([JSON.stringify(user)], {
-          type: "application/json",
-        }),
-      }).
-        then((res) => {
-          if (res.status >= 400) {
-            throw res;
-          }
-        });
+      await createUser(user);
       setTimeout(() => location.href = Routes.USER_LOGIN);
       return dispatch(this.requestRegisterSuc());
     } catch (ex) {
@@ -96,18 +86,7 @@ class IdentityService {
   login = (user: UserAuthentication, cb?: LoginCallback): AppThunkAction<AuthAction> => async (dispatch) => {
     dispatch(this.requestLogin());
     try {
-      await Http(API_V1_USER_LOGIN, {
-        "method": "POST",
-        "headers": {
-          "Content-Type": "application/json",
-        },
-        "body": JSON.stringify(user),
-      }).
-        then((res) => {
-          if (res.status >= 400) {
-            throw res;
-          }
-        });
+      await loginUser(user);
       const result = await this._manager.getUser();
       await this._manager.signinPopup().then(() => location.href = "/");
       return dispatch(this.requestLoginSuc(result));
@@ -144,12 +123,10 @@ class IdentityService {
     "type": AuthActions.LOGOUT_COMPLETE
   })
 
-  logout = (cb?: LogoutCallback): AppThunkAction<AuthAction> => (dispatch) => {
+  logout = (cb?: LogoutCallback): AppThunkAction<AuthAction> => async (dispatch) => {
     dispatch(this.requestLogout());
     try {
-      Http(API_V1_USER_LOGOUT, {
-        method: "POST",
-      });
+      await logoutUser();
       this._manager.signoutRedirect().then(() => {
         cb && cb(null);
       });

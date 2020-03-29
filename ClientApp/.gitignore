@@ -12,6 +12,7 @@ build
 # testing
 docs
 reports
+ChromeDriver*
 
 # uirecorder
 logs

@@ -1,42 +1,39 @@
 import loadable from "@loadable/component";
-import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { List } from "antd";
 
-import { QuestionnaireExtended, ResponseState } from "@/data-types";
-import { API_V1_POLLS_BY_USER } from "@/shared/conf";
+import { ResponseState, RQuestionnaireResponse } from "@/response";
 import { toastMessageByStatus } from "@/shared/toast-message";
-import { Http } from "@/shared";
+import { unifyQuestionnaire } from "@/components/Questionnaire/data-util";
+import { getAllPollsByCurrentUser } from "@/shared/request-util";
+import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
 
 import styles from "./AccountCenter.module.scss";
 import NewFormButton from "./NewFormButton";
 
-const PollsLazy = loadable(
-  () => import("./Polls")
+const PollLazy = loadable(
+  () => import("./Poll")
 );
 
 const AccountCenter = () => {
   const [
     loading,
     setLoading
-  ] = useState(false);
+  ] = useStateBeforeUnMount(false);
 
   const [
     polls,
     setPolls
-  ] = useState<Array<QuestionnaireExtended>>([]);
+  ] = useStateBeforeUnMount<Array<RQuestionnaireResponse>>([]);
 
   async function getPolls() {
     setLoading(true);
-    const response = await Http(API_V1_POLLS_BY_USER);
+    const response = await getAllPollsByCurrentUser();
     if (response.ok) {
-      const res: ResponseState<Array<QuestionnaireExtended>> = await response.json();
-      res.data.forEach((item) => {
-        item.createdAt = dayjs(item.createdAt).
-          add(8, "h").
-          toDate().
-          toLocaleString();
-      });
+      const res: ResponseState<Array<RQuestionnaireResponse>> = await response.json();
+      for (const item of res.data) {
+        unifyQuestionnaire(item);
+      }
       setPolls(res.data);
     }
     toastMessageByStatus(response.status);
@@ -65,7 +62,7 @@ const AccountCenter = () => {
           dataSource={polls}
           renderItem={(item) => (
             <List.Item>
-              <PollsLazy setPolls={setPolls} {...item} />
+              <PollLazy setPolls={setPolls} {...item} />
             </List.Item>
           )}
         />

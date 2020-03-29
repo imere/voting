@@ -48,7 +48,7 @@ namespace vote
                     UpdateAccessTokenClaimsOnRefresh=true,
                     RefreshTokenExpiration = TokenExpiration.Sliding,
                     RefreshTokenUsage = TokenUsage.OneTimeOnly,
-                    AbsoluteRefreshTokenLifetime = 0,
+                    AbsoluteRefreshTokenLifetime = 60 * 60,
 
                     AllowedScopes =
                     {

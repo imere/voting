@@ -7,15 +7,15 @@ import { FetchProviderProps, Provider as FetchProvider } from "use-http";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 
-import * as serviceWorker from "./serviceWorker";
-import ErrorBoundary from "./components/ErrorBoundary";
-import Protected from "./layouts/Protected";
-import { configureStore } from "./store";
-import { initialState } from "./reducers/initial-state";
-import { iu } from "./actions";
-import { Routes } from "./constants";
-import { defaultLoadableOption } from "./shared/conf";
-import { addAuthorization, addCredentials, shouldAddAuthorization, shouldAddCredentials } from "./shared/request";
+import * as serviceWorker from "@/serviceWorker";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import Protected from "@/layouts/Protected";
+import { configureStore } from "@/store";
+import { initialState } from "@/reducers/initial-state";
+import { iu } from "@/actions";
+import { Routes } from "@/constants";
+import { defaultLoadableOption } from "@/shared/conf";
+import { addAuthorization, addCredentials, shouldAddAuthorization, shouldAddCredentials } from "@/shared/request";
 
 const AccountLazy = Loadable(
   () => import("./pages/Account"),
@@ -29,25 +29,22 @@ const AppLazy = Loadable(
 
 import("./index.scss");
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-RegExp.prototype.toJSON || (
-  Reflect.defineProperty(RegExp.prototype, "toJSON", {
-    value: function () {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      return (this as RegExp).toString();
-    }
-  })
-);
+Reflect.defineProperty(RegExp.prototype, "toJSON", {
+  value: function () {
+    return (this as RegExp).toString();
+  }
+});
 
 iu.getUser().then((user) => {
   const baseUrl = document.
-    getElementsByTagName("base")[0].
+    getElementsByTagName("base")[0]?.
     getAttribute("href") as string;
   const history = createBrowserHistory({ "basename": baseUrl });
 
-  window.onerror = window.onunhandledrejection = console.warn.bind(console);
+  window.onerror = window.onunhandledrejection = () => {
+    console.warn.bind(console);
+    return false;
+  };
 
   initialState.auth.user = user;
   const store = configureStore(history, initialState);

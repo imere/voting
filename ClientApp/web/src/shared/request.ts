@@ -1,4 +1,4 @@
-import { ALLOWED_ORIGINS, API_ORIGIN } from "./conf";
+import { AUTHORIZATION_ALLOWED_URLS, CREDENTIAL_ALLOWED_URLS } from "./conf";
 
 export async function addAuthorization(init: RequestInit) {
   const user = await import("@/actions").then(({ iu }) =>  iu.getUser());
@@ -22,12 +22,20 @@ export function shouldCORS(url: string) {
   return !url.startsWith("/") && !url.startsWith(window.location.origin);
 }
 
+// TODO add logic using `control.methods`
 export function shouldAddAuthorization(url: string) {
-  return url.startsWith(API_ORIGIN);
+  return AUTHORIZATION_ALLOWED_URLS.
+    some((control) => control.matchers.
+      some((origin) => url.startsWith(origin))
+    );
 }
 
+// TODO add logic using `control.methods`
 export function shouldAddCredentials(url: string) {
-  return ALLOWED_ORIGINS.some((origin) => url.startsWith(origin));
+  return CREDENTIAL_ALLOWED_URLS.
+    some((control) => control.matchers.
+      some((origin) => url.startsWith(origin))
+    );
 }
 
 type FetchType = (input: RequestInfo, init?: RequestInit | undefined) => Promise<Response>;
@@ -45,10 +53,14 @@ const request: FetchType = async (input, init = {}) => {
 
   if (shouldCORS(url)) {
     addCORS(init);
+  } else {
+    init.mode = "no-cors";
   }
 
   if (shouldAddCredentials(url)) {
     addCredentials(init);
+  } else {
+    init.credentials = "omit";
   }
 
   if (shouldAddAuthorization(url)) {

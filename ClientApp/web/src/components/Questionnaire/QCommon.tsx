@@ -10,12 +10,12 @@ import { Questionnaire } from "@/components/Questionnaire/questionnaire";
 import { Routes } from "@/constants";
 import { QItemDataFactory, QItemDefaultData, renderQItems } from "@/components/Questionnaire/util";
 import { getItemsValues } from "@/components/Questionnaire/data-util";
-import { QuestionnaireExtended } from "@/data-types";
+import { RQuestionnaireResponse } from "@/response";
 import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
 
 import RedirectTo from "../RedirectTo";
 
-export function dataSourceHolder(): QuestionnaireExtended {
+export function dataSourceHolder(): RQuestionnaireResponse {
   return {
     id: NaN,
     title: "Loading...",

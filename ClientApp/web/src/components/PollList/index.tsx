@@ -1,43 +1,61 @@
 import "./PollList.scss";
 
-import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Table } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { GetComponentProps } from "rc-table/lib/interface";
+import { GetComponentProps } from "rc-table/es/interface";
 import { useHistory } from "react-router";
 
-import { API_V1_POLLS } from "@/shared/conf";
-import { QuestionnaireExtended, ResponseState } from "@/data-types";
-import { Http } from "@/shared";
+import { ResponseState, RQuestionnaireResponse } from "@/response";
 import { Routes } from "@/constants";
 import { toastMessageByStatus } from "@/shared/toast-message";
+import { unifyQuestionnaire } from "@/components/Questionnaire/data-util";
+import { getAllPolls } from "@/shared/request-util";
+import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
+
+const columns: ColumnsType<RQuestionnaireResponse> = [
+  {
+    title: "Title",
+    dataIndex: "title",
+    key: "title",
+    ellipsis: true,
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
+    ellipsis: true,
+  },
+  {
+    title: "Time",
+    dataIndex: "createdAt",
+    key: "createdAt",
+  },
+];
 
 const PollList: React.FunctionComponent = () => {
   const history = useHistory();
+
   const [
     loading,
     setLoading
-  ] = useState(false);
+  ] = useStateBeforeUnMount(false);
 
   const [
     polls,
     setPolls
-  ] = useState<Array<QuestionnaireExtended>>([]);
+  ] = useStateBeforeUnMount<Array<RQuestionnaireResponse>>([]);
 
   async function getPolls() {
     setLoading(true);
-    const response = await Http(API_V1_POLLS);
+    const response = await getAllPolls();
     if (response.ok) {
-      const res: ResponseState<Array<QuestionnaireExtended>> = await response.json();
-      let i = 0;
-      for (const poll of res.data) {
-        Reflect.set(poll, "key", i);
-        poll.createdAt = dayjs(poll.createdAt).
-          add(8, "h").
-          toDate().
-          toLocaleString();
-        i++;
+      const res: ResponseState<Array<RQuestionnaireResponse>> = await response.json();
+      const { data } = res;
+      const { length } = data;
+      for (let i = 0; i < length; i++) {
+        Reflect.set(data[i], "key", i);
+        unifyQuestionnaire(data[i]);
       }
       setPolls(res.data);
     }
@@ -49,27 +67,7 @@ const PollList: React.FunctionComponent = () => {
     getPolls();
   }, []);
 
-  const columns: ColumnsType<QuestionnaireExtended> = [
-    {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-      ellipsis: true,
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      ellipsis: true,
-    },
-    {
-      title: "Time",
-      dataIndex: "createdAt",
-      key: "createdAt",
-    },
-  ];
-
-  const onRow: GetComponentProps<QuestionnaireExtended> = (record) => ({
+  const onRow: GetComponentProps<RQuestionnaireResponse> = (record) => ({
     onClick: () => {
       history.push({
         pathname: `${Routes.POLL_ANSWER.split(":")[0]}${record.id}`
@@ -78,7 +76,7 @@ const PollList: React.FunctionComponent = () => {
   });
 
   return (
-    <Table<QuestionnaireExtended>
+    <Table<RQuestionnaireResponse>
       className="poll-list"
       loading={loading}
       showHeader={false}

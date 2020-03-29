@@ -4,8 +4,6 @@ import { CheckboxOptionType } from "antd/es/checkbox";
 import { RadioGroupButtonStyle } from "antd/es/radio";
 import { OptionCoreData } from "rc-select/es/interface";
 
-declare type Status = "show" | "new" | "edit" | "ans"
-
 export interface BaseType {
   label: string
   name: string
@@ -118,14 +116,14 @@ export type QuestionnaireContentType =
   // TypeRadio |
   // TypeCheckBox |
   TypeCheckBoxGroup
-  // TypeRate |
-  // TypeSelect |
-  // TypeSelectMultiple |
-  // TypeCascade |
-  // TypeDate |
-  // TypeDateRange |
-  // TypeTime |
-  // TypeTimeRange
+// TypeRate |
+// TypeSelect |
+// TypeSelectMultiple |
+// TypeCascade |
+// TypeDate |
+// TypeDateRange |
+// TypeTime |
+// TypeTimeRange
 
 export interface Questionnaire {
   title: string
@@ -141,4 +139,20 @@ export interface QuestionnaireUpdate extends Questionnaire {
 export interface QuestionnaireResponse extends Questionnaire {
   id: number
   createdAt: Date
+}
+
+export interface Answer {
+  [name: string]: QuestionnaireContentType["value"]
+}
+
+export interface QuestionnaireAnswer {
+  id: number
+  answer: Answer
+  pollId: number
+  userId: number
+  createdAt: string
+}
+
+export interface QuestionnaireWithAnswer extends QuestionnaireResponse {
+  pollAnswers: Array<QuestionnaireAnswer>
 }

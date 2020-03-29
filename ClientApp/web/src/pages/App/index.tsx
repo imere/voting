@@ -26,7 +26,7 @@ function App({ theme }: AppProps) {
   const [
     collapsed,
     toggleCollapsed
-  ] = useSessionState<boolean>(SessionStates.siderCollapse, true);
+  ] = useSessionState(SessionStates.siderCollapse, true);
 
   const [useTML] = useSessionState(SessionStates.useTML, true);
 

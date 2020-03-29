@@ -1,3 +1,3 @@
 import { ThemeAction } from "./action-theme";
 
-declare type ContextAction = ThemeAction;
+export type ContextAction = ThemeAction;

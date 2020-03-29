@@ -11,35 +11,41 @@ interface EventBus {
 
 export class QEventBus implements EventBus {
 
-  items: Array<QuestionnaireContentType> = []
+  #_items = new Array<QuestionnaireContentType>()
 
-  getItem = (name: string) => this.items.find((item) => item.name === name)
+  get items(): Array<QuestionnaireContentType> {
+    return [...this.#_items];
+  }
+
+  set items(val: Array<QuestionnaireContentType>) {
+    this.#_items = val;
+  }
+
+  getItem = (name: string) => this.#_items.find((v) => v.name === name)
 
   addItem = (item: QuestionnaireContentType) => {
-    this.items = this.items.concat(item);
+    this.#_items = this.#_items.concat(item);
     this.#notify();
   }
 
   removeItem = (name: string) => {
-    this.items = this.items.filter((item) => item.name !== name);
+    this.#_items = this.#_items.filter((v) => v.name !== name);
     this.#notify();
   }
 
   updateItem = ({ name, ...rest }: QuestionnaireContentType) => {
-    for (const item of this.items) {
-      if (item.name !== name) {
-        continue;
-      }
-      delete item.value;
-      Object.assign(item, { name, ...rest });
-      break;
+    const item = this.getItem(name);
+    if (!item) {
+      return;
     }
-    this.items = this.items.concat();
+    delete item.value;
+    Object.assign(item, { name, ...rest });
     this.#notify();
+    return item;
   }
 
   replaceItemsWith = (items: Array<QuestionnaireContentType> = []): void => {
-    this.items = items;
+    this.items = items.concat();
   }
 
   #subscribers = new Set<Function>()

@@ -1,6 +1,6 @@
 import { lset } from "@/shared/storage";
 import { QItemDefaultData } from "@/components/Questionnaire/util";
-import { QuestionnaireExtended } from "@/data-types";
+import { RQuestionnaireResponse } from "@/response";
 
 export function setUser() {
   lset(
@@ -24,7 +24,7 @@ export function setUser() {
   );
 }
 
-function getQuestionnaire(s: any): QuestionnaireExtended {
+function getQuestionnaire(s: any): RQuestionnaireResponse {
   const title = s + Math.random().toFixed(15);
   const description = title;
   return {
@@ -45,7 +45,7 @@ function getQuestionnaire(s: any): QuestionnaireExtended {
   };
 }
 
-function getQuestionnaires(): QuestionnaireExtended[] {
+function getQuestionnaires(): RQuestionnaireResponse[] {
   return [...Array(10).keys()].map((v) => getQuestionnaire(v));
 }
 

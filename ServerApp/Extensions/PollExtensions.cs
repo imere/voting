@@ -14,7 +14,7 @@ namespace vote.Extensions
 {
     public static class PollExtensions
     {
-        public static QuestionnaireResponse ToQuestionnaire(Poll poll)
+        public static QuestionnaireResponse ToQuestionnaireResponse(Poll poll)
         {
             if (null == poll) return null;
 
@@ -28,15 +28,55 @@ namespace vote.Extensions
                 }
             }
 
-            return new QuestionnaireResponse
+            try
             {
-                Id = poll.Id,
-                Title = poll.Title,
-                Description = poll.Description,
-                IsPublic = isPublic,
-                Content = JsonConvert.DeserializeObject(poll.Content),
-                CreatedAt = poll.CreatedAt
-            };
+                return new QuestionnaireResponse
+                {
+                    Id = poll.Id,
+                    Title = poll.Title,
+                    Description = poll.Description,
+                    IsPublic = isPublic,
+                    Content = JsonConvert.DeserializeObject(poll.Content),
+                    CreatedAt = poll.CreatedAt
+                };
+            }
+            catch (JsonSerializationException)
+            {
+                return null;
+            }
+        }
+
+        public static QuestionnaireWithAnswer ToQuestionnaireWithAnswer(Poll poll)
+        {
+            if (null == poll) return null;
+
+            var isPublic = true;
+
+            if (null != poll.PollPropId)
+            {
+                if (false == poll.PollProp.IsPublic)
+                {
+                    isPublic = false;
+                }
+            }
+
+            try
+            {
+                return new QuestionnaireWithAnswer
+                {
+                    Id = poll.Id,
+                    Title = poll.Title,
+                    Description = poll.Description,
+                    IsPublic = isPublic,
+                    Content = JsonConvert.DeserializeObject(poll.Content),
+                    CreatedAt = poll.CreatedAt,
+                    PollAnswers = poll.PollAnswers,
+                };
+            }
+            catch (JsonSerializationException)
+            {
+                return null;
+            }
         }
     }
 }

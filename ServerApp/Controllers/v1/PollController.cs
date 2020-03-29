@@ -34,7 +34,7 @@ namespace vote.Controllers.v1
         public async Task<ActionResult> GetAll()
         {
             var polls = (await _service.GetAllPublicPolls())
-                .Select(poll => PollExtensions.ToQuestionnaire(poll));
+                .Select(poll => PollExtensions.ToQuestionnaireResponse(poll));
 
             return Ok(new ResponseState(polls));
         }
@@ -42,7 +42,7 @@ namespace vote.Controllers.v1
         [HttpGet("p/{pollId}")]
         public async Task<ActionResult> GetByPollId(long pollId)
         {
-            var result = PollExtensions.ToQuestionnaire(await _service.GetPollById(pollId));
+            var result = PollExtensions.ToQuestionnaireResponse(await _service.GetPollById(pollId));
 
             if (null == result) return BadRequest(new ResponseState(null));
 
@@ -64,6 +64,19 @@ namespace vote.Controllers.v1
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost("answer/{pollId}")]
+        public async Task<ActionResult> GetPollAnswersById([FromRoute] long pollId)
+        {
+            var poll = await _service.GetPollAndAnswersByPollId(pollId);
+
+            var result = PollExtensions.ToQuestionnaireWithAnswer(poll);
+
+            if (null == result) return BadRequest(new ResponseState(null));
+
+            return Ok(new ResponseState(result));
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("u")]
         public async Task<ActionResult> GetPollsByCurrentUser()
         {
@@ -82,7 +95,7 @@ namespace vote.Controllers.v1
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut]
-        public async Task<ActionResult<ResponseState>> Add([FromBody] Questionnaire questionnaire)
+        public async Task<ActionResult<ResponseState>> AddPoll([FromBody] Questionnaire questionnaire)
         {
             Poll result = await _service.AddPollByUserId(
                 long.Parse(User.GetSubjectId()),
@@ -95,9 +108,9 @@ namespace vote.Controllers.v1
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
-        public async Task<ActionResult> Update([FromBody] QuestionnaireUpdate questionnaire)
+        public async Task<ActionResult> UpdatePoll([FromBody] QuestionnaireUpdate questionnaire)
         {
-            var result = PollExtensions.ToQuestionnaire(await _service.UpdatePollByUserId(
+            var result = PollExtensions.ToQuestionnaireResponse(await _service.UpdatePollByUserId(
                 long.Parse(User.GetSubjectId()),
                 questionnaire));
 
@@ -108,9 +121,9 @@ namespace vote.Controllers.v1
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete("{pollId}")]
-        public async Task<ActionResult> DeleteById(long pollId)
+        public async Task<ActionResult> DeletePollById(long pollId)
         {
-            await _service.DeletePollByIdAndUser(long.Parse(User.GetSubjectId()), new Poll { Id = pollId });
+            await _service.DeletePollByUserAndId(long.Parse(User.GetSubjectId()), new Poll { Id = pollId });
             return NoContent();
         }
     }

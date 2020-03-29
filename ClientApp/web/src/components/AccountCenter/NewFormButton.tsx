@@ -21,11 +21,11 @@ const NewFormButton = () => {
 
   function onCreate({ title, description, pub }: Store) {
     setVisible(false);
-    const params = new URLSearchParams();
-    title && params.append("title", encodeURIComponent(title));
-    description && params.append("description", encodeURIComponent(description));
-    pub && params.append("public", encodeURIComponent(pub));
-    setParams(params);
+    const p = new URLSearchParams();
+    title && p.append("title", encodeURIComponent(title));
+    description && p.append("description", encodeURIComponent(description));
+    pub && p.append("public", encodeURIComponent(pub));
+    setParams(p);
   }
 
   return (

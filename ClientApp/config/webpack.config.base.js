@@ -62,6 +62,7 @@ if (isProd) {
 
 const baseConfig = {
   "mode": currentEnv,
+  "stats": "errors-warnings",
   "entry": {
     "app": "./web/src/index.tsx",
     "callback": "./web/src/pages/AuthCallback/index.ts",
@@ -138,7 +139,7 @@ const baseConfig = {
     //   excludeWarnings: true,
     //   suppressSuccess: true,
     // }),
-    new webpack.WatchIgnorePlugin([/\.d\.tsx?$/]),
+    // new webpack.WatchIgnorePlugin([/\.d\.tsx?$/]),
     new FriendlyErrorsWebpackPlugin(),
     // new HardSourcePlugin({
     //   // Either an absolute path or relative to webpack's options.context.

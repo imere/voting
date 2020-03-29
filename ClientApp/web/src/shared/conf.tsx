@@ -2,6 +2,7 @@ import React from "react";
 import { Options } from "@loadable/component";
 
 import Fallback from "@/components/Fallback";
+import { HttpMethod } from "@/types";
 
 export const HOST = "http://localhost:5000";
 
@@ -15,28 +16,28 @@ export const API_ORIGIN = "http://localhost:61598";
 export const API_V1_USER = `${API_ORIGIN}/api/v1/user`;
 
 /**
- * [post]
+ * [post] login
  */
 export const API_V1_USER_LOGIN = `${API_V1_USER}/login`;
 
 /**
- * [post]
+ * [post] logout
  */
 export const API_V1_USER_LOGOUT = `${API_V1_USER}/logout`;
 
 /**
  * [get] get all polls
  *
- * [put] create
+ * [put] create poll
  *
- * [post] update
+ * [post] update poll by id
  *
- * [delete] `url/{pollId}` delete
+ * [delete] `url/{pollId}` delete poll by id
  */
 export const API_V1_POLLS = `${API_ORIGIN}/api/v1/poll`;
 
 /**
- * [get] `url/{pollId}`
+ * [get] `url/{pollId}` get poll by id
  */
 export const API_V1_POLL_BY_ID = `${API_V1_POLLS}/p`;
 
@@ -46,11 +47,44 @@ export const API_V1_POLL_BY_ID = `${API_V1_POLLS}/p`;
 export const API_V1_POLLS_BY_USER = `${API_V1_POLLS}/u`;
 
 /**
- * [put] `url/{pollId}` answer a poll
+ * [post] `url/{pollId}` get poll answers by id
+ *
+ * [put] `url/{pollId}` answer a poll by id
  */
 export const API_V1_ANSWER = `${API_V1_POLLS}/answer`;
 
-export const ALLOWED_ORIGINS = [API_ORIGIN];
+interface UrlControl {
+  methods: Array<HttpMethod>
+  matchers: Array<string>
+}
+
+/**
+ * Conditions to add Authorization header
+ */
+export const AUTHORIZATION_ALLOWED_URLS: Array<UrlControl> = [
+  {
+    methods: [
+      "POST",
+      "PUT",
+      "DELETE",
+    ],
+    matchers: [API_ORIGIN],
+  }
+];
+
+/**
+ * Conditions to include credentials
+ */
+export const CREDENTIAL_ALLOWED_URLS: Array<UrlControl> = [
+  {
+    methods: [
+      "POST",
+      "PUT",
+      "DELETE",
+    ],
+    matchers: [API_ORIGIN],
+  }
+];
 
 
 export const defaultLoadableOption: Options<any> = {

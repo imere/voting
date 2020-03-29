@@ -4,22 +4,25 @@ import { sget, sremove, sset } from "@/shared/storage";
 
 const keySet = new Set();
 
-function useSessionState<T = any>(key: string, value: any): [T, React.Dispatch<React.SetStateAction<T>>] {
-  let initial;
-
-  function checkConsistent(oldValue: any, newValue: any) {
-    if (null !== oldValue && typeof oldValue !== typeof newValue) {
-      if (keySet.has(key)) {
-        console.error(`Inconsistent session: ${key} from ${typeof oldValue} to ${typeof newValue}`);
-      } else {
-        keySet.add(key);
-      }
+function checkConsistent(key: string, oldValue: any, newValue: any) {
+  if (null !== oldValue && typeof oldValue !== typeof newValue) {
+    if (keySet.has(key)) {
+      console.warn(`Inconsistent session: ${key} from ${typeof oldValue} to ${typeof newValue}`);
+    } else {
+      keySet.add(key);
     }
   }
+}
+
+/**
+ * store state to session storage
+ */
+function useSessionState<T = any>(key: string, value: T): [T, React.Dispatch<React.SetStateAction<T>>] {
+  let initial;
 
   try {
     initial = JSON.parse(sget(key) as string);
-    checkConsistent(initial, value);
+    checkConsistent(key, initial, value);
   } catch {
     sremove(key);
   }

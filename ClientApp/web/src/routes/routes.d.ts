@@ -7,4 +7,4 @@ type CustomRouteType = {
   redirect?: boolean,
   to?: LocationDescriptor<any>
 }
-declare type RouteArrayType = Array<(Omit<RouteProps, "path"> | Omit<RedirectProps, "path" | "to">) & CustomRouteType>
+export type RouteArrayType = Array<(Omit<RouteProps, "path"> | Omit<RedirectProps, "path" | "to">) & CustomRouteType>

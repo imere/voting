@@ -3,16 +3,16 @@ import { SiderTheme } from "antd/es/layout/Sider";
 
 import { None } from "@/types";
 
-declare interface AuthState {
+export interface AuthState {
   pending?: boolean;
   user?: User | None;
 }
 
-declare interface ContextState {
+export interface ContextState {
   theme: SiderTheme
 }
 
-declare type ApplicationState = {
+export type ApplicationState = {
   context: ContextState;
   auth: AuthState;
 }

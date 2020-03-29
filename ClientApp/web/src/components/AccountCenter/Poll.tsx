@@ -4,13 +4,13 @@ import { DeleteOutlined, EditOutlined, PieChartOutlined } from "@ant-design/icon
 import { LocationDescriptor } from "history";
 
 import RedirectTo from "@/components/RedirectTo";
-import { QuestionnaireExtended } from "@/data-types";
-import { Http } from "@/shared";
-import { API_V1_POLLS } from "@/shared/conf";
+import { RQuestionnaireResponse } from "@/response";
 import { Routes } from "@/constants";
+import { deletePollById } from "@/shared/request-util";
+import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
 
-interface PollReceivedProps extends QuestionnaireExtended {
-  setPolls: React.Dispatch<React.SetStateAction<Array<QuestionnaireExtended>>>
+interface PollReceivedProps extends RQuestionnaireResponse {
+  setPolls: React.Dispatch<React.SetStateAction<Array<RQuestionnaireResponse>>>
 }
 
 type PollProps = PollReceivedProps;
@@ -21,7 +21,7 @@ const Polls = ({ id, title, description, createdAt, setPolls }: PollProps) => {
   const [
     loading,
     setLoading
-  ] = useState(false);
+  ] = useStateBeforeUnMount(false);
 
   const [
     redirectUrl,
@@ -34,9 +34,7 @@ const Polls = ({ id, title, description, createdAt, setPolls }: PollProps) => {
 
   async function handleDeleteClick() {
     setLoading(true);
-    const response = await Http(`${API_V1_POLLS}/${id}`, {
-      method: "DELETE",
-    });
+    const response = await deletePollById(id);
     if (response.ok) {
       setPolls((prev) => prev.filter((item) => item.id !== id));
     }
@@ -44,7 +42,7 @@ const Polls = ({ id, title, description, createdAt, setPolls }: PollProps) => {
   }
 
   function handleStatisticClick() {
-    // setRedirectUrl();
+    setRedirectUrl(`${Routes.POLL_STATISTIC.split(":")[0]}${id}`);
   }
 
   return (

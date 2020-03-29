@@ -23,7 +23,7 @@ const TypeMap = new Proxy({
   get(target, p, receiver) {
     const value = Reflect.get(target, p, receiver);
     if (undefined === value) {
-      if (p.endsWith("[]")) {
+      if (typeof p === "string" && p.endsWith("[]")) {
         return "object";
       }
       return "object";
@@ -90,6 +90,7 @@ traverse(ast, {
           interfaceId,
           superClass,
           t.classBody(body),
+          null
         );
 
         classDec.typeParameters = typeParameters;
@@ -99,6 +100,9 @@ traverse(ast, {
       TSTypeAliasDeclaration(path) {
         path.remove();
       },
+      TSInterfaceDeclaration(path) {
+        path.remove();
+      }
     }, path.scope);
 
     const body = [...path.node.body];
@@ -119,14 +123,14 @@ const { code } = generate(ast, {}, "");
 
 function wrap(code) {
   return "/* Auto generated */\n" +
-  `using System;
+    `using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
   using System.ComponentModel.DataAnnotations;
   using System.ComponentModel.DataAnnotations.Schema;
   using System.Linq;
   using System.Threading.Tasks;\n`.
-    split(/;\s+/).join(";\n") + "\n" + code;
+      split(/;\s+/).join(";\n") + "\n" + code;
 }
 
 fs.writeFileSync(outFile,

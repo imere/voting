@@ -4,19 +4,18 @@ import { useParams } from "react-router";
 import { LocationDescriptor } from "history";
 
 import QCommon, { dataSourceHolder, Info } from "@/components/Questionnaire/QCommon";
-import { QuestionnaireExtended, ResponseState } from "@/data-types";
-import { Http } from "@/shared";
-import { API_V1_ANSWER, API_V1_POLL_BY_ID } from "@/shared/conf";
+import { ResponseState, RQuestionnaireResponse } from "@/response";
 import { toastMessageByStatus } from "@/shared/toast-message";
 import { QuestionnaireContext } from "@/contexts/questionnaire";
 import { Routes } from "@/constants";
 import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
-import { unifyDataSource } from "@/components/Questionnaire/data-util";
+import { unifyQuestionnaire } from "@/components/Questionnaire/data-util";
+import { createAnswerByPollId, getPollByPollId } from "@/shared/request-util";
 
-const Answer: React.FC = () => {
+import { Answer } from "./questionnaire";
+
+const AnswerComponent: React.FC = () => {
   const { pollId } = useParams();
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const id = Number.parseInt(pollId!, 10);
 
   const [
     loading,
@@ -31,18 +30,13 @@ const Answer: React.FC = () => {
   const [
     info,
     setInfo
-  ] = useState<Info>(dataSourceHolder());
+  ] = useStateBeforeUnMount<Info>(dataSourceHolder());
 
   const ctx = useContext(QuestionnaireContext);
 
   async function onFinish(values: Store) {
     setLoading(true);
-    const response = await Http(`${API_V1_ANSWER}/${id}`, {
-      method: "PUT",
-      body: new Blob([JSON.stringify(values)], {
-        type: "application/json; charset=utf-8",
-      }),
-    });
+    const response = await createAnswerByPollId(pollId as string, values as Array<Answer>);
     if (response.ok) {
       setRedirectUrl("/");
     }
@@ -50,12 +44,12 @@ const Answer: React.FC = () => {
     setLoading(false);
   }
 
-  async function getPollById(id: number) {
+  async function getPollById(id: number | string) {
     setLoading(true);
-    const response = await Http(`${API_V1_POLL_BY_ID}/${id}`);
+    const response = await getPollByPollId(id);
     if (response.ok) {
-      const res: ResponseState<QuestionnaireExtended> = await response.json();
-      const dataSource = unifyDataSource(res.data);
+      const res: ResponseState<RQuestionnaireResponse> = await response.json();
+      const dataSource = unifyQuestionnaire(res.data);
       setInfo(dataSource);
       ctx.replaceItemsWith(dataSource.content);
     }
@@ -68,7 +62,7 @@ const Answer: React.FC = () => {
   }
 
   useEffect(() => {
-    getPollById(id);
+    getPollById(pollId as string);
   }, []);
 
   return (
@@ -83,4 +77,4 @@ const Answer: React.FC = () => {
   );
 };
 
-export default Answer;
+export default AnswerComponent;

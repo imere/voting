@@ -1,7 +1,7 @@
 import { FormEvent } from "react";
 
 export function eventTrusted(ev: MouseEvent | FormEvent): boolean {
-  if ("boolean" === typeof ev.isTrusted) {
+  if (typeof ev.isTrusted === "boolean") {
     return ev.isTrusted;
   }
   return true;

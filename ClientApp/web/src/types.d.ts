@@ -3,14 +3,14 @@ import { ThunkDispatch } from "redux-thunk";
 
 import { ApplicationState } from "@/reducers/state";
 
-declare type None = null | undefined
+export type None = null | undefined
 
-declare interface AnyType {
+export interface AnyObject {
   [key: string]: any
   [key: number]: any
 }
 
-declare interface AppThunkAction<TAction> {
+export interface AppThunkAction<TAction> {
   (dispatch: (action: TAction) => void, getState: () => ApplicationState): void;
 }
 
@@ -22,10 +22,12 @@ interface Dispatch<S> {
   <A>(action: A & { type: any }): A & { type: any };
 }
 
-declare type Disp<S, E, A extends Action> = Dispatch<A> & ThunkDispatch<S, E, A>;
+export type Disp<S, E, A extends Action> = Dispatch<A> & ThunkDispatch<S, E, A>;
 
-declare type ThunkAction<R, S, E> = (dispatch: Dispatch<S>, getState: () => S, extraArgument: E) => R;
+export type ThunkAction<R, S, E> = (dispatch: Dispatch<S>, getState: () => S, extraArgument: E) => R;
 
+declare const HttpMethods: ["GET", "POST", "PUT", "DELETE", "PATCH"];
+export type HttpMethod = typeof HttpMethods[number]
 
 declare const ValidateStatuses: ["success", "warning", "error", "validating", ""];
-declare type ValidateStatus = typeof ValidateStatuses[number]
+export type ValidateStatus = typeof ValidateStatuses[number]

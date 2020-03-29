@@ -9,7 +9,7 @@ import { Routes } from "@/constants";
 import { AuthAction, LoginCallback, UserAuthentication } from "@/actions/action-auth";
 import { ApplicationState } from "@/reducers/state";
 import { Disp, ValidateStatus } from "@/types";
-import { ResponseState } from "@/data-types";
+import { ResponseState } from "@/response";
 import { passwordRules, usernameRules } from "@/shared/validate";
 import { toastMessageByStatus } from "@/shared/toast-message";
 
@@ -62,11 +62,11 @@ const AccountLogin = ({ login, pending }: AccountLoginProps) => {
     setLogining
   ] = useState(false);
 
-  const loginCallback: LoginCallback = (_, res) => {
+  const loginCallback: LoginCallback = (_, response) => {
     setLogining(false);
-    toastMessageByStatus(res?.status, [400]);
-    if (res?.status === 400) {
-      res.json().then((res: ResponseState) => {
+    toastMessageByStatus(response?.status, [400]);
+    if (response?.status === 400) {
+      response.json().then((res: ResponseState) => {
         if (res.username) {
           setUsernameStatus("error");
           setUsernameHelp(res.username);

@@ -3,31 +3,29 @@ import { useParams } from "react-router-dom";
 import { LocationDescriptor } from "history";
 
 import { QuestionnaireContext } from "@/contexts/questionnaire";
-import { QuestionnaireExtended, ResponseState } from "@/data-types";
-import { API_V1_POLL_BY_ID, API_V1_POLLS } from "@/shared/conf";
+import { ResponseState, RQuestionnaireResponse } from "@/response";
 import { toastMessageByStatus } from "@/shared/toast-message";
-import { Http } from "@/shared";
 import { Routes } from "@/constants";
+import { getPollByPollId, updatePoll } from "@/shared/request-util";
+import { useStateBeforeUnMount } from "@/hooks/useStateBeforeUnMount";
 
 import QCommon, { dataSourceHolder, Info } from "./QCommon";
-import { stripItemsLengthMessage, unifyDataSource } from "./data-util";
+import { stripItemsLengthMessage, unifyQuestionnaire } from "./data-util";
 import { Questionnaire } from "./questionnaire";
 
 interface EditReceivedProps {
-  dataSource?: Array<QuestionnaireExtended>
+  dataSource?: Array<RQuestionnaireResponse>
 }
 
 type EditProps = EditReceivedProps
 
 const Edit: React.FC<EditProps> = () => {
   const { pollId } = useParams();
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const id = Number.parseInt(pollId!, 10);
 
   const [
     loading,
     setLoading
-  ] = useState(false);
+  ] = useStateBeforeUnMount(false);
 
   const [
     redirectUrl,
@@ -37,7 +35,7 @@ const Edit: React.FC<EditProps> = () => {
   const [
     info,
     setInfo
-  ] = useState<Info>(dataSourceHolder());
+  ] = useStateBeforeUnMount<Info>(dataSourceHolder());
 
   const ctx = useContext(QuestionnaireContext);
 
@@ -46,12 +44,7 @@ const Edit: React.FC<EditProps> = () => {
       ...info,
       content: stripItemsLengthMessage(ctx.items),
     };
-    const response = await Http(API_V1_POLLS, {
-      method: "POST",
-      body: new Blob([JSON.stringify(dataSource)], {
-        type: "application/json; charset=utf-8",
-      }),
-    });
+    const response = await updatePoll(dataSource);
     if (response.ok) {
       setRedirectUrl(Routes.ACCOUNT_CENTER);
     }
@@ -62,12 +55,12 @@ const Edit: React.FC<EditProps> = () => {
     setRedirectUrl(Routes.ACCOUNT_CENTER);
   }
 
-  async function getPollById(id: number) {
+  async function getPollById(id: number | string) {
     setLoading(true);
-    const response = await Http(`${API_V1_POLL_BY_ID}/${id}`);
+    const response = await getPollByPollId(id);
     if (response.ok) {
-      const res: ResponseState<QuestionnaireExtended> = await response.json();
-      const data = unifyDataSource(res.data);
+      const res: ResponseState<RQuestionnaireResponse> = await response.json();
+      const data = unifyQuestionnaire(res.data);
       ctx.replaceItemsWith(data.content);
       setInfo(data);
     }
@@ -76,7 +69,7 @@ const Edit: React.FC<EditProps> = () => {
   }
 
   useEffect(() => {
-    getPollById(id);
+    getPollById(pollId as string);
   }, []);
 
   return (

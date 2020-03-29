@@ -1,16 +1,24 @@
+import dayjs from "dayjs";
 import { MD5 } from "object-hash";
 import { RuleObject } from "rc-field-form/es/interface";
 import { message } from "antd";
 
-import { QuestionnaireContentType } from "@/components/Questionnaire/questionnaire";
-import { QuestionnaireExtended } from "@/data-types";
+import { Answer, QuestionnaireContentType, QuestionnaireWithAnswer } from "@/components/Questionnaire/questionnaire";
+import { RQuestionnaireResponse, RQuestionnaireWithAnswer } from "@/response";
 
 export function hashItemId(id: string, salt = "") {
   return MD5(id + salt).slice(0, 7);
 }
 
+/**
+ * Returns hashed string
+ *
+ * @export
+ * @param {string} id
+ * @returns
+ */
 export function hashName(id: string) {
-  return hashItemId(id, Math.random().toFixed(15));
+  return "_" + hashItemId(id, Math.random().toFixed(15));
 }
 
 export function isRequired(rules: RuleObject[]): boolean {
@@ -23,6 +31,23 @@ export function getLengthObject(rules: RuleObject[]): RuleObject | undefined {
     return;
   }
   return lengthObject;
+}
+
+export function stripRulesLengthMessage(rules: RuleObject[]): RuleObject[] {
+  for (const rule of rules) {
+    if (typeof rule.min !== "undefined" || typeof rule.max !== "undefined") {
+      delete rule.message;
+      break;
+    }
+  }
+  return rules;
+}
+
+export function stripItemsLengthMessage(items: QuestionnaireContentType[]): QuestionnaireContentType[] {
+  for (const item of items) {
+    stripRulesLengthMessage(item.rules);
+  }
+  return items;
 }
 
 export function setRuleLengthMessage(rule: RuleObject, name = "长度"): RuleObject | undefined {
@@ -65,23 +90,6 @@ export function setItemsLengthMessage(items: QuestionnaireContentType[]): void {
   }
 }
 
-export function stripRulesLengthMessage(rules: RuleObject[]): RuleObject[] {
-  for (const rule of rules) {
-    if (typeof rule.min !== "undefined" || typeof rule.max !== "undefined") {
-      delete rule.message;
-      break;
-    }
-  }
-  return rules;
-}
-
-export function stripItemsLengthMessage(items: QuestionnaireContentType[]): QuestionnaireContentType[] {
-  for (const item of items) {
-    stripRulesLengthMessage(item.rules);
-  }
-  return items;
-}
-
 export function setRequiredMessage(rules: RuleObject[], message = "必填项"): RuleObject[] {
   for (const rule of rules) {
     if (rule.required) {
@@ -116,20 +124,32 @@ export function checkQuestionnaireValid(content: Array<QuestionnaireContentType>
   }
 }
 
-export function getRegExpFromString(regStr: string): RegExp {
-  return RegExp(regStr);
+export function getRegExpFromString(reg?: string | RegExp): RegExp | undefined {
+  if (typeof reg === "string" && reg.startsWith("/") && reg.endsWith("/")) {
+    reg = reg.slice(1, reg.length - 1);
+  }
+  return reg ? RegExp(reg) : undefined;
+}
+
+export function addHour(d: string, hour: number): string {
+  return dayjs(d).
+    add(hour, "h").
+    toDate().
+    toLocaleString();
 }
 
 /**
  * Use when server may response without deserializing `content`
  */
-export function unifyDataSource(questionnaire: QuestionnaireExtended): QuestionnaireExtended {
+export function unifyQuestionnaire(questionnaire: RQuestionnaireResponse): RQuestionnaireResponse {
   try {
     questionnaire.content = typeof questionnaire.content === "string"
       ? JSON.parse(questionnaire.content)
       : questionnaire.content;
-    checkQuestionnaireValid(questionnaire.content);
-    for (const item of questionnaire.content) {
+    questionnaire.createdAt = typeof questionnaire.createdAt === "string"
+      ? addHour(questionnaire.createdAt, 8)
+      : questionnaire.createdAt;
+    for (const item of (questionnaire.content || [])) {
       for (const rule of item.rules) {
         setRuleLengthMessage(rule);
         if (rule.pattern && typeof rule.pattern === "string") {
@@ -144,16 +164,34 @@ export function unifyDataSource(questionnaire: QuestionnaireExtended): Questionn
   return questionnaire;
 }
 
+export function unifyQuestionnaireWithAnswer(questionnaire: RQuestionnaireWithAnswer): QuestionnaireWithAnswer {
+  unifyQuestionnaire(questionnaire);
+  if (!questionnaire.content.length) {
+    return questionnaire as any;
+  }
+  for (const pollAnswer of questionnaire.pollAnswers) {
+    const { answer } = pollAnswer;
+    if (typeof answer === "string") {
+      try {
+        pollAnswer.answer = JSON.parse(answer);
+      } catch {
+        pollAnswer.answer = {} as any;
+      }
+    }
+  }
+  return questionnaire as any;
+}
+
 /**
  * Helper to get `items` values ready for antd `Form` values
  */
 export function getItemsValues(items: Array<QuestionnaireContentType>) {
-  const ret = {};
-  items.forEach(({ name, value }) => {
+  const ret: Answer = {};
+  for (const { name, value } of items) {
     Reflect.defineProperty(ret, name, {
       enumerable: true,
       value,
     });
-  });
+  }
   return ret;
 }

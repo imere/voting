@@ -12,7 +12,7 @@ exports.createEslintLoader = (env) => ({
         "configFile": undefined,
         "eslintPath": require.resolve("eslint"),
         "outputReport": {
-          "filePath": require("path").resolve(__dirname, "../../../docs/eslint/checkstyle.xml"),
+          "filePath": require("path").resolve(__dirname, "../../..", "docs/eslint/checkstyle.xml"),
           "formatter": "checkstyle",
         },
       },

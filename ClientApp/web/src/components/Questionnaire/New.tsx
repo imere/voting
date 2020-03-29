@@ -5,9 +5,8 @@ import { LocationDescriptor } from "history";
 import { QuestionnaireContext } from "@/contexts/questionnaire";
 import { Questionnaire } from "@/components/Questionnaire/questionnaire";
 import { Routes } from "@/constants";
-import { API_V1_POLLS } from "@/shared/conf";
 import { toastMessageByStatus } from "@/shared/toast-message";
-import { Http } from "@/shared";
+import { createPoll } from "@/shared/request-util";
 
 import QCommon, { Info } from "./QCommon";
 import { stripRulesLengthMessage } from "./data-util";
@@ -58,12 +57,7 @@ const New: React.FC = () => {
       isPublic: !!info.isPublic,
       content: ctx.items,
     };
-    const response = await Http(API_V1_POLLS, {
-      method: "PUT",
-      body: new Blob([JSON.stringify(dataSource)], {
-        type: "application/json; charset=utf-8",
-      })
-    });
+    const response = await createPoll(dataSource);
     if (response.ok) {
       setRedirectUrl(Routes.ACCOUNT_CENTER);
     }

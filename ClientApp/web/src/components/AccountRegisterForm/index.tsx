@@ -9,8 +9,8 @@ import { Routes } from "@/constants";
 import { AuthAction, RegisterCallback, UserAuthentication } from "@/actions/action-auth";
 import { iu } from "@/actions";
 import { ApplicationState } from "@/reducers/state";
-import { Disp, ValidateStatus } from "@/types";
-import { ResponseState } from "@/data-types";
+import { Disp, None, ValidateStatus } from "@/types";
+import { ResponseState } from "@/response";
 import { passwordRules, usernameRules } from "@/shared/validate";
 import { toastMessageByStatus } from "@/shared/toast-message";
 
@@ -42,7 +42,7 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
   const [
     usernameHelp,
     setUsernameHelp
-  ] = useState<React.ReactNode | undefined>(undefined);
+  ] = useState<React.ReactNode | None>(undefined);
 
   const [
     usernameStatus,
@@ -52,7 +52,7 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
   const [
     passwordHelp,
     setPasswordHelp
-  ] = useState<React.ReactNode | undefined>(undefined);
+  ] = useState<React.ReactNode | None>(undefined);
 
   const [
     passwordStatus,
@@ -64,11 +64,11 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
     setRegistering
   ] = useState(false);
 
-  const registerCallback: RegisterCallback = (_, res) => {
+  const registerCallback: RegisterCallback = (_, response) => {
     setRegistering(false);
-    toastMessageByStatus(res?.status, [400]);
-    if (res?.status === 400) {
-      res.json().then((res: ResponseState) => {
+    toastMessageByStatus(response?.status, [400]);
+    if (response?.status === 400) {
+      response.json().then((res: ResponseState) => {
         if (res.username) {
           setUsernameStatus("error");
           setUsernameHelp(res.username);
@@ -86,9 +86,9 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
   };
 
   function resetHelp() {
-    setUsernameHelp(undefined);
+    setUsernameHelp(null);
     setUsernameStatus(undefined);
-    setPasswordHelp(undefined);
+    setPasswordHelp(null);
     setPasswordStatus(undefined);
   }
 

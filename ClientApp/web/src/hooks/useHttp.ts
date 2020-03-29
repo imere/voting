@@ -24,7 +24,7 @@ function useHttp<T = any>(input: string, init: RequestInit = {}): UseFetch<T> {
     addAuthorization(init);
   }
 
-  return useFetch<T>(input, init);
+  return useFetch(input, init);
 }
 
 export { useHttp };
