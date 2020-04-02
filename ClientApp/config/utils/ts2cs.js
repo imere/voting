@@ -1,42 +1,42 @@
-const fs = require("fs");
-const { join } = require("path");
-const parser = require("@babel/parser");
-const t = require("@babel/types");
-const traverse = require("@babel/traverse").default;
-const generate = require("@babel/generator").default;
-const { upperFirst } = require("lodash");
+const fs = require('fs');
+const { join } = require('path');
+const parser = require('@babel/parser');
+const t = require('@babel/types');
+const traverse = require('@babel/traverse').default;
+const generate = require('@babel/generator').default;
+const { upperFirst } = require('lodash');
 
-const inFile = join(__dirname, "../..", "web/src/components/Questionnaire/questionnaire.d.ts");
-const filename = "Questionnaire";
-const suffix = ".cs";
-const outFile = join(__dirname, "../../..", "/ServerApp/Models", `${filename}${suffix}`);
+const inFile = join(__dirname, '../..', 'web/src/components/Questionnaire/questionnaire.d.ts');
+const filename = 'Questionnaire';
+const suffix = '.cs';
+const outFile = join(__dirname, '../../..', '/ServerApp/Models', `${filename}${suffix}`);
 
 const TypeMap = new Proxy({
-  "Date": "DateTime",
-  "string": "string",
-  "string[]": "ICollection<string>",
-  "boolean": "bool",
-  "boolean[]": "ICollection<bool>",
-  "number": "double",
-  "number[]": "ICollection<double>",
+  'Date': 'DateTime',
+  'string': 'string',
+  'string[]': 'ICollection<string>',
+  'boolean': 'bool',
+  'boolean[]': 'ICollection<bool>',
+  'number': 'double',
+  'number[]': 'ICollection<double>',
 }, {
   get(target, p, receiver) {
     const value = Reflect.get(target, p, receiver);
     if (undefined === value) {
-      if (typeof p === "string" && p.endsWith("[]")) {
-        return "object";
+      if (typeof p === 'string' && p.endsWith('[]')) {
+        return 'object';
       }
-      return "object";
+      return 'object';
     }
     return value;
   }
 });
 
 const ast = parser.parse(
-  fs.readFileSync(inFile, { encoding: "utf8" }),
+  fs.readFileSync(inFile, { encoding: 'utf8' }),
   {
-    sourceType: "module",
-    plugins: ["typescript"],
+    sourceType: 'module',
+    plugins: ['typescript'],
   },
 );
 
@@ -74,7 +74,7 @@ traverse(ast, {
                   null,
                   path.node.typeAnnotation
                 );
-                prop.accessibility = "public";
+                prop.accessibility = 'public';
                 prop.optional = path.node.optional;
                 body.push(prop);
               },
@@ -111,7 +111,7 @@ traverse(ast, {
 
     path.node.body.push(
       t.tsModuleDeclaration(
-        t.identifier("vote.Models"),
+        t.identifier('vote.Models'),
         t.tsModuleBlock(body),
       )
     );
@@ -119,10 +119,10 @@ traverse(ast, {
   }
 });
 
-const { code } = generate(ast, {}, "");
+const { code } = generate(ast, {}, '');
 
 function wrap(code) {
-  return "/* Auto generated */\n" +
+  return '/* Auto generated */\n' +
     `using System;
   using System.Collections.Generic;
   using System.Collections.ObjectModel;
@@ -130,31 +130,31 @@ function wrap(code) {
   using System.ComponentModel.DataAnnotations.Schema;
   using System.Linq;
   using System.Threading.Tasks;\n`.
-      split(/;\s+/).join(";\n") + "\n" + code;
+      split(/;\s+/).join(';\n') + '\n' + code;
 }
 
 fs.writeFileSync(outFile,
   wrap(
     code.
       replace(/public ([a-zA-Z]+?)(\?)?:(?:\s+)?(.+?);$/gm, (match, name, optional, type) => {
-        if (type.includes("\"")) {
-          if (type.includes("|")) {
+        if (type.includes('"')) {
+          if (type.includes('|')) {
             return `public string ${upperFirst(name)} { get; set; }`;
           }
           return `public readonly string ${upperFirst(name)} = ${type};`;
         } else {
-          if (type.includes("string")) {
+          if (type.includes('string')) {
             optional = null;
           }
-          return `public ${TypeMap[type]}${optional ? optional : ""} ${upperFirst(name)} { get; set; }`;
+          return `public ${TypeMap[type]}${optional ? optional : ''} ${upperFirst(name)} { get; set; }`;
         }
       }).
-      replace(/class/g, "public class").
-      replace(/extends/g, ":").
-      replace(/\/\/.+/g, "").
-      replace(/^\s+$/gm, "").
-      replace(/^(.+?)\s+double\s+?(.*Id)/gim, "\t[Required]\n$1 long $2").
-      replace(/^(.+?)\s+bool\?\s(IsPublic.+)$/gim, "$1 bool? $2 = true;")
+      replace(/class/g, 'public class').
+      replace(/extends/g, ':').
+      replace(/\/\/.+/g, '').
+      replace(/^\s+$/gm, '').
+      replace(/^(.+?)\s+double\s+?(.*Id)/gim, '\t[Required]\n$1 long $2').
+      replace(/^(.+?)\s+bool\?\s(IsPublic.+)$/gim, '$1 bool? $2 = true;')
   ),
-  { encoding: "utf8" }
+  { encoding: 'utf8' }
 );

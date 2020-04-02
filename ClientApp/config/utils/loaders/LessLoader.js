@@ -1,39 +1,39 @@
 // @ts-nocheck
-const MiniCSSExtractWebpackPlugin = require("mini-css-extract-plugin");
+const MiniCSSExtractWebpackPlugin = require('mini-css-extract-plugin');
 
 exports.createLessLoader = (env) => ({
-  "test": /\.less$/,
-  "use": (env === "production"
+  'test': /\.less$/,
+  'use': (env === 'production'
     ? [
       {
-        "loader": MiniCSSExtractWebpackPlugin.loader,
+        'loader': MiniCSSExtractWebpackPlugin.loader,
       },
     ]
     : [
       {
-        "loader": "style-loader",
+        'loader': 'style-loader',
       },
     ]
   ).concat([
     {
-      "loader": "cache-loader",
-      "options": {
-        "cacheDirectory": require("../../config").CacheDir,
+      'loader': 'cache-loader',
+      'options': {
+        'cacheDirectory': require('../../config').CacheDir,
       }
     },
     {
-      "loader": "css-loader",
-      "options": {
-        "importLoaders": 2,
+      'loader': 'css-loader',
+      'options': {
+        'importLoaders': 2,
       }
     },
-    "postcss-loader",
+    'postcss-loader',
     {
-      "loader": "less-loader",
-      "options": {
-        "javascriptEnabled": true,
-        "strictMath": false,
-        "noIeCompat": false,
+      'loader': 'less-loader',
+      'options': {
+        'javascriptEnabled': true,
+        'strictMath': false,
+        'noIeCompat': false,
       }
     },
   ]),

@@ -1,24 +1,24 @@
-const fs = require("fs");
-const path = require("path");
-const webpack = require("webpack");
-const ProgressBarPlugin = require("progress-bar-webpack-plugin");
+const fs = require('fs');
+const path = require('path');
+const webpack = require('webpack');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 // const DashboardPlugin = require("webpack-dashboard/plugin");
 // const BuildNotifier = require('webpack-build-notifier');
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const HtmlPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
-const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
-const WorkboxPlugin = require("workbox-webpack-plugin");
-const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin");
-const { VueLoaderPlugin } = require("vue-loader");
-const StylelintPlugin = require("stylelint-webpack-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const HtmlPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
+const StylelintPlugin = require('stylelint-webpack-plugin');
 // const HardSourcePlugin = require("hard-source-webpack-plugin");
-const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
-const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
+const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-const WebpackMerge = require("webpack-merge");
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const WebpackMerge = require('webpack-merge');
 
 const {
   OUTPUT_PATH,
@@ -26,7 +26,7 @@ const {
   DEV_HOST,
   DEV_PORT,
   CssDist
-} = require("./config.js");
+} = require('./config.js');
 
 const {
   EslintLoader,
@@ -41,56 +41,56 @@ const {
   MediaLoader,
   FontLoader,
   VueLoader,
-} = require("./utils/loaders");
+} = require('./utils/loaders');
 
 const ENVS = [
-  "production",
-  "development"
+  'production',
+  'development'
 ];
-const args = require("yargs-parser")(process.argv.slice(2));
-const currentEnv = (ENVS.includes(args.mode)) ? args.mode : "development";
-const isProd = currentEnv === "production";
-require("node-bash-title")(currentEnv);
+const args = require('yargs-parser')(process.argv.slice(2));
+const currentEnv = (ENVS.includes(args.mode)) ? args.mode : 'development';
+const isProd = currentEnv === 'production';
+require('node-bash-title')(currentEnv);
 
 if (isProd) {
-  ["./dist"].forEach((name) => {
+  ['./dist'].forEach((name) => {
     if (fs.existsSync(name)) {
-      fs.rmdirSync(name, { "recursive": true });
+      fs.rmdirSync(name, { 'recursive': true });
     }
   });
 }
 
 const baseConfig = {
-  "mode": currentEnv,
-  "stats": "errors-warnings",
-  "entry": {
-    "app": "./web/src/index.tsx",
-    "callback": "./web/src/pages/AuthCallback/index.ts",
+  'mode': currentEnv,
+  'stats': 'errors-warnings',
+  'entry': {
+    'app': './web/src/index.tsx',
+    'callback': './web/src/pages/AuthCallback/index.ts',
   },
-  "output": {
-    "publicPath": PUBLIC_PATH,
-    "path": OUTPUT_PATH,
+  'output': {
+    'publicPath': PUBLIC_PATH,
+    'path': OUTPUT_PATH,
   },
-  "devServer": {
-    "quiet": true,
-    "host": DEV_HOST,
-    "port": DEV_PORT,
-    "historyApiFallback": {
-      "rewrites": [
+  'devServer': {
+    'quiet': true,
+    'host': DEV_HOST,
+    'port': DEV_PORT,
+    'historyApiFallback': {
+      'rewrites': [
         {
-          "from": /^\/auth-callback$/,
-          "to": "/auth-callback.html",
+          'from': /^\/auth-callback$/,
+          'to': '/auth-callback.html',
         },
         {
-          "from": /.*/,
-          "to": "/index.html",
+          'from': /.*/,
+          'to': '/index.html',
         },
       ],
     },
   },
-  "module": {
+  'module': {
     // "noParse": /jquery|lodash|moment|immutable/,
-    "rules": [
+    'rules': [
       EslintLoader(currentEnv),
       PugLoader(currentEnv),
       CssLoader(currentEnv),
@@ -105,32 +105,32 @@ const baseConfig = {
       VueLoader(currentEnv),
     ],
   },
-  "resolve": {
-    "symlinks": false,
-    "extensions": [
-      ".vue",
-      ".tsx",
-      ".ts",
-      ".mjs",
-      ".jsx",
-      ".js",
+  'resolve': {
+    'symlinks': false,
+    'extensions': [
+      '.vue',
+      '.tsx',
+      '.ts',
+      '.mjs',
+      '.jsx',
+      '.js',
     ],
-    "alias": {
-      "vue$": "vue/dist/vue.esm.js",
-      "hoist-non-react-statics": path.resolve("./node_modules/hoist-non-react-statics"),
-      "react-is": path.resolve("./node_modules/react-is"),
+    'alias': {
+      'vue$': 'vue/dist/vue.esm.js',
+      'hoist-non-react-statics': path.resolve('./node_modules/hoist-non-react-statics'),
+      'react-is': path.resolve('./node_modules/react-is'),
     },
     // "modules": [
     //   path.resolve("./"),
     //   path.resolve("./node_modules"),
     // ],
-    "plugins": [
+    'plugins': [
       new TsconfigPathsPlugin({
-        "configFile": "tsconfig.json"
+        'configFile': 'tsconfig.json'
       }),
     ]
   },
-  "plugins": [
+  'plugins': [
     new ProgressBarPlugin(),
     // new DashboardPlugin(),
     // new BuildNotifier({
@@ -139,7 +139,7 @@ const baseConfig = {
     //   excludeWarnings: true,
     //   suppressSuccess: true,
     // }),
-    // new webpack.WatchIgnorePlugin([/\.d\.tsx?$/]),
+    new webpack.WatchIgnorePlugin([/\.d\.tsx?$/]),
     new FriendlyErrorsWebpackPlugin(),
     // new HardSourcePlugin({
     //   // Either an absolute path or relative to webpack's options.context.
@@ -179,84 +179,84 @@ const baseConfig = {
     new DuplicatePackageCheckerPlugin(),
     new StylelintPlugin({
       configFile: undefined,
-      files: ["**/*.{vue,html,css,sss,less,scss,sass}"],
+      files: ['**/*.{vue,html,css,sss,less,scss,sass}'],
       fix: false,
     }),
     new HtmlPlugin({
       PUBLIC_PATH,
       isProd,
-      id: "__root",
-      "filename": "index.html",
-      "template": "./web/public/index.html",
-      "inject": true,
-      "favicon": "./web/public/favicon.ico",
-      "minify": {
-        "removeComments": isProd,
-        "collapseWhitespace": isProd,
-        "removeAttributeQuotes": isProd,
+      id: '__root',
+      'filename': 'index.html',
+      'template': './web/public/index.html',
+      'inject': true,
+      'favicon': './web/public/favicon.ico',
+      'minify': {
+        'removeComments': isProd,
+        'collapseWhitespace': isProd,
+        'removeAttributeQuotes': isProd,
       },
-      "chunksSortMode": "dependency",
+      'chunksSortMode': 'dependency',
     }),
     new HtmlPlugin({
       PUBLIC_PATH,
       isProd,
-      id: "callback",
-      "filename": "auth-callback.html",
-      "template": "./web/public/index.html",
-      "inject": true,
-      "favicon": "./web/public/favicon.ico",
-      "minify": {
-        "removeComments": isProd,
-        "collapseWhitespace": isProd,
-        "removeAttributeQuotes": isProd,
+      id: 'callback',
+      'filename': 'auth-callback.html',
+      'template': './web/public/index.html',
+      'inject': true,
+      'favicon': './web/public/favicon.ico',
+      'minify': {
+        'removeComments': isProd,
+        'collapseWhitespace': isProd,
+        'removeAttributeQuotes': isProd,
       },
-      "chunksSortMode": "dependency",
+      'chunksSortMode': 'dependency',
     }),
     new CopyPlugin([
-      { "from": "./web/public/robots.txt", "to": "." },
-      { "from": "./web/public/*.png", "to": ".", "flatten": true },
+      { 'from': './web/public/robots.txt', 'to': '.' },
+      { 'from': './web/public/*.png', 'to': '.', 'flatten': true },
     ]),
     new MiniCSSExtractPlugin({
-      "filename": isProd
-        ? CssDist("[name].[contenthash:5].css")
-        : CssDist("[name].css"),
-      "chunkFilename": isProd
-        ? CssDist("[name].[contenthash:5].css")
-        : CssDist("[name].css"),
-      "ignoreOrder": false,
+      'filename': isProd
+        ? CssDist('[name].[contenthash:5].css')
+        : CssDist('[name].css'),
+      'chunkFilename': isProd
+        ? CssDist('[name].[contenthash:5].css')
+        : CssDist('[name].css'),
+      'ignoreOrder': false,
     }),
     new WorkboxPlugin.GenerateSW({
       // these options encourage the ServiceWorkers to get in there fast
       // and not allow any straggling "old" SWs to hang around
-      "clientsClaim": true,
-      "skipWaiting": true,
+      'clientsClaim': true,
+      'skipWaiting': true,
     }),
     new BundleAnalyzerPlugin({
-      "analyzerMode": "static",
-      "reportFilename": require("path").resolve(__dirname, "../docs/bundle-analyzer", "report.html"),
-      "openAnalyzer": false,
+      'analyzerMode': 'static',
+      'reportFilename': require('path').resolve(__dirname, '../docs/bundle-analyzer', 'report.html'),
+      'openAnalyzer': false,
     }),
     new VueLoaderPlugin(),
     new AntdDayjsWebpackPlugin({
       replaceMoment: true,
     }),
   ],
-  "node": {
-    "setImmediate": false,
-    "dgram": "empty",
-    "fs": "empty",
-    "net": "empty",
-    "tls": "empty",
-    "child_process": "empty",
+  'node': {
+    'setImmediate': false,
+    'dgram': 'empty',
+    'fs': 'empty',
+    'net': 'empty',
+    'tls': 'empty',
+    'child_process': 'empty',
   },
 };
 
-const mergedConfig = WebpackMerge(baseConfig, require(`./webpack.config.${isProd ? "prod" : "dev"}.js`));
+const mergedConfig = WebpackMerge(baseConfig, require(`./webpack.config.${isProd ? 'prod' : 'dev'}.js`));
 
 module.exports = isProd
   ?
   new SpeedMeasurePlugin({
-    outputFormat: "human"
+    outputFormat: 'human'
   }).wrap(mergedConfig)
   :
   mergedConfig;

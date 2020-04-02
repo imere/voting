@@ -1,17 +1,17 @@
-const MiniCSSExtractWebpackPlugin = require("mini-css-extract-plugin");
+const MiniCSSExtractWebpackPlugin = require('mini-css-extract-plugin');
 
 exports.createVueLoader = (env) => {
-  const isProd = "production" === env;
+  const isProd = 'production' === env;
   return {
     test: /\.vue$/,
-    loader: "vue-loader",
+    loader: 'vue-loader',
     options: {
       loaders: [
         // {
         //   ts: "babel-loader!ts-loader",
         // },
         {
-          loader: "vue-style-loader",
+          loader: 'vue-style-loader',
           options: {
             sourceMap: !isProd,
           },
@@ -20,20 +20,20 @@ exports.createVueLoader = (env) => {
           loader: MiniCSSExtractWebpackPlugin.loader,
         },
         {
-          loader: "css-loader",
+          loader: 'css-loader',
           options: {
             importLoaders: 1,
             sourceMap: !isProd,
           },
         },
         {
-          loader: "postcss-loader",
+          loader: 'postcss-loader',
           options: {
             sourceMap: !isProd,
           },
         },
         {
-          loader: "sass-loader",
+          loader: 'sass-loader',
           options: {
             sourceMap: !isProd,
           },
@@ -41,12 +41,12 @@ exports.createVueLoader = (env) => {
       ],
       transformToRequire: {
         video: [
-          "src",
-          "poster"
+          'src',
+          'poster'
         ],
-        source: "src",
-        img: "src",
-        image: "xlink:href",
+        source: 'src',
+        img: 'src',
+        image: 'xlink:href',
       },
     }
   };

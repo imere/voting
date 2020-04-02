@@ -1,7 +1,7 @@
 exports.createBabelLoader = (env) => ({
-  "test": /\.(j|t)sx?$/,
-  "exclude": /node_modules/,
-  "use": [
+  'test': /\.(j|t)sx?$/,
+  'exclude': /node_modules/,
+  'use': [
     // {
     //   "loader": "cache-loader",
     //   "options": {
@@ -9,7 +9,7 @@ exports.createBabelLoader = (env) => ({
     //   }
     // },
     {
-      "loader": "babel-loader",
+      'loader': 'babel-loader',
     },
   ],
 });
