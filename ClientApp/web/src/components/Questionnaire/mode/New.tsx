@@ -2,16 +2,15 @@ import React, { useContext, useState } from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 import { LocationDescriptor } from 'history';
 
+import QCommon, { Info } from '@/components/Questionnaire/QCommon';
 import { QuestionnaireContext } from '@/contexts/questionnaire';
 import { Questionnaire } from '@/components/Questionnaire/questionnaire';
 import { Routes } from '@/constants';
-import { toastMessageByStatus } from '@/shared/toast-message';
+import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { createPoll } from '@/shared/request-util';
+import { stripRulesLengthMessage } from '@/components/Questionnaire/data-util';
 
-import QCommon, { Info } from './QCommon';
-import { stripRulesLengthMessage } from './data-util';
-
-const New: React.FC = () => {
+const NewComponent: React.FC = () => {
   function getInfo() {
     const params = new URLSearchParams(useLocation().search);
 
@@ -83,4 +82,4 @@ const New: React.FC = () => {
   );
 };
 
-export default New;
+export default NewComponent;

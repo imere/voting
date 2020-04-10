@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
 import { Store } from 'rc-field-form/es/interface';
 
 import { Routes } from '@/constants';
-import { AuthAction, LoginCallback, UserAuthentication } from '@/actions/action-auth';
-import { ApplicationState } from '@/reducers/state';
+import { AuthAction, LoginCallback, UserAuthentication } from '@/store/actions/action-auth';
+import { ApplicationState } from '@/store/state';
 import { Disp, ValidateStatus } from '@/types';
 import { ResponseState } from '@/response';
 import { passwordRules, usernameRules } from '@/shared/validate';
-import { toastMessageByStatus } from '@/shared/toast-message';
+import { toastMessageByStatus } from '@/framework/shared/toast-message';
 
 import styles from './AccountLogin.module.scss';
 
@@ -153,7 +153,7 @@ const mapStateToProps = (state: ApplicationState): AccountLoginOwnStateProps => 
 });
 
 const mapDispatchToProps = (dispatch: AccountLoginDispatch): AccountLoginOwnDispatchProps => ({
-  login: (user, cb) => import('@/actions').then(({ iu }) => dispatch(iu.login(user, cb))),
+  login: (user, cb) => import('@/store/actions').then(({ iu }) => dispatch(iu.login(user, cb))),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountLogin);

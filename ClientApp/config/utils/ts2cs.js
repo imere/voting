@@ -9,7 +9,7 @@ const { upperFirst } = require('lodash');
 const inFile = join(__dirname, '../..', 'web/src/components/Questionnaire/questionnaire.d.ts');
 const filename = 'Questionnaire';
 const suffix = '.cs';
-const outFile = join(__dirname, '../../..', '/ServerApp/Models', `${filename}${suffix}`);
+const outFile = join(__dirname, '../..', '../ServerApp/Models', `${filename}${suffix}`);
 
 const TypeMap = new Proxy({
   'Date': 'DateTime',

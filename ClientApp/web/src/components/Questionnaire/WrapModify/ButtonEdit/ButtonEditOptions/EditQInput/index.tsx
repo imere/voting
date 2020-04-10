@@ -4,6 +4,7 @@ import Layout from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditO
 import LengthRange from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/LengthRange';
 import { TypeInput } from '@/components/Questionnaire/questionnaire';
 import { QEventBus } from '@/components/Questionnaire/QEventBus';
+import { getLengthMessageByType } from '@/components/Questionnaire/data-util';
 
 import DefaultValue from './DefaultValue';
 
@@ -20,7 +21,7 @@ const EditQInput: React.FC<EditQInputProps> = (props: EditQInputProps) => (
   >
     <DefaultValue {...props} />
     <LengthRange
-      lengthName="长度"
+      lengthName={getLengthMessageByType('input')}
       {...props}
     />
   </Layout>

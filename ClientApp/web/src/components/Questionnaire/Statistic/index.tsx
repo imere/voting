@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Card, Collapse } from 'antd';
 import { useParams } from 'react-router';
 
-import { toastMessageByStatus } from '@/shared/toast-message';
+import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { ResponseState, RQuestionnaireWithAnswer } from '@/response';
 import { getAnswersByPollId } from '@/shared/request-util';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
@@ -10,7 +10,7 @@ import { unifyQuestionnaireWithAnswer } from '@/components/Questionnaire/data-ut
 import { None } from '@/types';
 import { QuestionnaireWithAnswer } from '@/components/Questionnaire/questionnaire';
 
-import { statByTypename } from './util';
+import { processQuestionnaireWithAnswer, statByTypename } from './util';
 
 const { Panel } = Collapse;
 const { Meta } = Card;
@@ -60,12 +60,11 @@ const Statistic: React.FC = () => {
       }>
       <Collapse>
         {
-          poll?.content.map((item, i) => (
-            <Panel header={item.label} key={i}>
+          poll && processQuestionnaireWithAnswer(poll).map((data, i) => (
+            <Panel header={data.info.label} key={i}>
               {statByTypename(
-                item.typename, {
-                  item,
-                  answers: poll.pollAnswers
+                data.info.typename, {
+                  data
                 }
               )}
             </Panel>

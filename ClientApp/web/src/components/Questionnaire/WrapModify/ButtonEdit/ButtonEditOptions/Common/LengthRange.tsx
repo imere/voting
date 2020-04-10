@@ -8,6 +8,7 @@ import { QEventBus } from '@/components/Questionnaire/QEventBus';
 import { EditItem } from './EditItem';
 
 type LengthRangeReceivedProps = {
+  negative?: boolean
   ctx: QEventBus
   name: string
   lengthName: string
@@ -15,7 +16,7 @@ type LengthRangeReceivedProps = {
 
 type LengthRangeProps = LengthRangeReceivedProps
 
-const LengthRange = ({ ctx: { getItem, updateItem }, name, lengthName }: LengthRangeProps) => {
+const LengthRange = ({ negative, ctx: { getItem, updateItem }, name, lengthName }: LengthRangeProps) => {
 
   const item = getItem(name) as QuestionnaireContentType;
 
@@ -38,6 +39,10 @@ const LengthRange = ({ ctx: { getItem, updateItem }, name, lengthName }: LengthR
       length.type = 'array';
     }
 
+    if (item.typename === 'number') {
+      length.type = 'number';
+    }
+
     setRulesLengthMessage([length], lengthName);
     updateItem(item);
   }
@@ -49,7 +54,7 @@ const LengthRange = ({ ctx: { getItem, updateItem }, name, lengthName }: LengthR
           style={{ width: 100, textAlign: 'center' }}
           type="number"
           placeholder="最小"
-          min={0}
+          min={negative ? undefined : 0}
           defaultValue={getLengthObject(item.rules)?.min}
           onChange={(min) => handleLengthChange(min, 'min')}
         />

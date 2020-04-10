@@ -1,11 +1,12 @@
 import { Reducer } from 'redux';
 
 import { AuthActions } from '@/constants/index';
-import { AuthAction } from '@/actions/action-auth';
+import { AuthAction } from '@/store/actions/action-auth';
 
-import { AuthState } from './state';
+import { AuthState } from '@/store/state';
+import { initialState } from '@/store/initial-state';
 
-export const auth: Reducer<AuthState, AuthAction> = (state = {}, action): AuthState => {
+export const auth: Reducer<AuthState, AuthAction> = (state = initialState.auth, action): AuthState => {
   switch (action.type) {
   case AuthActions.REGISTER:
     return {
@@ -14,11 +15,6 @@ export const auth: Reducer<AuthState, AuthAction> = (state = {}, action): AuthSt
     };
 
   case AuthActions.REGISTER_SUC:
-    return {
-      ...state,
-      'pending': false,
-    };
-
   case AuthActions.REGISTER_ERR:
     return {
       ...state,
@@ -48,14 +44,14 @@ export const auth: Reducer<AuthState, AuthAction> = (state = {}, action): AuthSt
     return {
       ...state,
       'pending': true,
-      'user': undefined
+      'user': null
     };
 
   case AuthActions.LOGOUT_COMPLETE:
     return {
       ...state,
       'pending': false,
-      'user': undefined
+      'user': null
     };
 
   default:

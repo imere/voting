@@ -1,12 +1,8 @@
-const { compilerOptions } = require('./tsconfig.json');
+const { compilerOptions = {} } = require('./tsconfig.json');
 const alias = {};
-if (compilerOptions) {
-  const { paths } = compilerOptions;
-  if (paths) {
-    for (const k of Object.keys(paths)) {
-      alias[k] = paths[k][0];
-    }
-  }
+const { paths = {} } = compilerOptions;
+for (const k of Object.keys(paths)) {
+  alias[k] = paths[k][0];
 }
 
 module.exports = {

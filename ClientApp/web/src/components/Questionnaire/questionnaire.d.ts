@@ -108,7 +108,7 @@ export interface TypeTimeRange extends BaseType {
 }
 
 export type QuestionnaireContentType =
-  // TypeNumber |
+  TypeNumber |
   TypeInput |
   // TypeTextArea |
   // TypeSwitch |

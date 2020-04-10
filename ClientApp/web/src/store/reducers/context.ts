@@ -1,10 +1,9 @@
 import { Reducer } from 'redux';
 
 import { ThemeActions } from '@/constants';
-import { ContextAction } from '@/actions/action-context';
-
-import { initialState } from './initial-state';
-import { ContextState } from './state';
+import { ContextAction } from '@/store/actions/action-context';
+import { initialState } from '@/store/initial-state';
+import { ContextState } from '@/store/state';
 
 export const context: Reducer<ContextState, ContextAction> = (state = initialState.context, action): ContextState => {
   switch (action.type) {

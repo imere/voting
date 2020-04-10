@@ -1,25 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Store } from 'rc-field-form/es/interface';
+import { useParams } from 'react-router';
 import { LocationDescriptor } from 'history';
 
-import { QuestionnaireContext } from '@/contexts/questionnaire';
+import QCommon, { dataSourceHolder, Info } from '@/components/Questionnaire/QCommon';
 import { ResponseState, RQuestionnaireResponse } from '@/response';
-import { toastMessageByStatus } from '@/shared/toast-message';
+import { toastMessageByStatus } from '@/framework/shared/toast-message';
+import { QuestionnaireContext } from '@/contexts/questionnaire';
 import { Routes } from '@/constants';
-import { getPollByPollId, updatePoll } from '@/shared/request-util';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
+import { unifyQuestionnaire } from '@/components/Questionnaire/data-util';
+import { createAnswerByPollId, getPollByPollId } from '@/shared/request-util';
+import { Answer } from '@/components/Questionnaire/questionnaire';
 
-import QCommon, { dataSourceHolder, Info } from './QCommon';
-import { stripItemsLengthMessage, unifyQuestionnaire } from './data-util';
-import { Questionnaire } from './questionnaire';
-
-interface EditReceivedProps {
-  dataSource?: Array<RQuestionnaireResponse>
-}
-
-type EditProps = EditReceivedProps
-
-const Edit: React.FC<EditProps> = () => {
+const AnswerComponent: React.FC = () => {
   const { pollId } = useParams();
 
   const [
@@ -39,20 +33,14 @@ const Edit: React.FC<EditProps> = () => {
 
   const ctx = useContext(QuestionnaireContext);
 
-  async function onConfirmClick() {
-    const dataSource: Questionnaire = {
-      ...info,
-      content: stripItemsLengthMessage(ctx.items),
-    };
-    const response = await updatePoll(dataSource);
+  async function onFinish(values: Store) {
+    setLoading(true);
+    const response = await createAnswerByPollId(pollId as string, values as Array<Answer>);
     if (response.ok) {
-      setRedirectUrl(Routes.ACCOUNT_CENTER);
+      setRedirectUrl('/');
     }
     toastMessageByStatus(response.status);
-  }
-
-  async function onCancelClick() {
-    setRedirectUrl(Routes.ACCOUNT_CENTER);
+    setLoading(false);
   }
 
   async function getPollById(id: number | string) {
@@ -60,28 +48,32 @@ const Edit: React.FC<EditProps> = () => {
     const response = await getPollByPollId(id);
     if (response.ok) {
       const res: ResponseState<RQuestionnaireResponse> = await response.json();
-      const data = unifyQuestionnaire(res.data);
-      ctx.replaceItemsWith(data.content);
-      setInfo(data);
+      const dataSource = unifyQuestionnaire(res.data);
+      setInfo(dataSource);
+      ctx.replaceItemsWith(dataSource.content);
     }
     toastMessageByStatus(response.status);
     setLoading(false);
   }
 
+  async function onCancelClick() {
+    setRedirectUrl(Routes.POLL_LIST);
+  }
+
   useEffect(() => {
-    getPollById(pollId as string);
+    pollId && getPollById(pollId);
   }, []);
 
   return (
     <QCommon
       redirectUrl={redirectUrl}
-      isEditing={true}
+      isEditing={false}
       loading={loading}
       info={info}
-      onConfirmClick={onConfirmClick}
       onCancelClick={onCancelClick}
+      onFinish={onFinish}
     />
   );
 };
 
-export default Edit;
+export default AnswerComponent;

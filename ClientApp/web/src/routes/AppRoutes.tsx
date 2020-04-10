@@ -1,7 +1,7 @@
 import Loadable from '@loadable/component';
 
 import { Routes } from '@/constants';
-import { defaultLoadableOption } from '@/shared/conf';
+import { defaultLoadableOption } from '@/shared/loadable-conf';
 
 import { RouteArrayType } from './routes';
 
@@ -11,17 +11,17 @@ const PollListLazy = Loadable(
 );
 
 const QuestionnaireNewLazy = Loadable(
-  () => import('@/components/Questionnaire/New'),
+  () => import('@/components/Questionnaire/mode/New'),
   defaultLoadableOption
 );
 
 const QuestionnaireEditLazy = Loadable(
-  () => import('@/components/Questionnaire/Edit'),
+  () => import('@/components/Questionnaire/mode/Edit'),
   defaultLoadableOption
 );
 
 const QuestionnaireAnswerLazy = Loadable(
-  () => import('@/components/Questionnaire/Answer'),
+  () => import('@/components/Questionnaire/mode/Answer'),
   defaultLoadableOption
 );
 

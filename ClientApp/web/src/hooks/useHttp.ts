@@ -7,7 +7,7 @@ import {
   shouldAddAuthorization,
   shouldAddCredentials,
   shouldCORS,
-} from '@/shared/request';
+} from '@/framework/shared/request';
 
 // type CustomFetchType = (input: string, init?: RequestInit | undefined) => UseFetch<any>;
 

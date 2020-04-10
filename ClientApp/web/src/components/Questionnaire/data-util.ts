@@ -50,7 +50,18 @@ export function stripItemsLengthMessage(items: QuestionnaireContentType[]): Ques
   return items;
 }
 
-export function setRuleLengthMessage(rule: RuleObject, name = '长度'): RuleObject | undefined {
+export function getLengthMessageByType(typename: QuestionnaireContentType['typename']) {
+  switch (typename) {
+  case 'checkboxgroup':
+    return '选项数';
+  case 'number':
+    return '数字';
+  default:
+    return '长度';
+  }
+}
+
+export function setRuleLengthMessage(rule: RuleObject, name: string): RuleObject | undefined {
   if (typeof rule.min === 'undefined' && typeof rule.max === 'undefined') {
     return;
   }
@@ -70,7 +81,7 @@ export function setRuleLengthMessage(rule: RuleObject, name = '长度'): RuleObj
   return rule;
 }
 
-export function setRulesLengthMessage(rules: RuleObject[], name = '长度'): RuleObject[] {
+export function setRulesLengthMessage(rules: RuleObject[], name: string): RuleObject[] {
   for (const rule of rules) {
     if (setRuleLengthMessage(rule, name)) {
       break;
@@ -79,15 +90,11 @@ export function setRulesLengthMessage(rules: RuleObject[], name = '长度'): Rul
   return rules;
 }
 
-export function setItemsLengthMessage(items: QuestionnaireContentType[]): void {
-  const map: {
-    [K in QuestionnaireContentType['typename']]?: string
-  } = {
-    checkboxgroup: '选项数',
-  };
+export function setItemsLengthMessage(items: QuestionnaireContentType[]): QuestionnaireContentType[] {
   for (const item of items) {
-    setRulesLengthMessage(item.rules, map[item.typename]);
+    setRulesLengthMessage(item.rules, getLengthMessageByType(item.typename));
   }
+  return items;
 }
 
 export function setRequiredMessage(rules: RuleObject[], message = '必填项'): RuleObject[] {
@@ -118,12 +125,6 @@ export function toggleRequired(rules: RuleObject[]): RuleObject[] {
   return rules;
 }
 
-export function checkQuestionnaireValid(content: Array<QuestionnaireContentType>): void {
-  if (!Array.isArray(content)) {
-    throw 'Error';
-  }
-}
-
 export function getRegExpFromString(reg?: string | RegExp): RegExp | undefined {
   if (typeof reg === 'string' && reg.startsWith('/') && reg.endsWith('/')) {
     reg = reg.slice(1, reg.length - 1);
@@ -146,12 +147,15 @@ export function unifyQuestionnaire(questionnaire: RQuestionnaireResponse): RQues
     questionnaire.content = typeof questionnaire.content === 'string'
       ? JSON.parse(questionnaire.content)
       : questionnaire.content;
+
     questionnaire.createdAt = typeof questionnaire.createdAt === 'string'
       ? addHour(questionnaire.createdAt, 8)
       : questionnaire.createdAt;
+
     for (const item of (questionnaire.content || [])) {
+      const msg=getLengthMessageByType(item.typename);
       for (const rule of item.rules) {
-        setRuleLengthMessage(rule);
+        setRuleLengthMessage(rule, msg);
         if (rule.pattern && typeof rule.pattern === 'string') {
           rule.pattern = getRegExpFromString(rule.pattern);
         }

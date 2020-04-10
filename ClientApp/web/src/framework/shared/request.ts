@@ -1,7 +1,7 @@
-import { AUTHORIZATION_ALLOWED_URLS, CREDENTIAL_ALLOWED_URLS } from './conf';
+import { AUTHORIZATION_ALLOWED_URLS, CREDENTIAL_ALLOWED_URLS } from './api/questionnaire';
 
 export async function addAuthorization(init: RequestInit) {
-  const user = await import('@/actions').then(({ iu }) =>  iu.getUser());
+  const user = await import('@/store/actions').then(({ iu }) =>  iu.getUser());
   if (user) {
     if (!init.headers) {
       init.headers = {};
@@ -45,7 +45,7 @@ const request: FetchType = async (input, init = {}) => {
   init.method = method;
 
   let url: string;
-  if ('string' === typeof input) {
+  if (typeof input === 'string') {
     url = input;
   } else {
     url = input.url;

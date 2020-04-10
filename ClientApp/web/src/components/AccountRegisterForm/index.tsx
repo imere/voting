@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { Routes } from '@/constants';
-import { AuthAction, RegisterCallback, UserAuthentication } from '@/actions/action-auth';
-import { iu } from '@/actions';
-import { ApplicationState } from '@/reducers/state';
+import { AuthAction, RegisterCallback, UserAuthentication } from '@/store/actions/action-auth';
+import { iu } from '@/store/actions';
+import { ApplicationState } from '@/store/state';
 import { Disp, None, ValidateStatus } from '@/types';
 import { ResponseState } from '@/response';
 import { passwordRules, usernameRules } from '@/shared/validate';
-import { toastMessageByStatus } from '@/shared/toast-message';
+import { toastMessageByStatus } from '@/framework/shared/toast-message';
 
 import styles from './AccountRegister.module.scss';
 

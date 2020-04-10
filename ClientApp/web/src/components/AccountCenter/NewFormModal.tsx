@@ -3,6 +3,7 @@ import { Form, Input, Modal, Switch } from 'antd';
 import { Store } from 'rc-field-form/es/interface';
 
 import { descriptionRules, titleRules } from '@/shared/validate';
+import { Logger } from '@/framework/shared/logger';
 
 interface NewFormModalReceivedProps {
   visible?: boolean
@@ -30,7 +31,7 @@ const NewFormModal = ({ visible, onCancel, onCreate }: NewFormModalProps) => {
             onCreate(values);
           }).
           catch((info) => {
-            console.log('Validate Failed:', info);
+            Logger.warn('Validate Failed:', info);
           });
       }}
     >

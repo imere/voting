@@ -84,7 +84,7 @@ export const titleRules: RuleObject[] = toggleRequired(
       max: 20,
     },
     ...commonQRules,
-  ])
+  ], '长度')
 );
 
 export const descriptionRules: RuleObject[] = setRulesLengthMessage([
@@ -92,4 +92,4 @@ export const descriptionRules: RuleObject[] = setRulesLengthMessage([
     max: 100,
   },
   ...commonQRules,
-]);
+], '长度');

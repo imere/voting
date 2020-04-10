@@ -1,19 +1,13 @@
 import React, { useEffect } from 'react';
 
-import {
-  extractAnswersToArray,
-  transformObjectToArrayData,
-  transformToObjectData,
-} from '@/components/Questionnaire/Statistic/util';
-import { Geometry, ChartReceivedProps } from '@/components/Questionnaire/Statistic/statistic';
+import { ChartReceivedProps, Geometry } from '@/components/Questionnaire/Statistic/statistic';
 
 import { HorizontalBar } from './bar';
 
 type BarChartProps = ChartReceivedProps
 
-const BarChart: React.FC<BarChartProps> = ({ item, answers }: BarChartProps) => {
-  let { name } = item;
-  name = '_' + name;
+const BarChart: React.FC<BarChartProps> = ({ data }: BarChartProps) => {
+  const name = '_' + data.name;
 
   const geometry: Geometry = {
     width: 800,
@@ -25,10 +19,6 @@ const BarChart: React.FC<BarChartProps> = ({ item, answers }: BarChartProps) => 
       bottom: 20,
     }
   };
-
-  const data = transformObjectToArrayData(transformToObjectData(
-    extractAnswersToArray(item, answers)
-  ));
 
   useEffect(() => {
     HorizontalBar(`#${name}`, geometry, data);

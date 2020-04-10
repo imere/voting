@@ -1,7 +1,3 @@
-import React from 'react';
-import { Options } from '@loadable/component';
-
-import Fallback from '@/components/Fallback';
 import { HttpMethod } from '@/types';
 
 export const HOST = 'http://localhost:5000';
@@ -85,8 +81,3 @@ export const CREDENTIAL_ALLOWED_URLS: Array<UrlControl> = [
     matchers: [API_ORIGIN],
   }
 ];
-
-
-export const defaultLoadableOption: Options<any> = {
-  fallback: <Fallback />
-};

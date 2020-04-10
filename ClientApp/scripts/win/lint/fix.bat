@@ -1,1 +1,1 @@
-npx eslint --fix ./web/**/*.{ts,tsx,js,jsx,vue} ./tests/**/*.{ts,tsx}
+npx eslint --fix ./web/**/*.{ts,tsx,js,jsx,vue} ./tests/**/*.{ts,tsx,js,jsx,vue}

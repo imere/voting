@@ -11,11 +11,17 @@ import * as serviceWorker from '@/serviceWorker';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Protected from '@/layouts/Protected';
 import { configureStore } from '@/store';
-import { initialState } from '@/reducers/initial-state';
-import { iu } from '@/actions';
+import { initialState } from '@/store/initial-state';
+import { iu } from '@/store/actions';
 import { Routes } from '@/constants';
-import { defaultLoadableOption } from '@/shared/conf';
-import { addAuthorization, addCredentials, shouldAddAuthorization, shouldAddCredentials } from '@/shared/request';
+import { defaultLoadableOption } from '@/shared/loadable-conf';
+import {
+  addAuthorization,
+  addCredentials,
+  shouldAddAuthorization,
+  shouldAddCredentials,
+} from '@/framework/shared/request';
+import { Logger } from '@/framework/shared/logger';
 
 const AccountLazy = Loadable(
   () => import('./pages/Account'),
@@ -41,8 +47,8 @@ iu.getUser().then((user) => {
     getAttribute('href') as string;
   const history = createBrowserHistory({ 'basename': baseUrl });
 
-  window.onerror = window.onunhandledrejection = () => {
-    console.warn.bind(console);
+  window.onerror = window.onunhandledrejection = (...args: any) => {
+    Logger.warn(...args);
     return false;
   };
 

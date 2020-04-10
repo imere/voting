@@ -1,5 +1,7 @@
 import { message } from 'antd';
 
+import { Logger } from './logger';
+
 export function toastMessageByStatus(status?: number, omit: number[] = []): void {
   if (omit.includes(status as number)) {
     return;
@@ -25,6 +27,6 @@ export function toastMessageByStatus(status?: number, omit: number[] = []): void
   case undefined:
     break;
   default:
-    console.debug('Unhandled', status);
+    Logger.warn('Unhandled', status);
   }
 }

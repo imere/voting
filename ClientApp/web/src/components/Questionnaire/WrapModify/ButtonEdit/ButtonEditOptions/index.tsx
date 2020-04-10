@@ -27,14 +27,21 @@ const ButtonEditOptions = ({ name }: ButtonEditOptionsProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { label: _, name: __, rules: ___, ...prop } = QItemDefaultData[typename]();
     ctx.updateItem(
-      QItemDataFactory[typename](
-        {
-          ...prop,
-          label: item.label,
-          name,
-          rules: isRequired(item.rules) ? ___ : [],
-        } as any
-      )
+      QItemDataFactory({
+        ...prop,
+        typename,
+        label: item.label,
+        name,
+        rules: isRequired(item.rules) ? ___ : [],
+      }) as any
+      // QItemDataFactory[typename](
+      //   {
+      //     ...prop,
+      //     label: item.label,
+      //     name,
+      //     rules: isRequired(item.rules) ? ___ : [],
+      //   } as any
+      // )
     );
   }
 

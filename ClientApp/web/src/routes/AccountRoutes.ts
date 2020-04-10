@@ -1,7 +1,7 @@
 import Loadable from '@loadable/component';
 
 import { Routes } from '@/constants';
-import { defaultLoadableOption } from '@/shared/conf';
+import { defaultLoadableOption } from '@/shared/loadable-conf';
 
 import { RouteArrayType } from './routes';
 

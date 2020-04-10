@@ -77,14 +77,14 @@ export class QEventBus implements EventBus {
   }
 
   #notify = (): void => {
-    for (const anyFunc of this.#subscribers) {
+    for (const anyFunc of this.#subscribers.values()) {
       try {
         requestAnimationFrame(() => anyFunc());
       } catch {
-        //
+        // noop
       }
     }
-    for (const setStateAction of this.#refreshers) {
+    for (const setStateAction of this.#refreshers.values()) {
       requestAnimationFrame(() => setStateAction((value) => !value));
     }
   }

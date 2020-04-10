@@ -1,4 +1,4 @@
-import { UserAuthentication } from '@/actions/action-auth';
+import { UserAuthentication } from '@/store/actions/action-auth';
 import { Answer, Questionnaire } from '@/components/Questionnaire/questionnaire';
 
 import { Http } from '.';
@@ -10,7 +10,7 @@ import {
   API_V1_USER,
   API_V1_USER_LOGIN,
   API_V1_USER_LOGOUT,
-} from './conf';
+} from '@/framework/shared/api/questionnaire';
 
 // API_V1_USER
 export function createUser(user: UserAuthentication) {
@@ -54,6 +54,8 @@ export function loginUser(user: UserAuthentication) {
 export function logoutUser() {
   return Http(API_V1_USER_LOGOUT, {
     method: 'POST',
+  }).catch(() => {
+    // noop
   });
 }
 

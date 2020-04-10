@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { List } from 'antd';
 
 import { ResponseState, RQuestionnaireResponse } from '@/response';
-import { toastMessageByStatus } from '@/shared/toast-message';
+import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { unifyQuestionnaire } from '@/components/Questionnaire/data-util';
 import { getAllPollsByCurrentUser } from '@/shared/request-util';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';

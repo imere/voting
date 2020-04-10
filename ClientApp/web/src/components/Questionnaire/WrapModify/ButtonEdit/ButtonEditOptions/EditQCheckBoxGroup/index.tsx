@@ -4,6 +4,7 @@ import Layout from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditO
 import LengthRange from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/LengthRange';
 import { TypeCheckBoxGroup } from '@/components/Questionnaire/questionnaire';
 import { QEventBus } from '@/components/Questionnaire/QEventBus';
+import { getLengthMessageByType } from '@/components/Questionnaire/data-util';
 
 import DefaultValue from './DefaultValue';
 import Options from './Options';
@@ -22,7 +23,7 @@ const EditQCheckBoxGroup = (props: EditQCheckBoxGroupProps) => (
     <DefaultValue {...props} />
     <Options {...props} />
     <LengthRange
-      lengthName="选项数"
+      lengthName={getLengthMessageByType('checkboxgroup')}
       {...props}
     />
   </Layout>

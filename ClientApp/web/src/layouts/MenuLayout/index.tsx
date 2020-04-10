@@ -6,7 +6,7 @@ import ContentComponent from '@/components/Content';
 import HeaderComponent from '@/components/Header';
 import TopOrSideMenu from '@/components/TopOrSideMenu';
 import FooterComponent from '@/layouts/Footer';
-import { defaultLoadableOption } from '@/shared/conf';
+import { defaultLoadableOption } from '@/shared/loadable-conf';
 
 interface MenuLayoutReceivedProps {
   useTML: boolean

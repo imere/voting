@@ -1,68 +1,147 @@
 import { createElement } from 'react';
 
-import { holdOn } from '@/shared/holdOn';
-import { QuestionnaireAnswer, QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
+import { Answer, QuestionnaireContentType, QuestionnaireWithAnswer } from '@/components/Questionnaire/questionnaire';
+import { Logger } from '@/framework/shared/logger';
 
 import { BarChart } from './BarChart';
 import { NoStat } from './NoStat';
-import { ObjectData, ArrayData, ChartReceivedProps } from './statistic';
+import { ChartReceivedProps, Info, ObjectData, StatisticData } from './statistic';
 
-function extractor(typename: QuestionnaireContentType['typename']): (item: QuestionnaireContentType, answers: Array<QuestionnaireAnswer>) => Array<any> {
-  switch (typename) {
-  case 'checkboxgroup':
-    return ({ name }, answers) => {
-      const res: Array<string[]> = [];
-      for (const { answer } of answers) {
-        res.push(answer[name] as string[]);
-      }
-      return res;
-    };
-  default:
-    return holdOn([]);
+function getInfoMap(items: QuestionnaireContentType[] = []): Map<string, Info> {
+  const res = new Map<string, Info>();
+  if (!Array.isArray(items)) {
+    Logger.warn(`content type ${typeof items} received, but Array expected`);
   }
+  for (const item of items) {
+    res.set(item.name, item);
+  }
+  return res;
 }
 
-export function extractAnswersToArray(item : QuestionnaireContentType, answers: Array<QuestionnaireAnswer>): Array<QuestionnaireContentType['value']> {
-  const { typename } = item;
-  const fn = extractor(typename);
-  const res = fn && fn(item, answers);
+/**
+ * Extract specific property
+ *
+ * In:
+ * {
+ *  pollAnswers: Array<{
+ *    answer: {
+ *      name1: value1 | Array<value>1
+ *      name2: value2 | Array<value>2
+ *    }
+ *  }, {
+ *    answer: {
+ *      name1: value3 | Array<value>3
+ *      name2: value4 | Array<value>4
+ *    }
+ *  }
+ * }>
+ *
+ * Out:
+ * Array<{
+ *  name1: value1 | Array<value>1
+ *  name2: value2 | Array<value>2
+ * }, {
+ *  name1: value3 | Array<value>3
+ *  name2: value4 | Array<value>4
+ * }>
+ */
+function extractAnswersToArray(questionnaire: QuestionnaireWithAnswer): Array<Answer> {
+  const res: ReturnType<typeof extractAnswersToArray> = [];
+  const { pollAnswers } = questionnaire;
+  for (const { answer } of pollAnswers) {
+    res.push(answer);
+  }
   return res;
 }
 
-export function transformToObjectData(values: Array<QuestionnaireContentType['value']>): ObjectData {
-  if (typeof values[0] === 'string') {
-    const res: ReturnType<typeof transformToObjectData> = {};
-    for (const value of values as string[]) {
-      if (typeof res[value] === 'undefined') {
-        res[value] = 0;
-      }
-      res[value]++;
-    }
-    return res;
+function transformer(name: string, valueOrS: Answer[keyof Answer], res: ObjectData): void {
+  if (typeof res[name] === 'undefined') {
+    res[name] = {};
   }
 
-  if (Array.isArray(values[0])) {
-    const res: ReturnType<typeof transformToObjectData> = {};
-    for (const value of values as string[][]) {
-      for (const inner of value) {
-        if (typeof res[inner] === 'undefined') {
-          res[inner] = 0;
-        }
-        res[inner]++;
+  const accumulator = res[name] as { [value: string]: number; };
+
+  if (Array.isArray(valueOrS)) {
+    for (const value of valueOrS) {
+      if (typeof accumulator[value] === 'undefined') {
+        accumulator[value] = 0;
       }
+      accumulator[value]++;
     }
-    return res;
+  } else if (typeof valueOrS !== 'undefined') {
+    if (typeof accumulator[valueOrS] === 'undefined') {
+      accumulator[valueOrS] = 0;
+    }
+    accumulator[valueOrS]++;
   }
 
-  return {};
 }
 
-export function transformObjectToArrayData(data: ReturnType<typeof transformToObjectData>): ArrayData {
-  const res: ReturnType<typeof transformObjectToArrayData> = [];
-  for (const k of Object.keys(data)) {
-    res.push({ name: k, count: data[k] });
+/**
+ * In:
+ * Array<{
+ *  name1: value1 | Array<value>1
+ *  name2: value2 | Array<value>2
+ * }, {
+ *  name1: value3 | Array<value>3
+ *  name2: value4 | Array<value>4
+ * }>
+ *
+ * Out:
+ * {
+ *  name1: {value1: count, value3: count}
+ *  name2: {value2: count, value4: count}
+ * }
+ */
+function transformToObjectData(answerArr: ReturnType<typeof extractAnswersToArray>): ObjectData {
+  const res: ReturnType<typeof transformToObjectData> = {};
+
+  for (const answer of answerArr) {
+    for (const [
+      name,
+      valueOrS
+    ] of Object.entries(answer)) {
+      transformer(name, valueOrS, res);
+    }
+  }
+
+  return res;
+}
+
+/**
+ * In:
+ * {
+ *  name1: {value1: count, value3: count}
+ *  name2: {value2: count, value4: count}
+ * }
+ *
+ * Out:
+ * Array<{
+ *  name: name1,
+ *  count: {value1: count, value3: count}
+ * }, {
+ *  name: name2,
+ *  count: {value2: count, value4: count}
+ * }>
+ */
+function transformToArrayData(data: ReturnType<typeof transformToObjectData>, map: ReturnType<typeof getInfoMap>): StatisticData {
+  const res: ReturnType<typeof transformToArrayData> = [];
+  for (const [
+    name,
+    count
+  ] of Object.entries(data)) {
+    res.push({ info: map.get(name) as Info, name, count });
   }
   return res;
+}
+
+export function processQuestionnaireWithAnswer(questionnaire: QuestionnaireWithAnswer): ReturnType<typeof transformToArrayData> {
+  return transformToArrayData(
+    transformToObjectData(
+      extractAnswersToArray(questionnaire)
+    ),
+    getInfoMap(questionnaire.content)
+  );
 }
 
 /**
@@ -76,8 +155,20 @@ export function transformObjectToArrayData(data: ReturnType<typeof transformToOb
 export function statByTypename(typename: QuestionnaireContentType['typename'], props: ChartReceivedProps) {
   switch (typename) {
   case 'checkboxgroup':
+  case 'number':
     return createElement(BarChart, props);
   default:
     return createElement(NoStat);
   }
+}
+
+export function parse(data: StatisticData[number]) {
+  const arr: Array<{ value: string; count: number; }> = [];
+  for (const [
+    value,
+    count
+  ] of Object.entries(data.count)) {
+    arr.push({ value, count });
+  }
+  return arr;
 }

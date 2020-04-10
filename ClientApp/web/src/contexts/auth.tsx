@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import { UserAuthentication } from '@/actions/action-auth';
+import { UserAuthentication } from '@/store/actions/action-auth';
 
 export interface AuthContextType {
   register: (user: UserAuthentication) => void

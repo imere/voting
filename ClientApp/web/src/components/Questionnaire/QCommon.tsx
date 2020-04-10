@@ -20,7 +20,7 @@ export function dataSourceHolder(): RQuestionnaireResponse {
     id: NaN,
     title: 'Loading...',
     content: [],
-    createdAt: Date.now().toLocaleString(),
+    createdAt: new Date().toUTCString(),
   };
 }
 
@@ -61,10 +61,11 @@ const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelC
   const [form] = Form.useForm();
 
   function add() {
-    ctx.addItem(QItemDataFactory.input({
+    ctx.addItem(QItemDataFactory({
+      typename: 'input',
       label: `${id++}`,
-      rules: QItemDefaultData.input().rules
-    }));
+      rules: QItemDefaultData.input().rules,
+    }) as any);
   }
 
   const [
@@ -122,11 +123,9 @@ const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelC
         loading={loading}
         title={formTitle}
         extra={
-          !loading && (
-            info.isPublic
-              ? <Tag color="volcano">公开</Tag>
-              : <Tag color="green">非公开</Tag>
-          )
+          info.isPublic
+            ? <Tag color="volcano">公开</Tag>
+            : <Tag color="green">非公开</Tag>
         }
       >
         <Form

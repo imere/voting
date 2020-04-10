@@ -4,14 +4,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Logger } from '@/framework/shared/logger';
 
 @Component
 export default class AuthCallback extends Vue {
   beforeCreate() {
-    console.log('vc');
-    import('@/actions').then(({ iu }) =>
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      iu.completeAuthentication()(function() {}, undefined as any)
+    Logger.info('vc');
+    import('@/framework/shared/IdentityService').then(({ iservice }) =>
+      iservice.completeAuthentication()
     );
   }
 }
