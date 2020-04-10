@@ -4,6 +4,7 @@ import { Input, InputNumber } from 'antd';
 import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
 import { getLengthObject, setRulesLengthMessage } from '@/components/Questionnaire/data-util';
 import { QEventBus } from '@/components/Questionnaire/QEventBus';
+import { None } from '@/types';
 
 import { EditItem } from './EditItem';
 
@@ -20,30 +21,26 @@ const LengthRange = ({ negative, ctx: { getItem, updateItem }, name, lengthName 
 
   const item = getItem(name) as QuestionnaireContentType;
 
-  function handleLengthChange(num: number | undefined, minmax: 'min' | 'max') {
-    if (typeof num === 'undefined') {
-      return;
-    }
+  function handleLengthChange(num: number | None, minmax: 'min' | 'max') {
 
-    let length = getLengthObject(item.rules);
-    if (!length) {
-      item.rules.push(length = {});
+    let lengthObj = getLengthObject(item.rules);
+    if (!lengthObj) {
+      item.rules.push(lengthObj = {});
     }
-    if (minmax === 'min') {
-      length.min = Number(num);
-    } else {
-      length.max = Number(num);
-    }
+    lengthObj[minmax] =
+      num === undefined || num === null
+        ? undefined
+        : Number(num);
 
     if (item.typename === 'checkboxgroup') {
-      length.type = 'array';
+      lengthObj.type = 'array';
     }
 
     if (item.typename === 'number') {
-      length.type = 'number';
+      lengthObj.type = 'number';
     }
 
-    setRulesLengthMessage([length], lengthName);
+    setRulesLengthMessage([lengthObj], lengthName);
     updateItem(item);
   }
 
