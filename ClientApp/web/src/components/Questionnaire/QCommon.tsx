@@ -48,25 +48,9 @@ const { Meta } = Card;
 
 const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelClick, redirectUrl }: QuestionnaireProps) => {
 
-  if (isEditing) {
-    if (!info.title) {
-      return <Redirect to={Routes.ACCOUNT_CENTER} />;
-    }
-  }
-
   const [, forceRefresh] = useState(false);
 
   const ctx = useContext(QuestionnaireContext);
-
-  const [form] = Form.useForm();
-
-  function add() {
-    ctx.addItem(QItemDataFactory({
-      typename: 'input',
-      label: `${id++}`,
-      rules: QItemDefaultData.input().rules,
-    }) as any);
-  }
 
   const [
     processing,
@@ -77,6 +61,16 @@ const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelC
     canceling,
     setCanceling
   ] = useStateBeforeUnMount(false);
+
+  const [form] = Form.useForm();
+
+  function handleAddClick() {
+    ctx.addItem(QItemDataFactory({
+      typename: 'input',
+      label: `${id++}`,
+      rules: QItemDefaultData.input().rules,
+    }) as any);
+  }
 
   async function handleConfirmClick(ev: React.MouseEvent<HTMLElement, MouseEvent>) {
     try {
@@ -108,7 +102,16 @@ const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelC
       ctx.unsubscribe(setFieldsValue);
       ctx.replaceItemsWith();
     };
-  }, []);
+  }, [
+    ctx,
+    form
+  ]);
+
+  if (isEditing) {
+    if (!info.title) {
+      return <Redirect to={Routes.ACCOUNT_CENTER} />;
+    }
+  }
 
   const formTitle = (
     <Meta
@@ -138,7 +141,7 @@ const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelC
           {
             isEditing && (
               <Form.Item>
-                <Button type="dashed" onClick={add} style={{ width: '50%' }}>
+                <Button type="dashed" onClick={handleAddClick} style={{ width: '50%' }}>
                   <PlusOutlined /> 添加
                 </Button>
               </Form.Item>

@@ -10,7 +10,7 @@ import { QuestionnaireContext } from '@/contexts/questionnaire';
 import { Routes } from '@/constants';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 import { unifyQuestionnaire } from '@/components/Questionnaire/data-util';
-import { createAnswerByPollId, getPollByPollId } from '@/shared/request-util';
+import { createAnswerByPollId, getPollByPollId } from '@/framework/shared/request-util';
 import { Answer } from '@/components/Questionnaire/questionnaire';
 
 const AnswerComponent: React.FC = () => {

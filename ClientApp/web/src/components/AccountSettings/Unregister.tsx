@@ -6,7 +6,7 @@ import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { Disp } from '@/types';
 import { ApplicationState } from '@/store/state';
 import { AuthAction } from '@/store/actions/action-auth';
-import { deleteUser } from '@/shared/request-util';
+import { deleteUser } from '@/framework/shared/request-util';
 
 type UnregisterDispatch = Disp<ApplicationState, null, AuthAction>
 

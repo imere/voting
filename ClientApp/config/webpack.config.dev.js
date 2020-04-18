@@ -1,3 +1,4 @@
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ForkTsCheckerPlugin = require('fork-ts-checker-webpack-plugin');
 const { ScriptDist } = require('./config.js');
 
@@ -38,6 +39,7 @@ module.exports = {
     'hints': false,
   },
   plugins: [
+    new ProgressBarPlugin(),
     new ForkTsCheckerPlugin({
       'checkSyntacticErrors': true,
       'memoryLimit': 512,

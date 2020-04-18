@@ -10,7 +10,7 @@ import { ResponseState, RQuestionnaireResponse } from '@/response';
 import { Routes } from '@/constants';
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { unifyQuestionnaire } from '@/components/Questionnaire/data-util';
-import { getAllPolls } from '@/shared/request-util';
+import { getAllPolls } from '@/framework/shared/request-util';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 
 const columns: ColumnsType<RQuestionnaireResponse> = [

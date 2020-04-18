@@ -153,7 +153,7 @@ export function unifyQuestionnaire(questionnaire: RQuestionnaireResponse): RQues
       : questionnaire.createdAt;
 
     for (const item of (questionnaire.content || [])) {
-      const msg=getLengthMessageByType(item.typename);
+      const msg = getLengthMessageByType(item.typename);
       for (const rule of item.rules) {
         setRuleLengthMessage(rule, msg);
         if (rule.pattern && typeof rule.pattern === 'string') {

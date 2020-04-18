@@ -17,7 +17,7 @@ interface LogoReceivedProps {
 type LogoProps = LogoReceivedProps;
 
 const Logo: React.FC<LogoProps> = ({ mode, theme, style }: LogoProps) => (
-  <div className={Reflect.get(styles, `sider-logo-${mode.startsWith('vertical') ? 'inline': mode}`)} style={style}>
+  <div className={Reflect.get(styles, `sider-logo-${mode.startsWith('vertical') ? 'inline' : mode}`)} style={style}>
     <Link to="/" style={{ display: 'contents' }}>
 
       <img alt="logo" src={logo} className={styles['sider-logo-image']}></img>

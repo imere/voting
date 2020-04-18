@@ -1,7 +1,7 @@
 import { AUTHORIZATION_ALLOWED_URLS, CREDENTIAL_ALLOWED_URLS } from './api/questionnaire';
 
 export async function addAuthorization(init: RequestInit) {
-  const user = await import('@/store/actions').then(({ iu }) =>  iu.getUser());
+  const user = await import('@/framework/shared/IdentityService').then(({ iservice }) =>  iservice.getUser());
   if (user) {
     if (!init.headers) {
       init.headers = {};
@@ -54,7 +54,7 @@ const request: FetchType = async (input, init = {}) => {
   if (shouldCORS(url)) {
     addCORS(init);
   } else {
-    init.mode = 'no-cors';
+    init.mode = 'same-origin';
   }
 
   if (shouldAddCredentials(url)) {

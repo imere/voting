@@ -1,12 +1,12 @@
 import { UserManager, UserManagerSettings, WebStorageStateStore } from 'oidc-client';
 
 import { Routes } from '@/constants';
-import { API_ORIGIN, HOST } from '@/framework/shared/api/questionnaire';
+import { API_AUTHORITY, HOST } from '@/framework/shared/api/questionnaire';
 
 class IdentityService {
   private _manager: UserManager;
   private CLIENT_SETTINGS: UserManagerSettings = {
-    'authority': `${API_ORIGIN}`,
+    'authority': API_AUTHORITY,
     'client_id': 'js',
     'redirect_uri': `${HOST}${Routes.AUTH_CALLBACK}`,
     'post_logout_redirect_uri': `${HOST}`,

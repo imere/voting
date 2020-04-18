@@ -6,7 +6,7 @@ import { LocationDescriptor } from 'history';
 import RedirectTo from '@/components/RedirectTo';
 import { RQuestionnaireResponse } from '@/response';
 import { Routes } from '@/constants';
-import { deletePollById } from '@/shared/request-util';
+import { deletePollById } from '@/framework/shared/request-util';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 
 interface PollReceivedProps extends RQuestionnaireResponse {

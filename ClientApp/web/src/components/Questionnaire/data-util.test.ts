@@ -4,7 +4,7 @@ let source: number[];
 let salt: string;
 
 beforeAll(() => {
-  source = [...Array(2500).keys()];
+  source = [...Array(1000).keys()];
   salt = Math.random().toString();
 });
 

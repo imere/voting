@@ -1,12 +1,14 @@
 import { SetStateAction } from 'react';
 
+import { Logger } from '@/framework/shared/logger';
+
 import { QuestionnaireContentType } from './questionnaire';
 
-interface EventBus {
-  getItem: (name: string) => QuestionnaireContentType | undefined
-  addItem: (item: QuestionnaireContentType) => void
-  removeItem: (name: string) => void
-  updateItem: (item: QuestionnaireContentType) => void
+abstract class EventBus {
+  abstract getItem: (name: string) => QuestionnaireContentType | undefined
+  abstract addItem: (item: QuestionnaireContentType) => void
+  abstract removeItem: (name: string) => void
+  abstract updateItem: (item: QuestionnaireContentType) => void
 }
 
 export class QEventBus implements EventBus {
@@ -36,6 +38,7 @@ export class QEventBus implements EventBus {
   updateItem = ({ name, ...rest }: QuestionnaireContentType) => {
     const item = this.getItem(name);
     if (!item) {
+      Logger.warn(`${name} not exists`);
       return;
     }
     delete item.value;
@@ -80,8 +83,8 @@ export class QEventBus implements EventBus {
     for (const anyFunc of this.#subscribers.values()) {
       try {
         requestAnimationFrame(() => anyFunc());
-      } catch {
-        // noop
+      } catch (ex) {
+        Logger.error(ex);
       }
     }
     for (const setStateAction of this.#refreshers.values()) {

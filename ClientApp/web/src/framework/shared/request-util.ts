@@ -1,7 +1,6 @@
 import { UserAuthentication } from '@/store/actions/action-auth';
 import { Answer, Questionnaire } from '@/components/Questionnaire/questionnaire';
-
-import { Http } from '.';
+import { Http } from '@/framework/shared';
 import {
   API_V1_ANSWER,
   API_V1_POLL_BY_ID,
@@ -15,10 +14,11 @@ import {
 // API_V1_USER
 export function createUser(user: UserAuthentication) {
   return Http(API_V1_USER, {
-    'method': 'PUT',
-    'body': new Blob([JSON.stringify(user)], {
-      type: 'application/json',
-    }),
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
   }).
     then((res) => {
       if (res.status >= 400) {
@@ -29,7 +29,7 @@ export function createUser(user: UserAuthentication) {
 
 export function deleteUser() {
   return Http(API_V1_USER, {
-    'method': 'DELETE',
+    method: 'DELETE',
   });
 }
 
@@ -37,10 +37,11 @@ export function deleteUser() {
 // API_V1_USER_LOGIN
 export function loginUser(user: UserAuthentication) {
   return Http(API_V1_USER_LOGIN, {
-    'method': 'POST',
-    'body': new Blob([JSON.stringify(user)], {
-      type: 'application/json',
-    }),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
   }).
     then((res) => {
       if (res.status >= 400) {
@@ -64,18 +65,20 @@ export function logoutUser() {
 export async function createPoll(poll: Questionnaire) {
   return Http(API_V1_POLLS, {
     method: 'PUT',
-    body: new Blob([JSON.stringify(poll)], {
-      type: 'application/json; charset=utf-8',
-    })
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(poll),
   });
 }
 
 export async function updatePoll(poll: Questionnaire) {
   return Http(API_V1_POLLS, {
     method: 'POST',
-    body: new Blob([JSON.stringify(poll)], {
-      type: 'application/json; charset=utf-8',
-    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(poll),
   });
 }
 
@@ -112,8 +115,9 @@ export async function getAnswersByPollId(id: string | number) {
 export async function createAnswerByPollId(id: string | number, answer: Answer[]) {
   return Http(`${API_V1_ANSWER}/${id}`, {
     method: 'PUT',
-    body: new Blob([JSON.stringify(answer)], {
-      type: 'application/json; charset=utf-8',
-    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(answer),
   });
 }

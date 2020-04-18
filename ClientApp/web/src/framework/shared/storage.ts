@@ -1,15 +1,15 @@
-export const sget = (key: string) => sessionStorage.getItem(key);
+export const sget = (key: string) => window.sessionStorage.getItem(key);
 
-export const sset = (key: string, value: string) => sessionStorage.setItem(key, value);
+export const sset = (key: string, value: string) => window.sessionStorage.setItem(key, value);
 
-export const sremove = (key: string) => sessionStorage.removeItem(key);
+export const sremove = (key: string) => window.sessionStorage.removeItem(key);
 
-export const sclear = () => sessionStorage.clear();
+export const sclear = () => window.sessionStorage.clear();
 
-export const lget = (key: string) => localStorage.getItem(key);
+export const lget = (key: string) => window.localStorage.getItem(key);
 
-export const lset = (key: string, value: string) => localStorage.setItem(key, value);
+export const lset = (key: string, value: string) => window.localStorage.setItem(key, value);
 
-export const lremove = (key: string) => localStorage.removeItem(key);
+export const lremove = (key: string) => window.localStorage.removeItem(key);
 
-export const lclear = () => localStorage.clear();
+export const lclear = () => window.localStorage.clear();

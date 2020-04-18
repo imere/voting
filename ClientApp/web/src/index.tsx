@@ -22,6 +22,8 @@ import {
   shouldAddCredentials,
 } from '@/framework/shared/request';
 import { Logger } from '@/framework/shared/logger';
+import { polyfill } from '@/framework/shared/polyfill';
+import { AuthCallback } from './pages/AuthCallback';
 
 const AccountLazy = Loadable(
   () => import('./pages/Account'),
@@ -35,11 +37,7 @@ const AppLazy = Loadable(
 
 import('./index.scss');
 
-Reflect.defineProperty(RegExp.prototype, 'toJSON', {
-  value: function () {
-    return (this as RegExp).toString();
-  }
-});
+polyfill();
 
 iu.getUser().then((user) => {
   const baseUrl = document.
@@ -80,6 +78,7 @@ iu.getUser().then((user) => {
               <BrowserRouter>
                 <Protected redirectTo={Routes.USER_LOGIN}>
                   <Switch>
+                    <Route path={Routes.AUTH_CALLBACK} component={AuthCallback} />
                     <Route path={Routes.USER} component={AccountLazy} />
                     <Route path="/" component={AppLazy} />
                   </Switch>

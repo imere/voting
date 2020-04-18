@@ -7,12 +7,14 @@ import { QuestionnaireContext } from '@/contexts/questionnaire';
 import { Questionnaire } from '@/components/Questionnaire/questionnaire';
 import { Routes } from '@/constants';
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
-import { createPoll } from '@/shared/request-util';
+import { createPoll } from '@/framework/shared/request-util';
 import { stripRulesLengthMessage } from '@/components/Questionnaire/data-util';
 
 const NewComponent: React.FC = () => {
+  const { search } = useLocation();
+
   function getInfo() {
-    const params = new URLSearchParams(useLocation().search);
+    const params = new URLSearchParams(search);
 
     const res = {
       title: params.get('title'),
@@ -33,17 +35,16 @@ const NewComponent: React.FC = () => {
 
   const info = getInfo();
 
-  // ! non-null assertion check disabled below
-  if (!info.title) {
-    return <Redirect to={Routes.ACCOUNT_CENTER} />;
-  }
-
   const ctx = useContext(QuestionnaireContext);
 
   const [
     redirectUrl,
     setRedirectUrl
   ] = useState<LocationDescriptor | undefined>(undefined);
+
+  if (!info.title) {
+    return <Redirect to={Routes.ACCOUNT_CENTER} />;
+  }
 
   async function handleConfirmClick() {
     for (const item of ctx.items) {

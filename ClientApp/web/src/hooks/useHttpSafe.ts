@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 
-import { Http } from '@/shared';
+import { Http } from '@/framework/shared';
 
 function useHttpSafe(input: RequestInfo, init?: RequestInit | undefined): Promise<Response> {
   useEffect(() => {
     if (!init) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       init = {};
     }
     if (init.signal) {

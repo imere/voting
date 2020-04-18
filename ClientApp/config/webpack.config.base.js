@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 // const DashboardPlugin = require("webpack-dashboard/plugin");
 // const BuildNotifier = require('webpack-build-notifier');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -65,7 +64,7 @@ const baseConfig = {
   'stats': 'errors-warnings',
   'entry': {
     'app': './web/src/index.tsx',
-    'callback': './web/src/pages/AuthCallback/index.ts',
+    'callback': './web/src/framework/AuthCallback/index.ts',
   },
   'output': {
     'publicPath': PUBLIC_PATH,
@@ -77,10 +76,10 @@ const baseConfig = {
     'port': DEV_PORT,
     'historyApiFallback': {
       'rewrites': [
-        {
-          'from': /^\/auth-callback$/,
-          'to': '/auth-callback.html',
-        },
+        // {
+        //   'from': /^\/auth-callback$/,
+        //   'to': '/auth-callback.html',
+        // },
         {
           'from': /.*/,
           'to': '/index.html',
@@ -131,7 +130,6 @@ const baseConfig = {
     ]
   },
   'plugins': [
-    new ProgressBarPlugin(),
     // new DashboardPlugin(),
     // new BuildNotifier({
     //   title: currentEnv.toUpperCase(),
@@ -140,7 +138,7 @@ const baseConfig = {
     //   suppressSuccess: true,
     // }),
     new webpack.WatchIgnorePlugin([/\.d\.tsx?$/]),
-    new FriendlyErrorsWebpackPlugin(),
+    // new FriendlyErrorsWebpackPlugin(),
     // new HardSourcePlugin({
     //   // Either an absolute path or relative to webpack's options.context.
     //   cacheDirectory: require("path").resolve(__dirname, "../node_modules/.cache/hard-source/[confighash]"),

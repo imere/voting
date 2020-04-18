@@ -116,6 +116,8 @@ namespace vote.Controllers.v1
 
             if (null == result) return BadRequest(new ResponseState(null));
 
+            await _service.DeleteAnswersByPollId(questionnaire.Id);
+
             return Ok(new ResponseState(result));
         }
 

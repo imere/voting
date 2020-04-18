@@ -5,7 +5,7 @@ import { List } from 'antd';
 import { ResponseState, RQuestionnaireResponse } from '@/response';
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { unifyQuestionnaire } from '@/components/Questionnaire/data-util';
-import { getAllPollsByCurrentUser } from '@/shared/request-util';
+import { getAllPollsByCurrentUser } from '@/framework/shared/request-util';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 
 import styles from './AccountCenter.module.scss';

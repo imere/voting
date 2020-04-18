@@ -24,18 +24,18 @@ export const QItemMap: QItemMapType = {
 
 export function renderQItems(edit: boolean, items: Array<QuestionnaireContentType>): any[] {
   if (edit) {
-    return items.map((item, i) => (
+    return items.map((item) => (
       <WrapModify
-        key={i}
+        key={item.name}
         {...item}
       >
         {QItemMap[item.typename]}
       </WrapModify>
     ));
   }
-  return items.map((item, i) => (
+  return items.map((item) => (
     <WrapNormal
-      key={i}
+      key={item.name}
       {...item}
     >
       {QItemMap[item.typename]}

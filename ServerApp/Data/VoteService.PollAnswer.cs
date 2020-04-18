@@ -30,5 +30,11 @@ namespace vote.Data
                 return null;
             }
         }
+
+        public async Task DeleteAnswersByPollId(long pollId)
+        {
+            _context.PollAnswer.RemoveRange(_context.PollAnswer.Where(predicate => predicate.PollId == pollId));
+            await _context.SaveChangesAsync();
+        }
     }
 }

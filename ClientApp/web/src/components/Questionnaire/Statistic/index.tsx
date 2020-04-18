@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { ResponseState, RQuestionnaireWithAnswer } from '@/response';
-import { getAnswersByPollId } from '@/shared/request-util';
+import { getAnswersByPollId } from '@/framework/shared/request-util';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 import { unifyQuestionnaireWithAnswer } from '@/components/Questionnaire/data-util';
 import { None } from '@/types';

@@ -7,7 +7,7 @@ import { QuestionnaireContext } from '@/contexts/questionnaire';
 import { ResponseState, RQuestionnaireResponse } from '@/response';
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { Routes } from '@/constants';
-import { getPollByPollId, updatePoll } from '@/shared/request-util';
+import { getPollByPollId, updatePoll } from '@/framework/shared/request-util';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 import { stripItemsLengthMessage, unifyQuestionnaire } from '@/components/Questionnaire/data-util';
 import { Questionnaire } from '@/components/Questionnaire/questionnaire';
@@ -54,21 +54,22 @@ const EditComponent: React.FC<EditProps> = () => {
     setRedirectUrl(Routes.ACCOUNT_CENTER);
   }
 
-  async function getPollById(id: number | string) {
-    setLoading(true);
-    const response = await getPollByPollId(id);
-    if (response.ok) {
-      const res: ResponseState<RQuestionnaireResponse> = await response.json();
-      const data = unifyQuestionnaire(res.data);
-      ctx.replaceItemsWith(data.content);
-      setInfo(data);
-    }
-    toastMessageByStatus(response.status);
-    setLoading(false);
-  }
-
   useEffect(() => {
+    async function getPollById(id: number | string) {
+      setLoading(true);
+      const response = await getPollByPollId(id);
+      if (response.ok) {
+        const res: ResponseState<RQuestionnaireResponse> = await response.json();
+        const data = unifyQuestionnaire(res.data);
+        ctx.replaceItemsWith(data.content);
+        setInfo(data);
+      }
+      toastMessageByStatus(response.status);
+      setLoading(false);
+    }
+
     getPollById(pollId as string);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

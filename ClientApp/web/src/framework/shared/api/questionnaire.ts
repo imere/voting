@@ -2,6 +2,8 @@ import { HttpMethod } from '@/types';
 
 export const HOST = 'http://localhost:5000';
 
+export const API_AUTHORITY = 'http://localhost:61598';
+
 export const API_ORIGIN = 'http://localhost:61598';
 
 /**
