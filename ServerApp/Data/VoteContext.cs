@@ -28,23 +28,51 @@ namespace vote.Data
             base.OnModelCreating(builder);
 
             builder.Entity<ApplicationUser>()
+                .Property(props => props.Username)
+                .IsRequired();
+            builder.Entity<ApplicationUser>()
+                .Property(props => props.Password)
+                .IsRequired();
+            builder.Entity<ApplicationUser>()
+                .Property(props => props.CreatedAt)
+                .IsRequired();
+            builder.Entity<ApplicationUser>()
                 .HasIndex(user => user.Username)
                 .IsUnique();
             builder.Entity<ApplicationUser>()
                 .HasIndex(user => user.Displayname)
                 .IsUnique();
 
+
+            builder.Entity<Poll>()
+                .Property(props => props.Title)
+                .IsRequired();
+            builder.Entity<Poll>()
+                .Property(props => props.Content)
+                .IsRequired();
+            builder.Entity<Poll>()
+                .Property(props => props.CreatedAt)
+                .IsRequired();
+
+
             builder.Entity<PollProp>()
-                .Property(props => props.Public)
+                .Property(props => props.IsPublic)
                 .HasDefaultValue(true);
 
-            builder.Entity<PollData>()
-                .Property(data => data.Required)
-                .HasDefaultValue(true);
-            var pd = new PollData();
-            builder.Entity<PollData>()
-                .HasIndex(nameof(pd.Order), $"{nameof(pd.Poll)}{nameof(pd.Poll.Id)}")
-                .IsUnique();
+
+            builder.Entity<PollAnswer>()
+                .Property(props => props.Answer)
+                .IsRequired();
+            builder.Entity<PollAnswer>()
+                .Property(props => props.CreatedAt)
+                .IsRequired();
+            builder.Entity<PollAnswer>()
+                .Property(props => props.PollId)
+                .IsRequired();
+            builder.Entity<PollAnswer>()
+                .HasOne(props => props.User)
+                .WithMany(props => props.PollAnswers)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -1,11 +1,11 @@
-import React from "react";
-import { User } from "oidc-client";
-import { connect } from "react-redux";
-import { Redirect, RouteComponentProps, withRouter } from "react-router";
+import React from 'react';
+import { User } from 'oidc-client';
+import { connect } from 'react-redux';
+import { Redirect, RouteComponentProps, withRouter } from 'react-router';
 
-import AppRoutes from "@/routes/AppRoutes";
-import { None } from "@/types";
-import { ApplicationState } from "@/reducers/states";
+import AppRoutes from '@/routes/AppRoutes';
+import { None } from '@/typings/types';
+import { ApplicationState } from '@/store/state';
 
 interface ProtectedReceivedProps {
   children?: React.ReactNode
@@ -23,7 +23,7 @@ type ProtectedProps =
 
 const PROTECTED = AppRoutes.filter((route) => route.auth);
 
-const Protected = ({ user, children, redirectTo = "/", location: { pathname } }: ProtectedProps) => {
+const Protected = ({ user, children, redirectTo = '/', location: { pathname } }: ProtectedProps) => {
   if (user) {
     return <>{children}</>;
   }

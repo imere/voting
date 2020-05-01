@@ -7,6 +7,8 @@
       }
     ],
     "jsx": "react",
+    "allowJs": false,
+    "resolveJsonModule": true,
     "rootDir": ".",
     "baseUrl": ".",
     "rootDirs": [
@@ -16,8 +18,8 @@
       "@/*": [
         "web/src/*"
       ],
-      "@actions/*": [
-        "web/src/actions/*"
+      "@framework/*": [
+        "web/src/framework/*"
       ],
       "@components/*": [
         "web/src/components/*"
@@ -36,9 +38,6 @@
       ],
       "@pages/*": [
         "web/src/pages/*"
-      ],
-      "@reducers/*": [
-        "web/src/reducers/*"
       ],
       "@routes/*": [
         "web/src/routes/*"

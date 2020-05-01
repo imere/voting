@@ -1,99 +1,94 @@
-const TerserWebpackPlugin = require("terser-webpack-plugin");
-const OptimizeCSSAssetsWebpackPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserWebpackPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 
-const { ScriptDist, Externals } = require("./config.js");
+const { ScriptDist, Externals } = require('./config.js');
+
+function groups() {
+  const tests = [
+    '(.*hot.*)',
+    'oidc-client',
+    'object-hash',
+    '.*babel.*',
+    '.*(axios|fetch).*',
+    'react',
+    'vue',
+    '.*antd.*',
+  ];
+  const ret = {};
+  let i = 0;
+  for (const str of tests) {
+    const name = `c${i}`;
+    ret[name] = {
+      test: RegExp(`[\\\\/]node_modules[\\\\/]${str}`),
+      name,
+      reuseExistingChunk: true,
+    };
+    i++;
+  }
+  return ret;
+}
 
 module.exports = {
-  "output": {
-    "filename": ScriptDist("[name].[hash:5].js"),
-    "hotUpdateChunkFilename": "[id].[hash].hot-update.js",
-    "pathinfo": false,
+  'output': {
+    'filename': ScriptDist('[name].[hash:5].js'),
+    'hotUpdateChunkFilename': '[id].[hash].hot-update.js',
+    'pathinfo': false,
   },
-  "optimization": {
-    "noEmitOnErrors": true,
-    "moduleIds": "hashed",
-    "splitChunks": {
-      "chunks": "all",
-      "cacheGroups": {
-        "hot": {
-          "test": /[\\/]node_modules[\\/](.*hot.*)[\\/]/,
-          "name": "c0",
-          "reuseExistingChunk": true,
+  'optimization': {
+    'noEmitOnErrors': true,
+    'moduleIds': 'hashed',
+    'splitChunks': {
+      'chunks': 'all',
+      'maxInitialRequests': Infinity,
+      'minSize': 0,
+      'cacheGroups': {
+        'vendors': {
+          'test': /[\\/]node_modules[\\/]/,
+          'name': 'vendor',
+          'reuseExistingChunk': true,
         },
-        "c01": {
-          "test": /[\\/]node_modules[\\/](.*oidc.*)[\\/]/,
-          "name": "c01",
-          "reuseExistingChunk": true,
+        'commons': {
+          'chunks': 'initial',
+          'name': 'common',
+          'minChunks': 1,
+          'maxInitialRequests': Infinity,
+          'minSize': 0,
         },
-        "babel": {
-          "test": /[\\/]node_modules[\\/](.*babel.*)[\\/]/,
-          "name": "c1",
-          "reuseExistingChunk": true,
-        },
-        "core": {
-          "test": /[\\/]node_modules[\\/](.*core.*)[\\/]/,
-          "name": "c2",
-          "reuseExistingChunk": true,
-        },
-        "router": {
-          "test": /[\\/]node_modules[\\/](.*route.*)[\\/]/,
-          "name": "c3",
-          "reuseExistingChunk": true,
-        },
-        "state": {
-          "test": /[\\/]node_modules[\\/](.*redux.*)[\\/]/,
-          "name": "c4",
-          "reuseExistingChunk": true,
-        },
-        "loader": {
-          "test": /[\\/]node_modules[\\/](.*loader.*)[\\/]/,
-          "name": "c5",
-          "reuseExistingChunk": true,
-        },
-        "http": {
-          "test": /[\\/]node_modules[\\/](.*(axios|fetch).*)[\\/]/,
-          "name": "c6",
-          "reuseExistingChunk": true,
-        },
-        "aui": {
-          "test": /[\\/]node_modules[\\/](.*antd.*)[\\/]/,
-          "name": "c7",
-          "reuseExistingChunk": true,
-        },
+        ...groups(),
       },
     },
-    "runtimeChunk": {
-      "name": (entry) => `r~${entry.name}`,
+    'runtimeChunk': {
+      'name': (entry) => `r~${entry.name}`,
     },
-    "minimize": true,
-    "minimizer": [
+    'minimize': true,
+    'minimizer': [
       new TerserWebpackPlugin({
-        "terserOptions": {
-          "output": {
-            "comments": false,
+        'terserOptions': {
+          'output': {
+            'comments': false,
           },
         },
-        "extractComments": false,
+        'extractComments': false,
       }),
       new OptimizeCSSAssetsWebpackPlugin({
-        "assetNameRegExp": /\.css$/g,
-        "cssProcessor": require("cssnano"),
-        "cssProcessorPluginOptions": {
-          "preset": [
-            "default",
+        'assetNameRegExp': /\.css$/g,
+        'cssProcessor': require('cssnano'),
+        'cssProcessorPluginOptions': {
+          'preset': [
+            'default',
             {
-              "discardComments": {
-                "removeAll": true,
+              'discardComments': {
+                'removeAll': true,
               },
             },
           ],
         },
-        "canPrint": true,
+        'canPrint': false,
       }),
     ],
   },
-  "performance": {
-    "hints": "warning",
+  'performance': {
+    'hints': false,
   },
-  "externals": Externals,
+  'externals': Externals,
 };

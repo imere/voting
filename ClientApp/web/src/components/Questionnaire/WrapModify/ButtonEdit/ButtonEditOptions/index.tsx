@@ -1,38 +1,49 @@
-import React, { useContext } from "react";
-import { Radio } from "antd";
-import { RadioChangeEvent } from "antd/es/radio";
+import React, { useState } from 'react';
+import { Radio } from 'antd';
+import { RadioChangeEvent } from 'antd/es/radio';
 
-import QuestionnaireContext from "@/contexts/questionnaire";
-import { QuestionnaireContentType } from "@/data-types";
-import { ButtonEditContentMap, isRequired, QItemDataFactory, QItemDefaultData } from "@/components/Questionnaire/utils";
+import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
+import { ButtonEditContentMap, QItemDataFactory, QItemDefaultData } from '@/components/Questionnaire/util';
+import { isRequired } from '@/components/Questionnaire/data-util';
+import { useQContext } from '@/hooks/useQContext';
 
-import { options } from "./options";
+import { options } from './options';
 
-type ButtonEditOptionsProps = QuestionnaireContentType
+interface ButtonEditOptionsReceivedProps {
+  name: string
+}
 
-const ButtonEditOptions = ({ typename: defaultTypename, label, name, rules, ...rest }: ButtonEditOptionsProps) => {
-  const { updateItem } = useContext(QuestionnaireContext);
+type ButtonEditOptionsProps = ButtonEditOptionsReceivedProps
+
+const ButtonEditOptions = ({ name }: ButtonEditOptionsProps) => {
+  const [, refreshModify] = useState(false);
+
+  const ctx = useQContext({
+    refreshers: [refreshModify]
+  }, []);
+
+  const item = ctx.getItem(name) as QuestionnaireContentType;
 
   function handleClick({ target: { value } }: RadioChangeEvent) {
-    const typename = value as QuestionnaireContentType["typename"];
-    const factory = QItemDataFactory[typename];
+    const typename = value as QuestionnaireContentType['typename'];
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { label: _, name: __, rules: ___, ...rest } = QItemDefaultData[typename]();
-    updateItem(factory(
-      {
-        ...rest,
-        label,
+    const { label: _, name: __, rules: ___, ...prop } = QItemDefaultData[typename]();
+    ctx.updateItem(
+      QItemDataFactory({
+        ...prop,
+        typename,
+        label: item.label,
         name,
-        rules: isRequired(rules) ? ___ : [],
-      } as any
-    ));
+        rules: isRequired(item.rules) ? ___ : [],
+      }) as any
+    );
   }
 
   return (
     <>
-      {React.createElement(ButtonEditContentMap[defaultTypename], { typename: defaultTypename, label, name, rules, ...rest })}
+      {React.createElement(ButtonEditContentMap[item.typename], { name })}
       <Radio.Group
-        defaultValue={defaultTypename}
+        defaultValue={item.typename}
         onChange={handleClick}
       >
         {

@@ -1,48 +1,50 @@
-const ForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
-const { ScriptDist } = require("./config.js");
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const ForkTsCheckerPlugin = require('fork-ts-checker-webpack-plugin');
+const { ScriptDist } = require('./config.js');
 
 module.exports = {
-  "output": {
-    "filename": ScriptDist("[name].js"),
+  'output': {
+    'filename': ScriptDist('[name].js'),
   },
-  "devServer": {
-    "disableHostCheck": true,
-    "overlay": true,
+  'devServer': {
+    'disableHostCheck': true,
+    'overlay': true,
   },
-  "optimization": {
-    "noEmitOnErrors": true,
-    "removeAvailableModules": false,
-    "removeEmptyChunks": false,
-    "splitChunks": {
-      "chunks": "all",
-      "cacheGroups": {
-        "vendors": {
-          "test": /[\\/]node_modules[\\/]/,
-          "name": "vendor",
-          "reuseExistingChunk": true,
+  'optimization': {
+    'noEmitOnErrors': true,
+    'removeAvailableModules': false,
+    'removeEmptyChunks': false,
+    'splitChunks': {
+      'chunks': 'all',
+      'cacheGroups': {
+        'vendors': {
+          'test': /[\\/]node_modules[\\/]/,
+          'name': 'vendor',
+          'reuseExistingChunk': true,
         },
-        "commons": {
-          "chunks": "initial",
-          "name": "common",
-          "minChunks": 1,
-          "maxInitialRequests": 5,
-          "minSize": 0,
+        'commons': {
+          'chunks': 'initial',
+          'name': 'common',
+          'minChunks': 1,
+          'maxInitialRequests': 5,
+          'minSize': 0,
         },
       },
     },
-    "runtimeChunk": {
-      "name": (entry) => `r~${entry.name}`,
+    'runtimeChunk': {
+      'name': (entry) => `r~${entry.name}`,
     },
   },
-  "performance": {
-    "hints": false,
+  'performance': {
+    'hints': false,
   },
   plugins: [
+    new ProgressBarPlugin(),
     new ForkTsCheckerPlugin({
-      "checkSyntacticErrors": true,
-      "memoryLimit": 512,
-      "workers": 1,
-      "silent": false,
+      'checkSyntacticErrors': true,
+      'memoryLimit': 512,
+      'workers': 1,
+      'silent': false,
     }),
   ]
 };

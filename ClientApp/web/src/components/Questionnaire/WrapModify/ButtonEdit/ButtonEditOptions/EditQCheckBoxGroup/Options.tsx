@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
-import { Select } from "antd";
-import { SelectValue } from "antd/lib/select";
+import React, { useContext } from 'react';
+import { Select } from 'antd';
+import { SelectValue } from 'antd/es/select';
 
-import QuestionnaireContext from "@/contexts/questionnaire";
-import { TypeCheckBoxGroup } from "@/data-types";
+import { TypeCheckBoxGroup } from '@/components/Questionnaire/questionnaire';
+import { EditItem } from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/EditItem';
+import { QuestionnaireContext } from '@/contexts/questionnaire';
 
-interface OptionsReceivedProps extends Omit<TypeCheckBoxGroup, "typename"> {
-  id?: string
+interface OptionsReceivedProps {
+  name: TypeCheckBoxGroup['name']
 }
 
 type OptionsProps = OptionsReceivedProps
@@ -14,8 +15,7 @@ type OptionsProps = OptionsReceivedProps
 const Options = ({ name }: OptionsProps) => {
   const { getItem, updateItem } = useContext(QuestionnaireContext);
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const item = getItem(name)! as TypeCheckBoxGroup;
+  const item = getItem(name) as TypeCheckBoxGroup;
 
   function handleOptionsChange(value: SelectValue) {
     if (Array.isArray(value)) {
@@ -26,11 +26,13 @@ const Options = ({ name }: OptionsProps) => {
   }
 
   return (
-    <Select
-      mode="tags"
-      defaultValue={item.options as string[]}
-      onChange={handleOptionsChange}
-    />
+    <EditItem label="选项">
+      <Select
+        mode="tags"
+        defaultValue={item.options as string[]}
+        onChange={handleOptionsChange}
+      />
+    </EditItem>
   );
 };
 

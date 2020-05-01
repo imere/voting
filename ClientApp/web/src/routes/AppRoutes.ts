@@ -1,31 +1,46 @@
-import Loadable from "@loadable/component";
+import Loadable from '@loadable/component';
 
-import { Routes } from "@/constants";
-import { defaultLoadableOption } from "@/shared/conf";
+import { Routes } from '@/constants';
+import { defaultLoadableOption } from '@/shared/loadable-conf';
 
-import { RouteArrayType } from "./routes";
+import { RouteArrayType } from './routes';
 
 const PollListLazy = Loadable(
-  () => import("@/components/PollList"),
+  () => import('@/components/PollList'),
   defaultLoadableOption
 );
 
-const QuestionnaireLazy = Loadable(
-  () => import("@/components/Questionnaire"),
+const QuestionnaireNewLazy = Loadable(
+  () => import('@/components/Questionnaire/mode/New'),
+  defaultLoadableOption
+);
+
+const QuestionnaireEditLazy = Loadable(
+  () => import('@/components/Questionnaire/mode/Edit'),
+  defaultLoadableOption
+);
+
+const QuestionnaireAnswerLazy = Loadable(
+  () => import('@/components/Questionnaire/mode/Answer'),
+  defaultLoadableOption
+);
+
+const QuestionnaireStatisticLazy = Loadable(
+  () => import('@/components/Questionnaire/Statistic'),
   defaultLoadableOption
 );
 
 const AccountCenterLazy = Loadable(
-  () => import("@/components/AccountCenter"),
+  () => import('@/components/AccountCenter'),
   defaultLoadableOption
 );
 
 const AccountSettingsLazy = Loadable(
-  () => import("@/components/AccountSettings"),
+  () => import('@/components/AccountSettings'),
   defaultLoadableOption
 );
 
-export default [
+const r: RouteArrayType = [
   {
     exact: true,
     path: Routes.POLL_LIST,
@@ -33,14 +48,27 @@ export default [
   },
   {
     exact: true,
-    path: Routes.POLL,
-    component: QuestionnaireLazy,
+    auth: true,
+    path: Routes.POLL_NEW,
+    component: QuestionnaireNewLazy,
   },
   {
     exact: true,
     auth: true,
-    path: Routes.POLL_NEW,
-    component: QuestionnaireLazy,
+    path: Routes.POLL_EDIT,
+    component: QuestionnaireEditLazy,
+  },
+  {
+    exact: true,
+    auth: true,
+    path: Routes.POLL_STATISTIC,
+    component: QuestionnaireStatisticLazy,
+  },
+  {
+    exact: true,
+    auth: true,
+    path: Routes.POLL_ANSWER,
+    component: QuestionnaireAnswerLazy,
   },
   {
     exact: true,
@@ -58,4 +86,6 @@ export default [
     redirect: true,
     to: Routes.POLL_LIST,
   },
-] as RouteArrayType;
+];
+
+export default r;

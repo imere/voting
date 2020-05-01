@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,16 +13,17 @@ namespace vote.Models
         [Key]
         public long Id { get; set; }
 
-        [Required]
+        [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 1)]
         [Column(TypeName = "varchar(128)")]
         public string Title { get; set; }
 
-        [Column(TypeName = "varchar(512)")]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 0)]
+        [DataType(DataType.Text)]
         public string Description { get; set; }
 
-        public object[] Content { get; set; }
+        [DataType(DataType.Text)]
+        public string Content { get; set; }
 
-        [Required]
         [Column(TypeName = "datetime2")]
         public DateTime CreatedAt { get; set; }
 
@@ -30,11 +32,8 @@ namespace vote.Models
 
         public long? PollPropId { get; set; }
 
-        public ICollection<PollData> PollDatas { get; set; }
-
         public ICollection<PollAnswer> PollAnswers { get; set; }
 
-        [Required]
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
 

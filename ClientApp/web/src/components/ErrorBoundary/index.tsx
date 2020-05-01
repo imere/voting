@@ -1,4 +1,6 @@
-import React from "react";
+import React from 'react';
+
+import { Logger } from '@/framework/shared/logger';
 
 interface ErrorBoundaryReceivedProps {
   children?: React.ReactNode
@@ -21,7 +23,7 @@ class ErrorBoundary extends React.PureComponent<ErrorBoundaryReceivedProps, Erro
 
   // eslint-disable-next-line class-methods-use-this
   componentDidCatch(error: any, errorInfo: any) {
-    console.error(error, errorInfo);
+    Logger.error(error, errorInfo);
   }
 
   render() {

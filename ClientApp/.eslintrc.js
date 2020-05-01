@@ -19,6 +19,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:vue/recommended",
     "prettier/@typescript-eslint"
   ],
@@ -38,7 +39,9 @@ module.exports = {
     "ecmaFeatures": {
       "jsx": true
     },
-    "extraFileExtensions": ["vue"]
+    "extraFileExtensions": [
+      ".vue"
+    ]
   },
   "rules": {
     "@typescript-eslint/no-empty-interface": "off",
@@ -48,7 +51,7 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "accessor-pairs": "warn",
     "array-callback-return": "warn",
-    "arrow-body-style": "error",
+    "arrow-body-style": "warn",
     "array-bracket-newline": "warn",
     "array-element-newline": "warn",
     "arrow-parens": "error",
@@ -71,7 +74,7 @@ module.exports = {
     "eqeqeq": "error",
     "quotes": [
       "error",
-      "double"
+      "single"
     ],
     "indent": [
       "error",
@@ -98,6 +101,9 @@ module.exports = {
     "space-unary-ops": "error",
     "unicode-bom": "error",
     "semi": "error",
-    "no-trailing-spaces": "error"
+    "no-trailing-spaces": "error",
+    "space-infix-ops": "error",
+    "spaced-comment": "error",
+    "no-mixed-spaces-and-tabs": "error"
   }
 }

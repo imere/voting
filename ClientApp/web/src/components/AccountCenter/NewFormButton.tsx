@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Button } from "antd";
-import { Store } from "rc-field-form/lib/interface";
-import { Redirect } from "react-router";
+import React, { useState } from 'react';
+import { Button } from 'antd';
+import { Store } from 'rc-field-form/es/interface';
+import { Redirect } from 'react-router';
 
-import { Routes } from "@/constants";
+import { Routes } from '@/constants';
 
-import styles from "./NewFormButton.module.scss";
-import NewFormModal from "./NewFormModal";
+import styles from './NewFormButton.module.scss';
+import NewFormModal from './NewFormModal';
 
 const NewFormButton = () => {
   const [
@@ -19,22 +19,23 @@ const NewFormButton = () => {
     setParams
   ] = useState(new URLSearchParams());
 
-  function onCreate({ title, description, pub }: Store) {
+  function onCreate({ title, description, pub, expiresAt }: Store) {
     setVisible(false);
-    const params = new URLSearchParams();
-    title && params.append("title", encodeURIComponent(title));
-    description && params.append("description", encodeURIComponent(description));
-    pub && params.append("public", encodeURIComponent(pub));
-    setParams(params);
+    const p = new URLSearchParams();
+    title && p.append('title', encodeURIComponent(title));
+    description && p.append('description', encodeURIComponent(description));
+    pub && p.append('public', encodeURIComponent(pub));
+    expiresAt && p.append('expiresAt', encodeURIComponent(expiresAt));
+    setParams(p);
   }
 
   return (
     <>
       {
-        params.get("title") ? (
+        params.get('title') ? (
           <Redirect to={`${Routes.POLL_NEW}?${params}`} />
         ) : (
-          <div className={styles["button-new-form"]}>
+          <div className={styles['button-new-form']}>
             <Button
               type="primary"
               onClick={() => {

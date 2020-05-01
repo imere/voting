@@ -15,21 +15,20 @@ namespace vote.Models
         [Key]
         public long Id { get; set; }
 
-        [Required]
-        [StringLength(25, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+        [RegularExpression(@"^[a-zA-Z0-9]+$")]
+        [StringLength(15, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
         [DataType(DataType.Text)]
         public string Username { get; set; }
 
-        [Required]
+        [RegularExpression(@"^[a-zA-Z0-9]+$")]
         [StringLength(16, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [StringLength(10, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
-        [Column(TypeName = "varchar(128)")]
+        [StringLength(15, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+        [DataType(DataType.Text)]
         public string Displayname { get; set; }
 
-        [Required]
         [Column(TypeName = "datetime2")]
         public DateTime CreatedAt { get; set; }
 
@@ -41,7 +40,6 @@ namespace vote.Models
         public ICollection<PollAnswer> PollAnswers { get; set; }
 
         [NotMapped]
-        [DefaultValue(false)]
         public bool Persist { get; set; } = false;
     }
 }

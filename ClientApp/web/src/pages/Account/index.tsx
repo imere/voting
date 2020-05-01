@@ -1,9 +1,9 @@
-import React from "react";
-import { Switch } from "react-router";
+import React from 'react';
+import { Switch } from 'react-router';
 
-import AccountFormLayout from "@/layouts/AccountFormLayout";
-import AccountRoutes from "@/routes/AccountRoutes";
-import { renderRoutes } from "@/routes/utils";
+import AccountFormLayout from '@/layouts/AccountFormLayout';
+import AccountRoutes from '@/routes/AccountRoutes';
+import { renderRoutes } from '@/routes/util';
 
 const Account = () => (
   <AccountFormLayout>

@@ -1,40 +1,42 @@
-const fs = require("fs");
-const { join } = require("path");
-const parser = require("@babel/parser");
-const t = require("@babel/types");
-const traverse = require("@babel/traverse").default;
-const generate = require("@babel/generator").default;
+const fs = require('fs');
+const { join } = require('path');
+const parser = require('@babel/parser');
+const t = require('@babel/types');
+const traverse = require('@babel/traverse').default;
+const generate = require('@babel/generator').default;
+const { upperFirst } = require('lodash');
 
-const inFile = join(__dirname, "../..", "web/src/data-types.d.ts");
-const filename = "Questionnaire";
-const suffix = ".cs";
-const outFile = join(__dirname, "../../../ServerApp/Models", `${filename}${suffix}`);
+const inFile = join(__dirname, '../..', 'web/src/components/Questionnaire/questionnaire.d.ts');
+const filename = 'Questionnaire';
+const suffix = '.cs';
+const outFile = join(__dirname, '../..', '../ServerApp/Models', `${filename}${suffix}`);
 
 const TypeMap = new Proxy({
-  "string": "string",
-  "string[]": "string[]",
-  "boolean": "bool",
-  "boolean[]": "bool[]",
-  "number": "double",
-  "number[]": "double[]",
+  'Date': 'DateTime',
+  'string': 'string',
+  'string[]': 'ICollection<string>',
+  'boolean': 'bool',
+  'boolean[]': 'ICollection<bool>',
+  'number': 'double',
+  'number[]': 'ICollection<double>',
 }, {
   get(target, p, receiver) {
     const value = Reflect.get(target, p, receiver);
     if (undefined === value) {
-      if (p.endsWith("[]")) {
-        return "object[]"; 
+      if (typeof p === 'string' && p.endsWith('[]')) {
+        return 'object';
       }
-      return "object"; 
+      return 'object';
     }
     return value;
   }
 });
 
 const ast = parser.parse(
-  fs.readFileSync(inFile, { encoding: "utf8" }),
+  fs.readFileSync(inFile, { encoding: 'utf8' }),
   {
-    sourceType: "module",
-    plugins: ["typescript"],
+    sourceType: 'module',
+    plugins: ['typescript'],
   },
 );
 
@@ -51,20 +53,11 @@ traverse(ast, {
         let superClass = null;
         const body = [];
         traverse(path.node, {
-          TSTypeAliasDeclaration(path) {
+          TSTypeAliasDeclaration() {
             shouldSkip = true;
-            if (path.node.id.name.includes("Response")) {
-              path.remove();
-              return;
-            }
           },
           TSInterfaceDeclaration(path) {
             interfaceId = path.node.id;
-            if (interfaceId.name.includes("Response")) {
-              shouldSkip = true;
-              path.remove();
-              return;
-            }
             typeParameters = path.node.typeParameters;
             typeParameters && (
               typeParameters.params.forEach((param) => {
@@ -81,7 +74,7 @@ traverse(ast, {
                   null,
                   path.node.typeAnnotation
                 );
-                prop.accessibility = "public";
+                prop.accessibility = 'public';
                 prop.optional = path.node.optional;
                 body.push(prop);
               },
@@ -97,6 +90,7 @@ traverse(ast, {
           interfaceId,
           superClass,
           t.classBody(body),
+          null
         );
 
         classDec.typeParameters = typeParameters;
@@ -106,6 +100,9 @@ traverse(ast, {
       TSTypeAliasDeclaration(path) {
         path.remove();
       },
+      TSInterfaceDeclaration(path) {
+        path.remove();
+      }
     }, path.scope);
 
     const body = [...path.node.body];
@@ -114,7 +111,7 @@ traverse(ast, {
 
     path.node.body.push(
       t.tsModuleDeclaration(
-        t.identifier("vote.Models"),
+        t.identifier('vote.Models'),
         t.tsModuleBlock(body),
       )
     );
@@ -122,36 +119,53 @@ traverse(ast, {
   }
 });
 
-const { code } = generate(ast, {}, "");
+const { code } = generate(ast, {}, '');
 
 function wrap(code) {
-  return `using System;
+  return '/* Auto generated */\n' +
+    `using System;
   using System.Collections.Generic;
+  using System.Collections.ObjectModel;
   using System.ComponentModel.DataAnnotations;
   using System.ComponentModel.DataAnnotations.Schema;
   using System.Linq;
   using System.Threading.Tasks;\n`.
-    split(/;\s+/).join(";\n") + "\n" + code;
+      split(/;\s+/).join(';\n') + '\n' + code;
 }
 
 fs.writeFileSync(outFile,
   wrap(
     code.
-      replace(/public ([a-z]+?)(\?)?:(?:\s+)?(.+?);$/gm, (match, name, optional, type) => {
-        if (type.startsWith("\"")) {
-          if (type.includes("|")) {
-            return `public string ${name} { get; set; }`;
+      replace(/public ([a-zA-Z]+?)(\?)?:(?:\s+)?(.+?);$/gm, (match, name, optional, type) => {
+        // is string constant
+        if (type.includes('"') || type.includes('\'')) {
+          // if has multiple constants
+          if (type.includes('|')) {
+            // set type string
+            return `public string ${upperFirst(name)} { get; set; }`;
           }
-          return `public readonly string ${name} = ${type};`;
+          // else set readonly string
+          return `public readonly string ${upperFirst(name)} = ${type.replace(/'/g, '"')};`;
         } else {
-          if (type.includes("string")) {
+          // compatible of C# < 7.3
+          if (type.includes('string') || type.includes('object')) {
             optional = null;
           }
-          return `public ${TypeMap[type]}${optional ? optional : ""} ${name} { get; set; }`;
+          return `public ${TypeMap[type]}${optional ? optional : ''} ${upperFirst(name)} { get; set; }`;
         }
       }).
-      replace(/class/g, "public class").
-      replace(/extends/g, ":")
+      // class
+      replace(/class/g, 'public class').
+      // extends
+      replace(/extends/g, ':').
+      // remove comments
+      replace(/\/\/.+/g, '').
+      // remove whitespace
+      replace(/^\s+$/gm, '').
+      // set *Id required and type to long
+      replace(/^(.+?)\s+double\s+?(.*Id)/gim, '\t[Required]\n$1 long $2').
+      // set default IsPublic
+      replace(/^(.+?)\s+bool\?\s(IsPublic.+)$/gim, '$1 bool? $2 = true;')
   ),
-  { encoding: "utf8" }
+  { encoding: 'utf8' }
 );

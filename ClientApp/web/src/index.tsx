@@ -1,49 +1,61 @@
-import Loadable from "@loadable/component";
-import React from "react";
-import ReactDOM from "react-dom";
-import { createBrowserHistory } from "history";
-import { Provider as ReduxProvider } from "react-redux";
-import { FetchProviderProps, Provider as FetchProvider } from "use-http";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { ConnectedRouter } from "connected-react-router";
+import Loadable from '@loadable/component';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createBrowserHistory } from 'history';
+import { Provider as ReduxProvider } from 'react-redux';
+import { FetchProviderProps, Provider as FetchProvider } from 'use-http';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
 
-import * as serviceWorker from "./serviceWorker";
-import ErrorBoundary from "./components/ErrorBoundary";
-import Protected from "./layouts/Protected";
-import { configureStore } from "./store";
-import { initialState } from "./reducers/initial-state";
-import { iu } from "./actions";
-import { Routes } from "./constants";
-import { defaultLoadableOption } from "./shared/conf";
-import { addAuthorization, addCredentials, shouldAddAuthorization, shouldAddCredentials } from "./shared/request";
-import { setUser } from "./mocks/data";
+import * as serviceWorker from '@/serviceWorker';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import Protected from '@/layouts/Protected';
+import { configureStore } from '@/store';
+import { initialState } from '@/store/initial-state';
+import { iu } from '@/store/actions';
+import { Routes } from '@/constants';
+import { defaultLoadableOption } from '@/shared/loadable-conf';
+import {
+  addAuthorization,
+  addCredentials,
+  shouldAddAuthorization,
+  shouldAddCredentials,
+} from '@/framework/shared/request';
+import { Logger } from '@/framework/shared/logger';
+import { polyfill } from '@/framework/shared/polyfill';
+import { AuthCallback } from './pages/AuthCallback';
 
 const AccountLazy = Loadable(
-  () => import("./pages/Account"),
+  () => import('./pages/Account'),
   defaultLoadableOption
 );
 
 const AppLazy = Loadable(
-  () => import("./pages/App"),
+  () => import('./pages/App'),
   defaultLoadableOption
 );
 
-import("./index.scss");
+import('./index.scss');
 
-setUser();
+polyfill();
 
 iu.getUser().then((user) => {
   const baseUrl = document.
-    getElementsByTagName("base")[0].
-    getAttribute("href") as string;
-  const history = createBrowserHistory({ "basename": baseUrl });
+    getElementsByTagName('base')[0]?.
+    getAttribute('href') as string;
+  const history = createBrowserHistory({ 'basename': baseUrl });
+
+  window.onerror = window.onunhandledrejection = (...args: any) => {
+    Logger.warn(...args);
+    return false;
+  };
 
   window.onerror = window.onunhandledrejection = console.error.bind(console);
 
   initialState.auth.user = user;
   const store = configureStore(history, initialState);
 
-  const fetchProviderOptions: FetchProviderProps["options"] = {
+  const fetchProviderOptions: FetchProviderProps['options'] = {
     interceptors: {
       request: async (options, url) => {
         if (shouldAddCredentials(url)) {
@@ -57,7 +69,7 @@ iu.getUser().then((user) => {
     },
   };
 
-  const node = document.getElementById("__root");
+  const node = document.getElementById('__root');
 
   if (node) {
     ReactDOM.render(
@@ -68,6 +80,7 @@ iu.getUser().then((user) => {
               <BrowserRouter>
                 <Protected redirectTo={Routes.USER_LOGIN}>
                   <Switch>
+                    <Route path={Routes.AUTH_CALLBACK} component={AuthCallback} />
                     <Route path={Routes.USER} component={AccountLazy} />
                     <Route path="/" component={AppLazy} />
                   </Switch>

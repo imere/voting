@@ -1,0 +1,1 @@
+copy .\node_modules\chromedriver\lib\chromedriver\chromedriver.exe .\ChromeDriver.exe && node .\tests\e2e\baidu.spec.js

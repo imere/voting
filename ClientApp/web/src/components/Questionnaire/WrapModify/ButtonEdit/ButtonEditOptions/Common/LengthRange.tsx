@@ -1,76 +1,80 @@
-import React, { useContext } from "react";
-import { Input, InputNumber } from "antd";
+import React from 'react';
+import { Input, InputNumber } from 'antd';
 
-import QuestionnaireContext from "@/contexts/questionnaire";
-import { QuestionnaireContentType } from "@/data-types";
-import { getLength, setLengthMessage } from "@/components/Questionnaire/utils";
+import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
+import { getLengthObject, setRulesLengthMessage } from '@/components/Questionnaire/data-util';
+import { QEventBus } from '@/components/Questionnaire/QEventBus';
+import { None } from '@/typings/types';
 
-interface LengthRangeReceivedProps {
-  id?: string
-  onChange?: (ev: React.ChangeEvent) => void
+import { EditItem } from './EditItem';
+
+type LengthRangeReceivedProps = {
+  negative?: boolean
+  ctx: QEventBus
+  name: string
   lengthName: string
 }
 
-type LengthRangeProps =
-  LengthRangeReceivedProps &
-  QuestionnaireContentType
+type LengthRangeProps = LengthRangeReceivedProps
 
-const LengthRange = ({ lengthName, typename, name }: LengthRangeProps) => {
-  const { getItem, updateItem } = useContext(QuestionnaireContext);
+const LengthRange = ({ negative, ctx: { getItem, updateItem }, name, lengthName }: LengthRangeProps) => {
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const item = getItem(name)!;
+  const item = getItem(name) as QuestionnaireContentType;
 
-  function handleLengthChange(num: number | undefined, minmax: "min" | "max") {
-    if (typeof num === "undefined") {
-      return;
+  function handleLengthChange(num: number | None, minmax: 'min' | 'max') {
+
+    let lengthObj = getLengthObject(item.rules);
+    if (!lengthObj) {
+      item.rules.push(lengthObj = {});
+    }
+    lengthObj[minmax] =
+      num === undefined || num === null
+        ? undefined
+        : Number(num);
+
+    if (item.typename === 'checkboxgroup') {
+      lengthObj.type = 'array';
     }
 
-    let length = getLength(item.rules);
-    if (!length) {
-      item.rules.push(length = {});
-    }
-    if (minmax === "min") {
-      length.min = Number(num);
-    } else {
-      length.max = Number(num);
+    if (item.typename === 'number') {
+      lengthObj.type = 'number';
     }
 
-    if (typename === "checkboxgroup") {
-      length.type = "array";
-    }
-
-    setLengthMessage([length], lengthName);
+    setRulesLengthMessage([lengthObj], lengthName);
     updateItem(item);
   }
 
   return (
-    <Input.Group compact>
-      <InputNumber
-        style={{ width: 100, textAlign: "center" }}
-        type="number"
-        placeholder="最小"
-        min={0}
-        onChange={(min) => handleLengthChange(min, "min")}
-      />
-      <Input
-        style={{
-          width: 30,
-          borderLeft: 0,
-          borderRight: 0,
-          pointerEvents: "none",
-        }}
-        placeholder="~"
-        disabled
-      />
-      <InputNumber
-        style={{ width: 100, textAlign: "center", borderLeft: 0 }}
-        type="number"
-        placeholder="最大"
-        min={0}
-        onChange={(max) => handleLengthChange(max, "max")}
-      />
-    </Input.Group>
+    <EditItem label={lengthName}>
+      <Input.Group compact>
+        <InputNumber
+          style={{ width: 100, textAlign: 'center' }}
+          type="number"
+          placeholder="最小"
+          min={negative ? undefined : 0}
+          defaultValue={getLengthObject(item.rules)?.min}
+          onChange={(min) => handleLengthChange(min, 'min')}
+        />
+        <Input
+          style={{
+            width: 30,
+            borderLeft: 0,
+            borderRight: 0,
+            pointerEvents: 'none',
+          }}
+          placeholder="~"
+          disabled
+        />
+        <InputNumber
+          style={{ width: 100, textAlign: 'center', borderLeft: 0 }}
+          type="number"
+          placeholder="最大"
+          min={0}
+          defaultValue={getLengthObject(item.rules)?.max}
+          onChange={(max) => handleLengthChange(max, 'max')}
+        />
+      </Input.Group>
+    </EditItem>
   );
 };
 

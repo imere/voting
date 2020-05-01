@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { Button, Checkbox, Form, Input, message } from "antd";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { Store } from "rc-field-form/lib/interface";
+import React, { useState } from 'react';
+import { Button, Checkbox, Form, Input } from 'antd';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Store } from 'rc-field-form/es/interface';
 
-import { Routes } from "@/constants";
-import { AuthAction, LoginCallback, UserAuthentication } from "@/actions/action-auth";
-import { iu } from "@/actions";
-import { ApplicationState } from "@/reducers/states";
-import { Disp, ValidateStatus } from "@/types";
-import { ResponseState } from "@/data-types";
-import { passwordRules, usernameRules } from "@/shared/account-validate";
+import { Routes } from '@/constants';
+import { AuthAction, LoginCallback, UserAuthentication } from '@/store/actions/action-auth';
+import { ApplicationState } from '@/store/state';
+import { Disp, ValidateStatus } from '@/typings/types';
+import { ResponseState } from '@/typings/response';
+import { passwordRules, usernameRules } from '@/shared/validate';
+import { toastMessageByStatus } from '@/framework/shared/toast-message';
 
-import styles from "./AccountLogin.module.scss";
+import styles from './AccountLogin.module.scss';
 
 type AccountLoginDispatch = Disp<ApplicationState, null, AuthAction>;
 
@@ -62,23 +62,21 @@ const AccountLogin = ({ login, pending }: AccountLoginProps) => {
     setLogining
   ] = useState(false);
 
-  const loginCallback: LoginCallback = (err, res) => {
+  const loginCallback: LoginCallback = (_, response) => {
     setLogining(false);
-    if (err) {
-      return message.error("请检查网络", 3);
-    }
-    if (res && 400 === res.status) {
-      res.json().then((res: ResponseState) => {
+    toastMessageByStatus(response?.status, [400]);
+    if (response?.status === 400) {
+      response.json().then((res: ResponseState) => {
         if (res.username) {
-          setUsernameStatus("error");
+          setUsernameStatus('error');
           setUsernameHelp(res.username);
         }
         if (res.password) {
-          setPasswordStatus("error");
+          setPasswordStatus('error');
           setPasswordHelp(res.password);
         }
         if (res.data?.username) {
-          setUsernameStatus("error");
+          setUsernameStatus('error');
           setUsernameHelp(res.data.username);
         }
       });
@@ -103,36 +101,27 @@ const AccountLogin = ({ login, pending }: AccountLoginProps) => {
   }
 
   return (
-    <Form onFinish={onFinish} className={styles["login-form"]}>
+    <Form
+      className={styles['login-form']}
+      onFinish={onFinish}
+    >
 
       <Form.Item
         name="username"
         help={usernameHelp}
         validateStatus={usernameStatus}
-        rules={[
-          {
-            required: true,
-            message: "请输入用户名",
-          },
-          ...usernameRules,
-        ]}
+        rules={usernameRules}
       >
-        <Input placeholder="用户名" prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />} />
+        <Input placeholder="用户名" prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} />
       </Form.Item>
 
       <Form.Item
         name="password"
         help={passwordHelp}
         validateStatus={passwordStatus}
-        rules={[
-          {
-            required: true,
-            message: "请输入密码",
-          },
-          ...passwordRules,
-        ]}
+        rules={passwordRules}
       >
-        <Input type="password" placeholder="密码" prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />} />
+        <Input type="password" placeholder="密码" prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} />
       </Form.Item>
 
       <Form.Item>
@@ -143,13 +132,13 @@ const AccountLogin = ({ login, pending }: AccountLoginProps) => {
         >
           <Checkbox>记住登录状态</Checkbox>
         </Form.Item>
-        <a className={styles["login-form-forgot"]}>
+        <a className={styles['login-form-forgot']}>
           忘记密码
         </a>
       </Form.Item>
 
       <Form.Item>
-        <Button loading={pending || logining} type="primary" htmlType="submit" className={styles["login-form-button"]}>
+        <Button loading={pending || logining} type="primary" htmlType="submit" className={styles['login-form-button']}>
           登录
         </Button>
         <span>或</span><Link to={Routes.USER_REGISTER}>注册</Link>
@@ -164,7 +153,7 @@ const mapStateToProps = (state: ApplicationState): AccountLoginOwnStateProps => 
 });
 
 const mapDispatchToProps = (dispatch: AccountLoginDispatch): AccountLoginOwnDispatchProps => ({
-  login: (user, cb) => dispatch(iu.login(user, cb)),
+  login: (user, cb) => import('@/store/actions').then(({ iu }) => dispatch(iu.login(user, cb))),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountLogin);

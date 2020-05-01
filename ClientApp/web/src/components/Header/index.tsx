@@ -1,13 +1,13 @@
-import React from "react";
-import { Layout } from "antd";
-import { MenuMode } from "antd/es/menu";
-import { SiderTheme } from "antd/es/layout/Sider";
-import { connect } from "react-redux";
+import React from 'react';
+import { Layout } from 'antd';
+import { MenuMode } from 'antd/es/menu';
+import { SiderTheme } from 'antd/es/layout/Sider';
+import { connect } from 'react-redux';
 
-import { ApplicationState } from "@/reducers/states";
-import { classnames } from "@/shared/classnames";
+import { ApplicationState } from '@/store/state';
+import { classnames } from '@/shared/classnames';
 
-import styles from "./Header.module.scss";
+import styles from './Header.module.scss';
 
 const { Header } = Layout;
 
@@ -26,7 +26,7 @@ type HeaderProps =
 
 const HeaderComponent: React.FC<HeaderProps> = ({ children, mode, theme }: HeaderProps) => (
   <Header className={classnames(
-    Reflect.get(styles, `header-${mode.startsWith("vertical") ? "inline" : mode}`),
+    Reflect.get(styles, `header-${mode.startsWith('vertical') ? 'inline' : mode}`),
     Reflect.get(styles, `header-${theme}`),
   )}>
     {children}

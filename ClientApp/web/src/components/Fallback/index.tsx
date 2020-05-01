@@ -1,7 +1,7 @@
-import React from "react";
-import { Spin } from "antd";
+import React from 'react';
+import { Spin } from 'antd';
 
-import styles from "./Fallback.module.scss";
+import styles from './Fallback.module.scss';
 
 const Fallback: React.FC = () =>
   <div className={styles.fallback}>

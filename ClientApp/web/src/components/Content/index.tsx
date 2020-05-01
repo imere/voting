@@ -1,9 +1,9 @@
-import React from "react";
-import { Layout } from "antd";
+import React from 'react';
+import { Layout } from 'antd';
 
-import BreadCrumbComponent from "@/components/Breadcrumb";
+import BreadCrumbComponent from '@/components/Breadcrumb';
 
-import styles from "./Content.module.scss";
+import styles from './Content.module.scss';
 
 const { Content } = Layout;
 

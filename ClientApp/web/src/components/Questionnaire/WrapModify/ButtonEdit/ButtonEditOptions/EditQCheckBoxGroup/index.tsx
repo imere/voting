@@ -1,14 +1,18 @@
-import React from "react";
-import { Form } from "antd";
+import React from 'react';
 
-import Layout from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/Layout";
-import LengthRange from "@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/LengthRange";
-import { TypeCheckBoxGroup } from "@/data-types";
+import Layout from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/Layout';
+import LengthRange from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/LengthRange';
+import { TypeCheckBoxGroup } from '@/components/Questionnaire/questionnaire';
+import { QEventBus } from '@/components/Questionnaire/QEventBus';
+import { getLengthMessageByType } from '@/components/Questionnaire/data-util';
 
-import DefaultValue from "./DefaultValue";
-import Options from "./Options";
+import DefaultValue from './DefaultValue';
+import Options from './Options';
 
-interface EditQCheckBoxGroupReceivedProps extends TypeCheckBoxGroup {}
+interface EditQCheckBoxGroupReceivedProps {
+  ctx: QEventBus
+  name: TypeCheckBoxGroup['name']
+}
 
 type EditQCheckBoxGroupProps = EditQCheckBoxGroupReceivedProps
 
@@ -16,27 +20,12 @@ const EditQCheckBoxGroup = (props: EditQCheckBoxGroupProps) => (
   <Layout
     { ...props }
   >
-    <Form.Item
-      label="默认值"
-      name="value"
-    >
-      <DefaultValue {...props} />
-    </Form.Item>
-    <Form.Item
-      label="选项"
-      name="options"
-    >
-      <Options {...props} />
-    </Form.Item>
-    <Form.Item
-      label="选项数"
-      name="length"
-    >
-      <LengthRange
-        lengthName="选项数"
-        {...props}
-      />
-    </Form.Item>
+    <DefaultValue {...props} />
+    <Options {...props} />
+    <LengthRange
+      lengthName={getLengthMessageByType('checkboxgroup')}
+      {...props}
+    />
   </Layout>
 );
 

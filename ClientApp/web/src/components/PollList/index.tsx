@@ -1,56 +1,92 @@
-import React, { useEffect, useState } from "react";
-import { useFetch } from "use-http";
-import { Empty } from "antd";
+import './PollList.scss';
 
-import Fallback from "@/components/Fallback";
-import { API_POLL } from "@/shared/conf";
-import { Questionnaire, ResponseState } from "@/data-types";
-import { None } from "@/types";
-import { questionnaires } from "@/mocks/data";
+import React, { useEffect } from 'react';
+import { Table } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import { GetComponentProps } from 'rc-table/es/interface';
+import { useHistory } from 'react-router';
+
+import { ResponseState, RQuestionnaireResponse } from '@/typings/response';
+import { Routes } from '@/constants';
+import { toastMessageByStatus } from '@/framework/shared/toast-message';
+import { unifyQuestionnaire } from '@/components/Questionnaire/data-util';
+import { getAllPolls } from '@/framework/shared/request-util';
+import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
+
+const columns: ColumnsType<RQuestionnaireResponse> = [
+  {
+    title: 'Title',
+    dataIndex: 'title',
+    key: 'title',
+    ellipsis: true,
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description',
+    ellipsis: true,
+  },
+  {
+    title: 'Time',
+    dataIndex: 'createdAt',
+    key: 'createdAt',
+  },
+];
 
 const PollList: React.FunctionComponent = () => {
+  const history = useHistory();
+
   const [
     loading,
     setLoading
-  ] = useState(false);
+  ] = useStateBeforeUnMount(false);
 
   const [
     polls,
     setPolls
-  ] = useState<Array<Questionnaire>>([]);
-
-  const [
-    request,
-    response
-  ] = useFetch(API_POLL);
+  ] = useStateBeforeUnMount<Array<RQuestionnaireResponse>>([]);
 
   async function getPolls() {
     setLoading(true);
-    await request.get();
-    setLoading(false);
+    const response = await getAllPolls();
     if (response.ok) {
-      const res: ResponseState<Array<Questionnaire>> = await response.json();
+      const res: ResponseState<Array<RQuestionnaireResponse>> = await response.json();
+      const { data } = res;
+      const { length } = data;
+      for (let i = 0; i < length; i++) {
+        Reflect.set(data[i], 'key', i);
+        unifyQuestionnaire(data[i]);
+      }
       setPolls(res.data);
     }
-    setPolls(questionnaires);
+    toastMessageByStatus(response.status);
+    setLoading(false);
   }
 
   useEffect(() => {
     getPolls();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function render(loading: boolean, polls: any[] | None) {
-    if (loading) {
-      return <Fallback />;
-    }
-    if (polls && polls.length) {
-      return <>{JSON.stringify(polls)}</>;
-    } else {
-      return <Empty style={{ paddingTop: "100px" }} />;
-    }
-  }
+  const onRow: GetComponentProps<RQuestionnaireResponse> = (record) => ({
+    onClick: () => {
+      history.push({
+        pathname: `${Routes.POLL_ANSWER.split(':')[0]}${record.id}`
+      });
+    },
+  });
 
-  return render(loading, polls);
+  return (
+    <Table<RQuestionnaireResponse>
+      className="poll-list"
+      loading={loading}
+      showHeader={false}
+      columns={columns}
+      onRow={onRow}
+      pagination={polls?.length ? undefined : false}
+      dataSource={polls}
+    />
+  );
 };
 
 export default PollList;

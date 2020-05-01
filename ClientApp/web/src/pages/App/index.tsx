@@ -1,19 +1,20 @@
-import React from "react";
-import { Switch } from "react-router";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { SiderTheme } from "antd/es/layout/Sider";
-import { connect } from "react-redux";
+import React from 'react';
+import { Switch } from 'react-router';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { SiderTheme } from 'antd/es/layout/Sider';
+import { connect } from 'react-redux';
 
-import HeaderNavComponent from "@/components/HeaderNav";
-import SideMenuLayout from "@/layouts/SideMenuLayout";
-import TopMenuLayout from "@/layouts/TopMenuLayout";
-import AppRoutes from "@/routes/AppRoutes";
-import { useSessionState } from "@/hooks/useSessionState";
-import { ApplicationState } from "@/reducers/states";
-import { classnames } from "@/shared/classnames";
-import { renderRoutes } from "@/routes/utils";
+import HeaderNavComponent from '@/components/HeaderNav';
+import SessionStates from '@/hooks/SessionStates';
+import SideMenuLayout from '@/layouts/SideMenuLayout';
+import TopMenuLayout from '@/layouts/TopMenuLayout';
+import AppRoutes from '@/routes/AppRoutes';
+import { useSessionState } from '@/hooks/useSessionState';
+import { ApplicationState } from '@/store/state';
+import { classnames } from '@/shared/classnames';
+import { renderRoutes } from '@/routes/util';
 
-import styles from "./App.module.scss";
+import styles from './App.module.scss';
 
 interface AppOwnStateProps {
   theme: SiderTheme
@@ -25,9 +26,9 @@ function App({ theme }: AppProps) {
   const [
     collapsed,
     toggleCollapsed
-  ] = useSessionState("siderCollapse", true);
+  ] = useSessionState(SessionStates.siderCollapse, true);
 
-  const [useTML] = useSessionState("topMenu", true);
+  const [useTML] = useSessionState(SessionStates.useTML, true);
 
   const content = (
     <Switch>
@@ -37,10 +38,10 @@ function App({ theme }: AppProps) {
 
   const iconProps = {
     className: classnames(
-      styles["header-sider-trigger"],
+      styles['header-sider-trigger'],
       Reflect.get(styles, `header-sider-trigger-${theme}`),
     ),
-    onClick: () => toggleCollapsed(!collapsed)
+    onClick: () => toggleCollapsed((v) => !v)
   };
   const SML = (
     <SideMenuLayout

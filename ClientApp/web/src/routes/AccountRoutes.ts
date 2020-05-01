@@ -1,21 +1,21 @@
-import Loadable from "@loadable/component";
+import Loadable from '@loadable/component';
 
-import { Routes } from "@/constants";
-import { defaultLoadableOption } from "@/shared/conf";
+import { Routes } from '@/constants';
+import { defaultLoadableOption } from '@/shared/loadable-conf';
 
-import { RouteArrayType } from "./routes";
+import { RouteArrayType } from './routes';
 
 const AccountRegisterFormLazy = Loadable(
-  () => import("@/components/AccountRegisterForm"),
+  () => import('@/components/AccountRegisterForm'),
   defaultLoadableOption
 );
 
 const AccountLoginFormLazy = Loadable(
-  () => import("@/components/AccountLoginForm"),
+  () => import('@/components/AccountLoginForm'),
   defaultLoadableOption
 );
 
-export default [
+const r: RouteArrayType = [
   {
     exact: true,
     path: Routes.USER_REGISTER,
@@ -30,4 +30,6 @@ export default [
     redirect: true,
     to: Routes.POLL_LIST,
   },
-] as RouteArrayType;
+];
+
+export default r;

@@ -1,11 +1,12 @@
-import React, { useContext } from "react";
-import { Input } from "antd";
+import React, { useContext } from 'react';
+import { Input } from 'antd';
 
-import QuestionnaireContext from "@/contexts/questionnaire";
-import { TypeInput } from "@/data-types";
+import { TypeInput } from '@/components/Questionnaire/questionnaire';
+import { EditItem } from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/EditItem';
+import { QuestionnaireContext } from '@/contexts/questionnaire';
 
-interface DefaultValueReceivedProps extends Omit<TypeInput, "typename"> {
-  id?: string
+interface DefaultValueReceivedProps {
+  name: TypeInput['name']
 }
 
 type DefaultValueProps = DefaultValueReceivedProps
@@ -13,8 +14,7 @@ type DefaultValueProps = DefaultValueReceivedProps
 const DefaultValue = ({ name }: DefaultValueProps) => {
   const { getItem, updateItem } = useContext(QuestionnaireContext);
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const item = getItem(name)!;
+  const item = getItem(name) as TypeInput;
 
   function handleChange({ target: { value } }: React.ChangeEvent<HTMLInputElement>) {
     item.value = value.trim();
@@ -22,10 +22,13 @@ const DefaultValue = ({ name }: DefaultValueProps) => {
   }
 
   return (
-    <Input
-      placeholder="两端空格无效"
-      onChange={handleChange}
-    />
+    <EditItem label="默认值">
+      <Input
+        defaultValue={item.value}
+        placeholder="两端空格无效"
+        onChange={handleChange}
+      />
+    </EditItem>
   );
 };
 

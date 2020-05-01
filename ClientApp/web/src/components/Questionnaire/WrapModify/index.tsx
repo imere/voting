@@ -1,11 +1,11 @@
-import React from "react";
-import { Form } from "antd";
+import React from 'react';
+import { Form } from 'antd';
 
-import { QuestionnaireContentType } from "@/data-types";
+import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
 
-import ButtonDelete from "./ButtonDelete";
-import ButtonEdit from "./ButtonEdit";
-import styles from "./WrapModify.module.scss";
+import ButtonDelete from './ButtonDelete';
+import ButtonEdit from './ButtonEdit';
+import styles from './WrapModify.module.scss';
 
 interface WrapEditReceivedProps {
   children: React.FC<any> | React.ComponentClass
@@ -20,7 +20,7 @@ const WrapEdit: React.FC<WrapEditProps> = ({ children, ...rest }: WrapEditProps)
     {React.createElement(children, rest)}
     <div className={styles.modify}>
       <ButtonEdit
-        {...rest}
+        name={rest.name}
       />
       <ButtonDelete
         name={rest.name}

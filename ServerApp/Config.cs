@@ -3,7 +3,7 @@ using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
-namespace IdentityServer
+namespace vote
 {
     public static class Config
     {
@@ -48,7 +48,7 @@ namespace IdentityServer
                     UpdateAccessTokenClaimsOnRefresh=true,
                     RefreshTokenExpiration = TokenExpiration.Sliding,
                     RefreshTokenUsage = TokenUsage.OneTimeOnly,
-                    AbsoluteRefreshTokenLifetime = 0,
+                    AbsoluteRefreshTokenLifetime = 60 * 60,
 
                     AllowedScopes =
                     {

@@ -1,14 +1,15 @@
-import React, { useContext } from "react";
-import { Select } from "antd";
-import { SelectValue } from "antd/lib/select";
+import React, { useContext } from 'react';
+import { Select } from 'antd';
+import { SelectValue } from 'antd/es/select';
 
-import QuestionnaireContext from "@/contexts/questionnaire";
-import { TypeCheckBoxGroup } from "@/data-types";
+import { TypeCheckBoxGroup } from '@/components/Questionnaire/questionnaire';
+import { EditItem } from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/EditItem';
+import { QuestionnaireContext } from '@/contexts/questionnaire';
 
 const { Option } = Select;
 
-interface DefaultValueReceivedProps extends Omit<TypeCheckBoxGroup, "typename"> {
-  id?: string
+interface DefaultValueReceivedProps {
+  name: TypeCheckBoxGroup['name']
 }
 
 type DefaultValueProps = DefaultValueReceivedProps
@@ -16,8 +17,7 @@ type DefaultValueProps = DefaultValueReceivedProps
 const DefaultValue = ({ name }: DefaultValueProps) => {
   const { getItem, updateItem } = useContext(QuestionnaireContext);
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const item = getItem(name)! as TypeCheckBoxGroup;
+  const item = getItem(name) as TypeCheckBoxGroup;
 
   function handleChange(value: SelectValue) {
     if (Array.isArray(value)) {
@@ -28,21 +28,24 @@ const DefaultValue = ({ name }: DefaultValueProps) => {
   }
 
   return (
-    <Select
-      mode="multiple"
-      onChange={handleChange}
-    >
-      {
-        (item.options).map((v, i) => (
-          <Option
-            key={i + Math.random().toString(16)}
-            value={v as string}
-          >
-            {v}
-          </Option>
-        ))
-      }
-    </Select>
+    <EditItem label="默认值">
+      <Select
+        mode="multiple"
+        defaultValue={item.value}
+        onChange={handleChange}
+      >
+        {
+          (item.options).map((v, i) => (
+            <Option
+              key={i + Math.random().toString(16)}
+              value={v as string}
+            >
+              {v}
+            </Option>
+          ))
+        }
+      </Select>
+    </EditItem>
   );
 };
 

@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { MinusCircleOutlined } from "@ant-design/icons";
-import { Tooltip } from "antd";
+import React, { useContext } from 'react';
+import { MinusCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
 
-import QuestionnaireContext from "@/contexts/questionnaire";
+import { QuestionnaireContext } from '@/contexts/questionnaire';
 
 interface ButtonDeleteReceivedProps {
   name: string
@@ -16,7 +16,7 @@ const ButtonDelete = ({ name }: ButtonDeleteProps) => {
   return (
     <Tooltip title="删除">
       <MinusCircleOutlined
-        style={{ margin: "8px 8px 0" }}
+        style={{ margin: '8px 8px 0' }}
         onClick={() => removeItem(name)}
       />
     </Tooltip>

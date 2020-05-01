@@ -1,16 +1,16 @@
-import React from "react";
-import { Menu } from "antd";
-import { TableOutlined, UserOutlined } from "@ant-design/icons";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { MenuTheme } from "antd/es/menu/MenuContext";
-import { connect } from "react-redux";
-import { MenuMode } from "antd/es/menu";
-import { User } from "oidc-client";
+import React from 'react';
+import { Menu } from 'antd';
+import { TableOutlined, UserOutlined } from '@ant-design/icons';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { MenuTheme } from 'antd/es/menu/MenuContext';
+import { connect } from 'react-redux';
+import { MenuMode } from 'antd/es/menu';
+import { User } from 'oidc-client';
 
-import Logo from "@/layouts/Logo";
-import { Routes } from "@/constants";
-import { ApplicationState } from "@/reducers/states";
-import { None } from "@/types";
+import Logo from '@/layouts/Logo';
+import { Routes } from '@/constants';
+import { ApplicationState } from '@/store/state';
+import { None } from '@/typings/types';
 
 const { SubMenu } = Menu;
 
@@ -24,18 +24,23 @@ interface TopOrSideMenuOwnStateProps {
 }
 
 type TopOrSideMenuProps =
-  RouteComponentProps &
   TopOrSideMenuOwnStateProps &
-  TopOrSideMenuReceivedProps;
+  TopOrSideMenuReceivedProps &
+  RouteComponentProps
 
 const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, user }: TopOrSideMenuProps) => {
-  mode = mode.startsWith("vertical") ? "inline" : mode;
+  mode = mode.startsWith('vertical') ? 'inline' : mode;
   import(`./${mode}.scss`);
 
   return (
     <>
       <Logo mode={mode} theme={theme} />
-      <Menu theme={theme} defaultSelectedKeys={[location.pathname]} selectedKeys={[location.pathname]} mode={mode}>
+      <Menu
+        mode={mode}
+        theme={theme}
+        defaultSelectedKeys={[location.pathname]}
+        selectedKeys={[location.pathname]}
+      >
         <Menu.Item key={Routes.POLL_LIST}>
           <Link to={Routes.POLL_LIST}>
             <TableOutlined />
@@ -48,10 +53,10 @@ const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, us
               <SubMenu
                 key="sub1"
                 title={
-                  <span>
+                  <>
                     <UserOutlined />
                     <span>个人</span>
-                  </span>
+                  </>
                 }
               >
                 <Menu.Item key={Routes.ACCOUNT_CENTER}>
@@ -66,7 +71,7 @@ const TopOrSideMenu: React.FC<TopOrSideMenuProps> = ({ mode, theme, location, us
                 </Menu.Item>
               </SubMenu>
             )
-            : ""
+            : undefined
         }
       </Menu>
     </>

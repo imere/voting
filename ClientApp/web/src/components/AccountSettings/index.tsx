@@ -1,7 +1,13 @@
-import React from "react";
+import React from 'react';
 
-class AccountSettings extends React.PureComponent {
-  render = () => <>AccountSettings</>
-}
+import ChangeLayout from '@/components/AccountSettings/ChangeLayout';
+import { Unregister } from '@/components/AccountSettings/Unregister';
+
+const AccountSettings: React.FC = () => (
+  <>
+    <ChangeLayout />
+    <Unregister />
+  </>
+);
 
 export default AccountSettings;

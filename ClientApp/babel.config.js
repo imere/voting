@@ -1,68 +1,83 @@
-const { compilerOptions } = require("./tsconfig.json");
+const { compilerOptions = {} } = require('./tsconfig.json');
 const alias = {};
-if (compilerOptions) {
-  const { paths } = compilerOptions;
-  if (paths) {
-    Object.keys(paths).forEach((k) => alias[k] = paths[k][0]);
-  }
+const { paths = {} } = compilerOptions;
+for (const k of Object.keys(paths)) {
+  alias[k] = paths[k][0];
 }
 
 module.exports = {
-  "presets": [
+  'presets': [
     [
-      "@babel/preset-env",
+      '@babel/preset-env',
       {
-        "targets": {
-          "node": "current"
+        'modules': false,
+        'useBuiltIns': 'usage',
+        'corejs': {
+          'version': 3,
+          'proposals': true
         }
       }
     ],
-    "@babel/preset-typescript",
-    "@babel/preset-react"
+    'typescript-vue',
+    '@babel/preset-typescript',
+    '@babel/preset-react'
   ],
-  "plugins": [
+  'plugins': [
     [
-      "module-resolver",
+      'module-resolver',
       {
-        "root": ["."],
-        "alias": alias
+        'root': ['.'],
+        'alias': alias
       }
     ],
     [
-      "@babel/plugin-transform-runtime",
+      '@babel/plugin-transform-runtime',
       {
-        "absoluteRuntime": false,
-        "corejs": 3,
-        "helpers": true,
-        "regenerator": true,
-        "useESModules": false,
-        "version": "^7.8.3"
+        'absoluteRuntime': false,
+        'corejs': 3,
+        'helpers': true,
+        'regenerator': true,
+        'useESModules': false,
+        'version': '^7.8.7'
       }
     ],
-    "@babel/plugin-transform-arrow-functions",
-    "@babel/plugin-syntax-dynamic-import",
+    '@babel/plugin-transform-arrow-functions',
+    '@babel/plugin-syntax-dynamic-import',
     [
-      "@babel/plugin-proposal-decorators",
+      '@babel/plugin-proposal-decorators',
       {
-        "legacy": true
-      }
-    ],
-    [
-      "@babel/plugin-proposal-class-properties",
-      {
-        "loose": true
+        'legacy': true
       }
     ],
     [
-      "import",
+      '@babel/plugin-proposal-class-properties',
       {
-        "libraryName": "antd",
-        "libraryDirectory": "es",
-        "style": true
+        'loose': true
+      }
+    ],
+    [
+      '@babel/plugin-proposal-private-methods',
+      {
+        'loose': true
+      }
+    ],
+    [
+      '@babel/plugin-proposal-object-rest-spread',
+      {
+        'useBuiltIns': true
+      }
+    ],
+    '@babel/plugin-proposal-optional-catch-binding',
+    [
+      'import',
+      {
+        'libraryName': 'antd',
+        'libraryDirectory': 'es',
+        'style': true
       }
     ],
   ],
-  "env": {
-    "production": {}
+  'env': {
+    'production': {}
   }
 };
