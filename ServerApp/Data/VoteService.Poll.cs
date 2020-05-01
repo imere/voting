@@ -24,14 +24,18 @@ namespace vote.Data
         {
             try
             {
-                EntityEntry<PollProp> prop = null;
-                if (null != questionnaire.IsPublic && false == questionnaire.IsPublic)
+                EntityEntry<PollProp> prop = await _context.PollProp.AddAsync(new PollProp
                 {
-                    prop = await _context.PollProp.AddAsync(new PollProp
-                    {
-                        IsPublic = questionnaire.IsPublic
-                    });
-                }
+                    IsPublic = questionnaire.IsPublic == null ? false : true,
+                    ExpiresAt = questionnaire.ExpiresAt,
+                });
+                //if (null != questionnaire.IsPublic && false == questionnaire.IsPublic)
+                //{
+                //    prop = await _context.PollProp.AddAsync(new PollProp
+                //    {
+                //        IsPublic = questionnaire.IsPublic
+                //    });
+                //}
 
                 var result = await _context.Poll.AddAsync(new Poll
                 {

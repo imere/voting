@@ -36,6 +36,7 @@ namespace vote.Extensions
                     Title = poll.Title,
                     Description = poll.Description,
                     IsPublic = isPublic,
+                    ExpiresAt = poll.PollProp.ExpiresAt,
                     Content = JsonConvert.DeserializeObject(poll.Content),
                     CreatedAt = poll.CreatedAt
                 };
@@ -68,6 +69,7 @@ namespace vote.Extensions
                     Title = poll.Title,
                     Description = poll.Description,
                     IsPublic = isPublic,
+                    ExpiresAt= poll.PollProp.ExpiresAt,
                     Content = JsonConvert.DeserializeObject(poll.Content),
                     CreatedAt = poll.CreatedAt,
                     PollAnswers = poll.PollAnswers,

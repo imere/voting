@@ -53,6 +53,13 @@ namespace vote.Controllers.v1
         [HttpPut("answer/{pollId}")]
         public async Task<ActionResult> AnswerPoll([FromRoute] long pollId, [FromBody] object answer)
         {
+            var poll = await _service.GetPollById(pollId);
+
+            if (null != poll && null != poll.PollProp.ExpiresAt && (DateTime.UtcNow > poll.PollProp.ExpiresAt))
+            {
+                return BadRequest(new ResponseState(null, text: "问卷已过期"));
+            }
+
             var result = await _service.AddAnswerByUserAndPoll(
                 long.Parse(User.GetSubjectId()),
                 pollId,
