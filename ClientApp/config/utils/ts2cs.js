@@ -137,23 +137,34 @@ fs.writeFileSync(outFile,
   wrap(
     code.
       replace(/public ([a-zA-Z]+?)(\?)?:(?:\s+)?(.+?);$/gm, (match, name, optional, type) => {
-        if (type.includes('"')) {
+        // is string constant
+        if (type.includes('"') || type.includes('\'')) {
+          // if has multiple constants
           if (type.includes('|')) {
+            // set type string
             return `public string ${upperFirst(name)} { get; set; }`;
           }
-          return `public readonly string ${upperFirst(name)} = ${type};`;
+          // else set readonly string
+          return `public readonly string ${upperFirst(name)} = ${type.replace(/'/g, '"')};`;
         } else {
-          if (type.includes('string')) {
+          // compatible of C# < 7.3
+          if (type.includes('string') || type.includes('object')) {
             optional = null;
           }
           return `public ${TypeMap[type]}${optional ? optional : ''} ${upperFirst(name)} { get; set; }`;
         }
       }).
+      // class
       replace(/class/g, 'public class').
+      // extends
       replace(/extends/g, ':').
+      // remove comments
       replace(/\/\/.+/g, '').
+      // remove whitespace
       replace(/^\s+$/gm, '').
+      // set *Id required and type to long
       replace(/^(.+?)\s+double\s+?(.*Id)/gim, '\t[Required]\n$1 long $2').
+      // set default IsPublic
       replace(/^(.+?)\s+bool\?\s(IsPublic.+)$/gim, '$1 bool? $2 = true;')
   ),
   { encoding: 'utf8' }

@@ -4,7 +4,7 @@ import { RuleObject } from 'rc-field-form/es/interface';
 import { message } from 'antd';
 
 import { Answer, QuestionnaireContentType, QuestionnaireWithAnswer } from '@/components/Questionnaire/questionnaire';
-import { RQuestionnaireResponse, RQuestionnaireWithAnswer } from '@/response';
+import { RQuestionnaireResponse, RQuestionnaireWithAnswer } from '@/typings/response';
 
 export function hashItemId(id: string, salt = '') {
   return MD5(id + salt).slice(0, 7);

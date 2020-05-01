@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AnyObject } from '@/types';
+import { AnyObject } from '@/typings/types';
 
 interface WrapNormalReceivedProps extends AnyObject {
   children: React.FC<any> | React.ComponentClass

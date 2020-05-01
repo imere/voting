@@ -15,6 +15,7 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 // const HardSourcePlugin = require("hard-source-webpack-plugin");
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const CombineManifestPlugin = require('webpack-combine-manifest-plugin');
 
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const WebpackMerge = require('webpack-merge');
@@ -236,8 +237,15 @@ const baseConfig = {
     }),
     new VueLoaderPlugin(),
     new AntdDayjsWebpackPlugin({
-      replaceMoment: true,
+      replaceMoment: false,
     }),
+    new CombineManifestPlugin({
+      from: [
+        path.join(__dirname, '../', 'web/public/manifest.json'),
+        path.join(__dirname, '../', 'dist/manifest.json'),
+      ],
+      to: path.join(__dirname, '../', 'dist/manifest.json')
+    })
   ],
   'node': {
     'setImmediate': false,

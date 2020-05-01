@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import { connect } from 'react-redux';
 
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
-import { Disp } from '@/types';
+import { Disp } from '@/typings/types';
 import { ApplicationState } from '@/store/state';
 import { AuthAction } from '@/store/actions/action-auth';
 import { deleteUser } from '@/framework/shared/request-util';

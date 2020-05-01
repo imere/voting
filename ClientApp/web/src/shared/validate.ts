@@ -1,6 +1,6 @@
 import { RuleObject } from 'rc-field-form/es/interface';
 
-import { None } from '@/types';
+import { None } from '@/typings/types';
 import { setRulesLengthMessage, toggleRequired } from '@/components/Questionnaire/data-util';
 
 export function lengthGt(s: string | None, len: number): boolean {

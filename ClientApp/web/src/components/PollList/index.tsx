@@ -6,7 +6,7 @@ import { ColumnsType } from 'antd/es/table';
 import { GetComponentProps } from 'rc-table/es/interface';
 import { useHistory } from 'react-router';
 
-import { ResponseState, RQuestionnaireResponse } from '@/response';
+import { ResponseState, RQuestionnaireResponse } from '@/typings/response';
 import { Routes } from '@/constants';
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { unifyQuestionnaire } from '@/components/Questionnaire/data-util';
@@ -65,6 +65,7 @@ const PollList: React.FunctionComponent = () => {
 
   useEffect(() => {
     getPolls();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onRow: GetComponentProps<RQuestionnaireResponse> = (record) => ({
@@ -82,7 +83,7 @@ const PollList: React.FunctionComponent = () => {
       showHeader={false}
       columns={columns}
       onRow={onRow}
-      pagination={polls?.length ? { position: 'bottom' } : false}
+      pagination={polls?.length ? undefined : false}
       dataSource={polls}
     />
   );

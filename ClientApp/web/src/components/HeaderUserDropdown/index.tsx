@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import ContextAuthConsumer from '@/components/ContextAuthConsumer';
 import ContextAuthProvider from '@/components/ContextAuthProvider';
-import { None } from '@/types';
+import { None } from '@/typings/types';
 
 import styles from './HeaderUserDropdown.module.scss';
 import { authItems, normalItems } from './items';

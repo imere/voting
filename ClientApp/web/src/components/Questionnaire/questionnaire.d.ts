@@ -129,6 +129,7 @@ export interface Questionnaire {
   title: string
   description?: string
   isPublic?: boolean
+  expiresAt?: Date
   content: QuestionnaireContentType[]
 }
 

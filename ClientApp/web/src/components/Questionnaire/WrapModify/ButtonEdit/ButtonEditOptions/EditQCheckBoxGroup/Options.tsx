@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Select } from 'antd';
 import { SelectValue } from 'antd/es/select';
 
 import { TypeCheckBoxGroup } from '@/components/Questionnaire/questionnaire';
-import { QEventBus } from '@/components/Questionnaire/QEventBus';
 import { EditItem } from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/EditItem';
+import { QuestionnaireContext } from '@/contexts/questionnaire';
 
 interface OptionsReceivedProps {
-  ctx: QEventBus
   name: TypeCheckBoxGroup['name']
 }
 
 type OptionsProps = OptionsReceivedProps
 
-const Options = ({ ctx: { getItem, updateItem }, name }: OptionsProps) => {
+const Options = ({ name }: OptionsProps) => {
+  const { getItem, updateItem } = useContext(QuestionnaireContext);
 
   const item = getItem(name) as TypeCheckBoxGroup;
 

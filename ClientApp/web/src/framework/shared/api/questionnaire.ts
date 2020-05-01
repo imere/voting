@@ -1,4 +1,4 @@
-import { HttpMethod } from '@/types';
+import { HttpMethod } from '@/typings/types';
 
 export const HOST = 'http://localhost:5000';
 

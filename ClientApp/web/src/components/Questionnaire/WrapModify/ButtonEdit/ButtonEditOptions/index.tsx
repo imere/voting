@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Radio } from 'antd';
 import { RadioChangeEvent } from 'antd/es/radio';
 
-import { QuestionnaireContext } from '@/contexts/questionnaire';
 import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
 import { ButtonEditContentMap, QItemDataFactory, QItemDefaultData } from '@/components/Questionnaire/util';
 import { isRequired } from '@/components/Questionnaire/data-util';
+import { useQContext } from '@/hooks/useQContext';
 
 import { options } from './options';
 
@@ -18,7 +18,9 @@ type ButtonEditOptionsProps = ButtonEditOptionsReceivedProps
 const ButtonEditOptions = ({ name }: ButtonEditOptionsProps) => {
   const [, refreshModify] = useState(false);
 
-  const ctx = useContext(QuestionnaireContext);
+  const ctx = useQContext({
+    refreshers: [refreshModify]
+  }, []);
 
   const item = ctx.getItem(name) as QuestionnaireContentType;
 
@@ -34,25 +36,12 @@ const ButtonEditOptions = ({ name }: ButtonEditOptionsProps) => {
         name,
         rules: isRequired(item.rules) ? ___ : [],
       }) as any
-      // QItemDataFactory[typename](
-      //   {
-      //     ...prop,
-      //     label: item.label,
-      //     name,
-      //     rules: isRequired(item.rules) ? ___ : [],
-      //   } as any
-      // )
     );
   }
 
-  useEffect(() => {
-    ctx.addRefresher(refreshModify);
-    return () => ctx.removeRefresher(refreshModify);
-  }, []);
-
   return (
     <>
-      {React.createElement(ButtonEditContentMap[item.typename], { ctx, name })}
+      {React.createElement(ButtonEditContentMap[item.typename], { name })}
       <Radio.Group
         defaultValue={item.typename}
         onChange={handleClick}

@@ -19,12 +19,13 @@ const NewFormButton = () => {
     setParams
   ] = useState(new URLSearchParams());
 
-  function onCreate({ title, description, pub }: Store) {
+  function onCreate({ title, description, pub, expiresAt }: Store) {
     setVisible(false);
     const p = new URLSearchParams();
     title && p.append('title', encodeURIComponent(title));
     description && p.append('description', encodeURIComponent(description));
     pub && p.append('public', encodeURIComponent(pub));
+    expiresAt && p.append('expiresAt', encodeURIComponent(expiresAt));
     setParams(p);
   }
 

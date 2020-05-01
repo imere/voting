@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Input } from 'antd';
 
 import { TypeInput } from '@/components/Questionnaire/questionnaire';
-import { QEventBus } from '@/components/Questionnaire/QEventBus';
 import { EditItem } from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/EditItem';
+import { QuestionnaireContext } from '@/contexts/questionnaire';
 
 interface DefaultValueReceivedProps {
-  ctx: QEventBus
   name: TypeInput['name']
 }
 
 type DefaultValueProps = DefaultValueReceivedProps
 
-const DefaultValue = ({ ctx: { getItem, updateItem }, name }: DefaultValueProps) => {
+const DefaultValue = ({ name }: DefaultValueProps) => {
+  const { getItem, updateItem } = useContext(QuestionnaireContext);
 
   const item = getItem(name) as TypeInput;
 

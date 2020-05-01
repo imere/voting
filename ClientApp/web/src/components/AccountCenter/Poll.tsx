@@ -4,7 +4,7 @@ import { DeleteOutlined, EditOutlined, PieChartOutlined } from '@ant-design/icon
 import { LocationDescriptor } from 'history';
 
 import RedirectTo from '@/components/RedirectTo';
-import { RQuestionnaireResponse } from '@/response';
+import { RQuestionnaireResponse } from '@/typings/response';
 import { Routes } from '@/constants';
 import { deletePollById } from '@/framework/shared/request-util';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';

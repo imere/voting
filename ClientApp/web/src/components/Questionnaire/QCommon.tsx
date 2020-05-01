@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Card, Form, Tag } from 'antd';
+import { Button, Card, Form, Tag, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Store } from 'rc-field-form/es/interface';
 import { Redirect } from 'react-router-dom';
@@ -9,9 +9,10 @@ import { QuestionnaireContext } from '@/contexts/questionnaire';
 import { Questionnaire } from '@/components/Questionnaire/questionnaire';
 import { Routes } from '@/constants';
 import { QItemDataFactory, QItemDefaultData, renderQItems } from '@/components/Questionnaire/util';
-import { getItemsValues } from '@/components/Questionnaire/data-util';
-import { RQuestionnaireResponse } from '@/response';
+import { getItemsValues, addHour } from '@/components/Questionnaire/data-util';
+import { RQuestionnaireResponse } from '@/typings/response';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
+import { useQContext } from '@/hooks/useQContext';
 
 import RedirectTo from '../RedirectTo';
 
@@ -28,6 +29,7 @@ export interface Info {
   title: Questionnaire['title']
   description?: Questionnaire['description']
   isPublic?: Questionnaire['isPublic']
+  expiresAt?: Questionnaire['expiresAt']
 }
 
 interface QuestionnaireReceivedProps {
@@ -64,6 +66,19 @@ const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelC
 
   const [form] = Form.useForm();
 
+  function setFieldsValue() {
+    form.setFieldsValue(getItemsValues(ctx.items));
+  }
+
+  useQContext({
+    refreshers: [forceRefresh],
+    listeners: [setFieldsValue],
+  }, []);
+
+  useEffect(() => () => {
+    ctx.replaceItemsWith();
+  }, [ctx]);
+
   function handleAddClick() {
     ctx.addItem(QItemDataFactory({
       typename: 'input',
@@ -90,32 +105,24 @@ const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelC
     }
   }
 
-  useEffect(() => {
-    function setFieldsValue() {
-      form.setFieldsValue(getItemsValues(ctx.items));
-    }
-
-    ctx.addRefresher(forceRefresh);
-    ctx.subscribe(setFieldsValue);
-    return () => {
-      ctx.removeRefresher(forceRefresh);
-      ctx.unsubscribe(setFieldsValue);
-      ctx.replaceItemsWith();
-    };
-  }, [
-    ctx,
-    form
-  ]);
-
   if (isEditing) {
     if (!info.title) {
       return <Redirect to={Routes.ACCOUNT_CENTER} />;
     }
   }
 
+  const expireTimeString = info.expiresAt
+      && (new Date() > new Date(addHour(info.expiresAt as any, 8)))
+      && new Date(addHour(info.expiresAt as any, 8)).toLocaleString()
+        || '';
+
+  if (expireTimeString) {
+    message.warn('问卷已过期');
+  }
+
   const formTitle = (
     <Meta
-      title={info.title}
+      title={`${info.title} ${expireTimeString ? `(过期时间:${expireTimeString})` : ''}`}
       description={info.description}
     />
   );
@@ -126,9 +133,14 @@ const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelC
         loading={loading}
         title={formTitle}
         extra={
-          info.isPublic
-            ? <Tag color="volcano">公开</Tag>
-            : <Tag color="green">非公开</Tag>
+          <>
+            {expireTimeString
+              ? <Tag color="volcano">问卷过期</Tag>
+              : <Tag color="green">问卷有效</Tag>}
+            {info.isPublic
+              ? <Tag color="volcano">公开</Tag>
+              : <Tag color="green">非公开</Tag>}
+          </>
         }
       >
         <Form

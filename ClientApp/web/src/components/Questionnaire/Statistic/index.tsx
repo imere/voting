@@ -3,11 +3,11 @@ import { Card, Collapse } from 'antd';
 import { useParams } from 'react-router';
 
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
-import { ResponseState, RQuestionnaireWithAnswer } from '@/response';
+import { ResponseState, RQuestionnaireWithAnswer } from '@/typings/response';
 import { getAnswersByPollId } from '@/framework/shared/request-util';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 import { unifyQuestionnaireWithAnswer } from '@/components/Questionnaire/data-util';
-import { None } from '@/types';
+import { None } from '@/typings/types';
 import { QuestionnaireWithAnswer } from '@/components/Questionnaire/questionnaire';
 
 import { processQuestionnaireWithAnswer, statByTypename } from './util';
@@ -47,6 +47,7 @@ const Statistic: React.FC = () => {
 
   useEffect(() => {
     pollId && loadQuestionnaire(pollId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

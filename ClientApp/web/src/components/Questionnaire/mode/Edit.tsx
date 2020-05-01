@@ -4,7 +4,7 @@ import { LocationDescriptor } from 'history';
 
 import QCommon, { dataSourceHolder, Info } from '@/components/Questionnaire/QCommon';
 import { QuestionnaireContext } from '@/contexts/questionnaire';
-import { ResponseState, RQuestionnaireResponse } from '@/response';
+import { ResponseState, RQuestionnaireResponse } from '@/typings/response';
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { Routes } from '@/constants';
 import { getPollByPollId, updatePoll } from '@/framework/shared/request-util';

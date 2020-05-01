@@ -11,7 +11,7 @@ import {
   ActionRegisterErr,
   ActionRegisterSuc,
 } from '@/constants/AuthActions';
-import { None } from '@/types';
+import { None } from '@/typings/types';
 
 export interface UserAuthentication {
   username: string

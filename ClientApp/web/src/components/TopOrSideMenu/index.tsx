@@ -10,7 +10,7 @@ import { User } from 'oidc-client';
 import Logo from '@/layouts/Logo';
 import { Routes } from '@/constants';
 import { ApplicationState } from '@/store/state';
-import { None } from '@/types';
+import { None } from '@/typings/types';
 
 const { SubMenu } = Menu;
 

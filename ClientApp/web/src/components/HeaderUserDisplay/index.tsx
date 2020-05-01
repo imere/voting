@@ -8,7 +8,7 @@ import { UserOutlined } from '@ant-design/icons';
 import HeaderUserDropdown from '@/components/HeaderUserDropdown';
 import { ApplicationState } from '@/store/state';
 import { classnames } from '@/shared/classnames';
-import { None } from '@/types';
+import { None } from '@/typings/types';
 import { lengthGt } from '@/shared/validate';
 
 import styles from './HeaderUserDisplay.module.scss';

@@ -2,7 +2,7 @@ import loadable from '@loadable/component';
 import React, { useEffect } from 'react';
 import { List } from 'antd';
 
-import { ResponseState, RQuestionnaireResponse } from '@/response';
+import { ResponseState, RQuestionnaireResponse } from '@/typings/response';
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { unifyQuestionnaire } from '@/components/Questionnaire/data-util';
 import { getAllPollsByCurrentUser } from '@/framework/shared/request-util';
@@ -42,6 +42,7 @@ const AccountCenter = () => {
 
   useEffect(() => {
     getPolls();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

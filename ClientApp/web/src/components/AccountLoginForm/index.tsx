@@ -8,8 +8,8 @@ import { Store } from 'rc-field-form/es/interface';
 import { Routes } from '@/constants';
 import { AuthAction, LoginCallback, UserAuthentication } from '@/store/actions/action-auth';
 import { ApplicationState } from '@/store/state';
-import { Disp, ValidateStatus } from '@/types';
-import { ResponseState } from '@/response';
+import { Disp, ValidateStatus } from '@/typings/types';
+import { ResponseState } from '@/typings/response';
 import { passwordRules, usernameRules } from '@/shared/validate';
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
 

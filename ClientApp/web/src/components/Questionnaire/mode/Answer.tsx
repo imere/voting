@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { LocationDescriptor } from 'history';
 
 import QCommon, { dataSourceHolder, Info } from '@/components/Questionnaire/QCommon';
-import { ResponseState, RQuestionnaireResponse } from '@/response';
+import { ResponseState, RQuestionnaireResponse } from '@/typings/response';
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { QuestionnaireContext } from '@/contexts/questionnaire';
 import { Routes } from '@/constants';
@@ -62,6 +62,7 @@ const AnswerComponent: React.FC = () => {
 
   useEffect(() => {
     pollId && getPollById(pollId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

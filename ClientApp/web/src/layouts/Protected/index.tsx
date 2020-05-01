@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router';
 
 import AppRoutes from '@/routes/AppRoutes';
-import { None } from '@/types';
+import { None } from '@/typings/types';
 import { ApplicationState } from '@/store/state';
 
 interface ProtectedReceivedProps {

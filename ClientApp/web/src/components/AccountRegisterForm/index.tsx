@@ -9,8 +9,8 @@ import { Routes } from '@/constants';
 import { AuthAction, RegisterCallback, UserAuthentication } from '@/store/actions/action-auth';
 import { iu } from '@/store/actions';
 import { ApplicationState } from '@/store/state';
-import { Disp, None, ValidateStatus } from '@/types';
-import { ResponseState } from '@/response';
+import { Disp, None, ValidateStatus } from '@/typings/types';
+import { ResponseState } from '@/typings/response';
 import { passwordRules, usernameRules } from '@/shared/validate';
 import { toastMessageByStatus } from '@/framework/shared/toast-message';
 

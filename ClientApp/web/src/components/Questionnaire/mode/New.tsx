@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React, { useContext, useState } from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 import { LocationDescriptor } from 'history';
@@ -19,7 +20,8 @@ const NewComponent: React.FC = () => {
     const res = {
       title: params.get('title'),
       description: params.get('description') || undefined,
-      isPublic: params.get('public')
+      isPublic: params.get('public'),
+      expiresAt: params.get('expiresAt'),
     };
 
     try {
@@ -27,6 +29,9 @@ const NewComponent: React.FC = () => {
         title: res.title && decodeURIComponent(res.title).trim(),
         description: res.description && decodeURIComponent(res.description).trim(),
         isPublic: res.isPublic && decodeURIComponent(res.isPublic).trim(),
+        expiresAt: res.expiresAt && dayjs(
+          decodeURIComponent(res.expiresAt).trim()
+        ).toDate().toUTCString(),
       };
     } catch {
       return {};
@@ -55,6 +60,7 @@ const NewComponent: React.FC = () => {
       title: info.title!,
       description: info.description,
       isPublic: !!info.isPublic,
+      expiresAt: info.expiresAt as any as Date,
       content: ctx.items,
     };
     const response = await createPoll(dataSource);
@@ -75,7 +81,7 @@ const NewComponent: React.FC = () => {
       info={{
         title: info.title,
         description: info.description,
-        isPublic: info.isPublic as any as Info['isPublic']
+        isPublic: info.isPublic as unknown as Info['isPublic']
       }}
       onConfirmClick={handleConfirmClick}
       onCancelClick={onCancelClick}

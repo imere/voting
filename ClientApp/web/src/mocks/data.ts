@@ -1,6 +1,6 @@
 import { lset } from '@/framework/shared/storage';
 import { QItemDefaultData } from '@/components/Questionnaire/util';
-import { RQuestionnaireResponse, RQuestionnaireWithAnswer } from '@/response';
+import { RQuestionnaireResponse, RQuestionnaireWithAnswer } from '@/typings/response';
 
 export function setUser() {
   lset(

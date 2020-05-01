@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 
 import { AuthContextType, Provider } from '@/contexts/auth';
-import { Disp } from '@/types';
+import { Disp } from '@/typings/types';
 import { ApplicationState } from '@/store/state';
 import { AuthAction } from '@/store/actions/action-auth';
 

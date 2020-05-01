@@ -1,6 +1,7 @@
 import { message } from 'antd';
 
 import { Logger } from './logger';
+import { ResponseState } from '@/typings/response';
 
 export function toastMessageByStatus(status?: number, omit: number[] = []): void {
   if (omit.includes(status as number)) {
@@ -27,6 +28,23 @@ export function toastMessageByStatus(status?: number, omit: number[] = []): void
   case undefined:
     break;
   default:
-    Logger.warn('Unhandled', status);
+    Logger.warn('Unhandled status code', status);
+  }
+}
+
+export function toastMessageByResponseState<T>(state?: ResponseState<T>, omitStatus: number[] = []): void {
+  if (omitStatus.includes(state?.code as number)) {
+    return;
+  }
+  switch (state?.code) {
+  case 200:
+  case null:
+  case undefined:
+    break;
+  default:
+    Logger.warn('Unhandled response code', status);
+  }
+  if (state?.text) {
+    message.info(state.text);
   }
 }

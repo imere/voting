@@ -3,7 +3,7 @@ import { Checkbox, Form } from 'antd';
 
 import { TypeCheckBoxGroup } from '@/components/Questionnaire/questionnaire';
 
-import styels from './QCheckBoxGroup.module.scss';
+import styles from './QCheckBoxGroup.module.scss';
 
 export interface QCheckBoxGroupReceivedProps extends TypeCheckBoxGroup {}
 
@@ -14,7 +14,7 @@ const QCheckBoxGroup = ({ label, name, rules = [], extra, options }: QCheckBoxGr
     rules={rules}
     extra={extra}
   >
-    <Checkbox.Group className={styels.checkboxgroup} options={options} />
+    <Checkbox.Group className={styles.checkboxgroup} options={options} />
   </Form.Item>
 );
 

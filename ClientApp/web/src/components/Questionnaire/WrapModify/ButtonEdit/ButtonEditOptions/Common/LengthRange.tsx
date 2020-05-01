@@ -4,7 +4,7 @@ import { Input, InputNumber } from 'antd';
 import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
 import { getLengthObject, setRulesLengthMessage } from '@/components/Questionnaire/data-util';
 import { QEventBus } from '@/components/Questionnaire/QEventBus';
-import { None } from '@/types';
+import { None } from '@/typings/types';
 
 import { EditItem } from './EditItem';
 
