@@ -4,7 +4,7 @@ import { Logger } from '@/framework/shared/logger';
 
 const AuthCallback = () => {
   Logger.info('ac');
-  import('@/framework/shared/IdentityService').then(({ iservice }) => iservice.completeAuthentication());
+  import('@/framework/shared/identity-service').then(({ iservice }) => iservice.completeAuthentication());
   return <>正在验证</>;
 };
 

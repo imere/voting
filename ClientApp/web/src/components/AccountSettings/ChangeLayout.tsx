@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch } from 'antd';
 
-import SessionStates from '@/hooks/SessionStates';
+import SessionStates from '@/hooks/session-states';
 import { useSessionState } from '@/hooks/useSessionState';
 
 const ChangeLayout: React.FC = () => {

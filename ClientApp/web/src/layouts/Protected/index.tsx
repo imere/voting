@@ -3,7 +3,7 @@ import { User } from 'oidc-client';
 import { connect } from 'react-redux';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router';
 
-import AppRoutes from '@/routes/AppRoutes';
+import AppRoutes from '@/routes/app-routes';
 import { None } from '@/typings/types';
 import { ApplicationState } from '@/store/state';
 

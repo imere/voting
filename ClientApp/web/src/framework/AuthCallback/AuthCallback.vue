@@ -10,7 +10,7 @@ import { Logger } from '@/framework/shared/logger';
 export default class AuthCallback extends Vue {
   beforeCreate() {
     Logger.info('vc');
-    import('@/framework/shared/IdentityService').then(({ iservice }) =>
+    import('@/framework/shared/identity-service').then(({ iservice }) =>
       iservice.completeAuthentication()
     );
   }

@@ -1,7 +1,7 @@
 import { AUTHORIZATION_ALLOWED_URLS, CREDENTIAL_ALLOWED_URLS } from './api/questionnaire';
 
 export async function addAuthorization(init: RequestInit) {
-  const user = await import('@/framework/shared/IdentityService').then(({ iservice }) =>  iservice.getUser());
+  const user = await import('@/framework/shared/identity-service').then(({ iservice }) =>  iservice.getUser());
   if (user) {
     if (!init.headers) {
       init.headers = {};

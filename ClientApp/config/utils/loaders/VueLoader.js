@@ -22,7 +22,7 @@ exports.createVueLoader = (env) => {
         {
           loader: 'css-loader',
           options: {
-            importLoaders: 1,
+            importLoaders: 2,
             sourceMap: !isProd,
           },
         },

@@ -10,7 +10,7 @@ import {
   ActionRegister,
   ActionRegisterErr,
   ActionRegisterSuc,
-} from '@/constants/AuthActions';
+} from '@/constants/auth-actions';
 import { None } from '@/typings/types';
 
 export interface UserAuthentication {

@@ -3,7 +3,7 @@ import { User } from 'oidc-client';
 import { AuthActions, Routes } from '@/constants';
 import { AppThunkAction, None } from '@/typings/types';
 import { createUser, loginUser, logoutUser } from '@/framework/shared/request-util';
-import { iservice } from '@/framework/shared/IdentityService';
+import { iservice } from '@/framework/shared/identity-service';
 
 import {
   AuthAction,

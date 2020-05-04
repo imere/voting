@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { ActionSwitchDark, ActionSwitchLight } from '@/constants/ThemeActions';
+import { ActionSwitchDark, ActionSwitchLight } from '@/constants/theme-actions';
 
 export interface ThemeLightAction extends Action<ActionSwitchLight> { }
 
