@@ -1,6 +1,6 @@
 import { ThemeActions } from '.';
 
-test('No duplicate ThemeActions', () => {
+test('No duplicate theme actions', () => {
   const actions = Object.values(ThemeActions);
   expect(
     actions.length

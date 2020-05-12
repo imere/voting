@@ -13,7 +13,9 @@ function useStateBeforeUnMount<T = any>(value: T): [T, React.Dispatch<React.SetS
     setState
   ] = useSetStateIfTrue(value, mountedRef);
 
-  useEffect(() => () => (mountedRef.current = false) as any as undefined, []);
+  useEffect(() => () => {
+    mountedRef.current = false;
+  }, []);
 
   return [
     state,

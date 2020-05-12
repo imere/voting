@@ -16,7 +16,7 @@ module.exports = {
   // browser: false,
 
   // The directory where Jest should store its cached dependency information
-  'cacheDirectory': 'docs/temp/jest',
+  'cacheDirectory': 'node_modules/.cache/jest',
 
   // Automatically clear mock calls and instances between every test
   'clearMocks': true,
@@ -63,7 +63,8 @@ module.exports = {
   // A set of global variables that need to be available in all test environments
   'globals': {
     'ts-jest': {
-      'tsConfig': true
+      'tsConfig': true,
+      'babelConfig': true
     }
   },
 
@@ -99,7 +100,7 @@ module.exports = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: null,
+  preset: 'ts-jest/presets/js-with-babel',
 
   // Run tests from one or more projects
   // projects: null,
@@ -149,7 +150,7 @@ module.exports = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  'testMatch': ['**/?(*.)+(test).[tj]s?(x)',],
+  'testMatch': ['**/src/**/?(*.)+(test).[tj]s?(x)',],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   'testPathIgnorePatterns': ['\\\\node_modules\\\\'],

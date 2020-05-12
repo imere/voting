@@ -3,7 +3,7 @@ import { Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
 
 import { Routes } from '@/constants';
-import { RouteNameMap } from './util';
+import { routeNameMap } from './util';
 
 import styles from './Breadcrumb.module.scss';
 
@@ -26,7 +26,7 @@ const BreadCrumbComponent = () => {
                   <Breadcrumb.Item key={i}>
                     {
                       Object.values(Routes).some((value) => route === value.split('/:')[0])
-                        ? <Link to={route}>{RouteNameMap[route]}</Link>
+                        ? <Link to={route}>{routeNameMap[route]}</Link>
                         : null
                     }
                   </Breadcrumb.Item>

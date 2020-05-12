@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 
 import { Routes } from '@/constants';
 import { AuthAction, RegisterCallback, UserAuthentication } from '@/store/actions/action-auth';
-import { iu } from '@/store/actions';
 import { ApplicationState } from '@/store/state';
 import { Disp, None, ValidateStatus } from '@/typings/types';
 import { ResponseState } from '@/typings/response';
@@ -85,14 +84,14 @@ const AccountRegister = ({ register, pending }: AccountRegisterProps) => {
     }
   };
 
-  function resetHelp() {
-    setUsernameHelp(null);
-    setUsernameStatus(undefined);
-    setPasswordHelp(null);
-    setPasswordStatus(undefined);
-  }
-
   function onFinish(values: Store) {
+    function resetHelp() {
+      setUsernameHelp(null);
+      setUsernameStatus(undefined);
+      setPasswordHelp(null);
+      setPasswordStatus(undefined);
+    }
+
     resetHelp();
     setRegistering(true);
     register({
@@ -219,7 +218,7 @@ const mapStateToProps = (state: ApplicationState): AccountRegisterOwnStateProps 
 });
 
 const mapDispatchToProps = (dispatch: AccountRegisterDispatch): AccountRegisterOwnDispatchProps => ({
-  register: (user, cb) => dispatch(iu.register(user, cb)),
+  register: (user, cb) => import('@/store/actions/auth').then(({ iu }) => dispatch(iu.register(user, cb))),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountRegister);

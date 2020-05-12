@@ -36,9 +36,9 @@ const ContextAuthProvider = ({ children, register, login, logout }: ContextAuthP
 };
 
 const mapDispatchToProps = (dispatch: ContextAuthProviderDispatch): ContextAuthProviderOwnDispatchProps => ({
-  register: (user) => import('@/store/actions').then(({ iu }) => dispatch(iu.register(user))),
-  login: (user) => import('@/store/actions').then(({ iu }) => dispatch(iu.login(user))),
-  logout: () => import('@/store/actions').then(({ iu }) => dispatch(iu.logout())),
+  register: (user) => import('@/store/actions/auth').then(({ iu }) => dispatch(iu.register(user))),
+  login: (user) => import('@/store/actions/auth').then(({ iu }) => dispatch(iu.login(user))),
+  logout: () => import('@/store/actions/auth').then(({ iu }) => dispatch(iu.logout())),
 });
 
 export default connect(null, mapDispatchToProps)(ContextAuthProvider);

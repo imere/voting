@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { sget, sremove, sset } from '@/framework/shared/storage';
 import { Logger } from '@/framework/shared/logger';
@@ -32,6 +32,8 @@ function useSessionState<T = any>(key: string, value: T): [T, React.Dispatch<Rea
   } catch {
     sremove(key);
   }
+
+  useEffect(() => () => keySet.clear(), []);
 
   const [
     state,

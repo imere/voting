@@ -153,7 +153,7 @@ const mapStateToProps = (state: ApplicationState): AccountLoginOwnStateProps => 
 });
 
 const mapDispatchToProps = (dispatch: AccountLoginDispatch): AccountLoginOwnDispatchProps => ({
-  login: (user, cb) => import('@/store/actions').then(({ iu }) => dispatch(iu.login(user, cb))),
+  login: (user, cb) => import('@/store/actions/auth').then(({ iu }) => dispatch(iu.login(user, cb))),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountLogin);

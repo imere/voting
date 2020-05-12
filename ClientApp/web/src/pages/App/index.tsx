@@ -5,7 +5,7 @@ import { SiderTheme } from 'antd/es/layout/Sider';
 import { connect } from 'react-redux';
 
 import HeaderNavComponent from '@/components/HeaderNav';
-import SessionStates from '@/hooks/session-states';
+import SessionStates from '@/constants/session-states';
 import SideMenuLayout from '@/layouts/SideMenuLayout';
 import TopMenuLayout from '@/layouts/TopMenuLayout';
 import AppRoutes from '@/routes/app-routes';

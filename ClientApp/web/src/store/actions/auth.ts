@@ -39,7 +39,7 @@ const requestLogin = (): RequestLoginAction => ({
   'type': AuthActions.LOGIN,
 });
 
-const requestLoginSuc = (user: User | None): RequestLoginSucAction => ({
+export const requestLoginSuc = (user: User | None): RequestLoginSucAction => ({
   'type': AuthActions.LOGIN_SUC,
   'user': user,
 });
@@ -53,7 +53,7 @@ const requestLogout = (): RequestLogoutAction => ({
   'type': AuthActions.LOGOUT
 });
 
-const requestLogoutComplete = (): RequestLogoutCompleteAction => ({
+export const requestLogoutComplete = (): RequestLogoutCompleteAction => ({
   'type': AuthActions.LOGOUT_COMPLETE
 });
 
@@ -126,4 +126,4 @@ class IdentityService {
   getUser = async () => await iservice.getUser();
 }
 
-export default new IdentityService();
+export const iu =  new IdentityService();

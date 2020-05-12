@@ -2,20 +2,22 @@ import React from 'react';
 
 import QCheckBoxGroup from '@/components/Questionnaire/Components/QCheckBoxGroup';
 import QInput from '@/components/Questionnaire/Components/QInput';
+import QNumber from '@/components/Questionnaire/Components/QNumber';
 import WrapModify from '@/components/Questionnaire/WrapModify';
 import EditQCheckBoxGroup from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQCheckBoxGroup';
 import EditQInput from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQInput';
+import EditQNumber from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/EditQNumber';
 import WrapNormal from '@/components/Questionnaire/WrapNormal';
 import { QuestionnaireContentType, TypeCheckBoxGroup } from '@/components/Questionnaire/questionnaire';
 import { Logger } from '@/framework/shared/logger';
+import {
+  getLengthMessageByType,
+  hashName,
+  setRulesLengthMessage,
+  toggleRequired,
+} from '@/components/Questionnaire/data-util';
 
-import QNumber from './Components/QNumber';
-import EditQNumber from './WrapModify/ButtonEdit/ButtonEditOptions/EditQNumber';
-import { getLengthMessageByType, hashName, setRulesLengthMessage, toggleRequired } from './data-util';
-
-type QItemMapType = {
-  [K in QuestionnaireContentType['typename']]: React.ComponentType<any>;
-};
+type QItemMapType = Record<QuestionnaireContentType['typename'], React.ComponentType<any>>
 export const QItemMap: QItemMapType = {
   'input': QInput,
   'checkboxgroup': QCheckBoxGroup,
@@ -49,9 +51,7 @@ function generateCommon(label: string) {
     name: hashName(label),
   };
 }
-type QItemDefaultDataType = {
-  [K in QuestionnaireContentType['typename']]: () => QuestionnaireContentType
-}
+type QItemDefaultDataType = Record<QuestionnaireContentType['typename'], () => QuestionnaireContentType>
 export const QItemDefaultData: QItemDefaultDataType = {
   input: () => ({
     ...generateCommon('label'),
@@ -90,7 +90,7 @@ export function QItemDataFactory({ typename, label, ...rest }: QItemDataParam<Qu
       ...rest,
     };
   default:
-    Logger.warn('Undefined behavior', typename);
+    Logger.warn('Undefined type', typename);
     return {} as QItemDataParam<QuestionnaireContentType>;
   }
 }

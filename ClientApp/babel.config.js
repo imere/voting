@@ -10,7 +10,7 @@ module.exports = {
     [
       '@babel/preset-env',
       {
-        'modules': false,
+        'modules': 'auto',
         'useBuiltIns': 'usage',
         'corejs': {
           'version': 3,
@@ -18,8 +18,8 @@ module.exports = {
         }
       }
     ],
-    'typescript-vue',
     '@babel/preset-typescript',
+    'typescript-vue',
     '@babel/preset-react'
   ],
   'plugins': [
@@ -68,6 +68,7 @@ module.exports = {
       }
     ],
     '@babel/plugin-proposal-optional-catch-binding',
+    '@babel/plugin-proposal-optional-chaining',
     [
       'import',
       {
@@ -78,6 +79,23 @@ module.exports = {
     ],
   ],
   'env': {
-    'production': {}
-  }
+    'production': {},
+    'test': {
+      'presets': [
+        [
+          '@babel/preset-env',
+        ],
+      ],
+      'plugins': [
+        [
+          'import',
+          {
+            'libraryName': 'antd',
+            'libraryDirectory': 'lib',
+            'style': false,
+          }
+        ],
+      ],
+    },
+  },
 };

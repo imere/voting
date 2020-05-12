@@ -56,7 +56,7 @@ class Unregister extends React.PureComponent<UnregisterProps, UnregisterState> {
 }
 
 const mapDispatchToProps = (dispatch: UnregisterDispatch): UnregisterOwnDispatchProps => ({
-  logout: () => import('@/store/actions').then(({ iu }) => dispatch(iu.logout())),
+  logout: () => import('@/store/actions/auth').then(({ iu }) => dispatch(iu.logout())),
 });
 
 const UnregisterComponent = connect(null, mapDispatchToProps)(Unregister);

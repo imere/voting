@@ -9,6 +9,8 @@ import { Routes } from '@/constants';
 import { deletePollById } from '@/framework/shared/request-util';
 import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 
+const { Meta } = Card;
+
 interface PollReceivedProps extends RQuestionnaireResponse {
   setPolls: React.Dispatch<React.SetStateAction<Array<RQuestionnaireResponse>>>
 }
@@ -16,7 +18,6 @@ interface PollReceivedProps extends RQuestionnaireResponse {
 type PollProps = PollReceivedProps;
 
 const Polls = ({ id, title, description, createdAt, setPolls }: PollProps) => {
-  const { Meta } = Card;
 
   const [
     loading,

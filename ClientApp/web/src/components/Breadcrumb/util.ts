@@ -1,6 +1,6 @@
 import { Routes } from '@/constants';
 
-export const RouteNameMap: {[key: string]: string} = new Proxy({
+export const nameMap = {
   '/': '首页',
   [Routes.ACCOUNT_CENTER]: '个人中心',
   [Routes.ACCOUNT_SETTINGS]: '个人设置',
@@ -9,7 +9,9 @@ export const RouteNameMap: {[key: string]: string} = new Proxy({
   [Routes.POLL_ANSWER.split('/:')[0]]: '回答问卷',
   [Routes.POLL_EDIT.split('/:')[0]]: '编辑问卷',
   [Routes.POLL_STATISTIC.split('/:')[0]]: '结果统计',
-}, {
+};
+
+export const routeNameMap: {[key: string]: string} = new Proxy(nameMap, {
   get(target, p, receiver) {
     const value = Reflect.get(target, p, receiver);
     if (typeof value === 'undefined') {

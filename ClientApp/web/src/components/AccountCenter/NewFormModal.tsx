@@ -62,7 +62,7 @@ const NewFormModal = ({ visible, onCancel, onCreate }: NewFormModalProps) => {
           <Switch />
         </Form.Item>
         <Form.Item
-          label="截至时间"
+          label="截止时间"
           name="expiresAt"
         >
           <DatePicker showTime />

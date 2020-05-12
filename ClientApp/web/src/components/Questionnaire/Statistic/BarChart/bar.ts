@@ -4,7 +4,7 @@ import { Selection } from 'd3-selection';
 import { Geometry, StatisticData } from '@/components/Questionnaire/Statistic/statistic';
 
 import { tip } from '../common/tip';
-import { parse } from '../util';
+import { parseFromStatisticData } from '../util';
 
 /**
  * Draw a horizontal bar chart
@@ -15,7 +15,7 @@ import { parse } from '../util';
  * @param {StatisticData[number]} data
  */
 export function HorizontalBar(selector: string, geo: Geometry, data: StatisticData[number]) {
-  const arr: Array<{ value: string; count: number; }> = parse(data);
+  const arr: Array<{ value: string; count: number; }> = parseFromStatisticData(data);
 
   const x = scaleBand().
     domain(range(arr.length) as any as string[]).
@@ -90,7 +90,7 @@ export function HorizontalBar(selector: string, geo: Geometry, data: StatisticDa
  * @param {StatisticData[number]} data
  */
 export function VerticalBar(selector: string, geo: Geometry, data: StatisticData[number]) {
-  const arr: Array<{ value: string; count: number; }> = parse(data);
+  const arr: Array<{ value: string; count: number; }> = parseFromStatisticData(data);
 
   const x = scaleBand().
     domain(range(arr.length).reverse() as any as string[]).

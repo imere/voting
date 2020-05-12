@@ -38,7 +38,7 @@ export class QEventBus implements EventBus {
   updateItem = ({ name, ...rest }: QuestionnaireContentType) => {
     const item = this.getItem(name);
     if (!item) {
-      Logger.warn(`${name} not exists`);
+      Logger.warn(`${name} not exist`);
       return;
     }
     delete item.value;
@@ -84,7 +84,7 @@ export class QEventBus implements EventBus {
       try {
         requestAnimationFrame(() => anyFunc());
       } catch (ex) {
-        Logger.error(ex);
+        Logger.error(ex.message || ex);
       }
     }
     for (const setStateAction of this.#refreshers.values()) {

@@ -13,18 +13,6 @@ export function lengthLt(s: string | None, len: number): boolean {
   return !!RegExp(`^.{0,${len - 1}}$`).exec(s!);
 }
 
-// export function validateUsername(username: string) {
-//   return lengthGt(username, 4) && lengthLt(username, 26);
-// }
-
-// export function validatePassword(password: string) {
-//   return lengthGt(password, 5) && lengthLt(password, 17);
-// }
-
-// export function validateDisplayName(username: string) {
-//   return lengthGt(username, 2) && lengthLt(username, 11);
-// }
-
 export const BuiltInRules: {
   [key: string]: RuleObject
 } = {

@@ -1,7 +1,6 @@
 import Loadable from '@loadable/component';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createBrowserHistory } from 'history';
 import { Provider as ReduxProvider } from 'react-redux';
 import { FetchProviderProps, Provider as FetchProvider } from 'use-http';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -10,9 +9,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import * as serviceWorker from '@/serviceWorker';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Protected from '@/layouts/Protected';
-import { configureStore } from '@/store';
-import { initialState } from '@/store/initial-state';
-import { iu } from '@/store/actions';
+import { iu, requestLoginSuc } from '@/store/actions/auth';
 import { Routes } from '@/constants';
 import { defaultLoadableOption } from '@/shared/loadable-conf';
 import {
@@ -21,17 +18,17 @@ import {
   shouldAddAuthorization,
   shouldAddCredentials,
 } from '@/framework/shared/request';
-import { Logger } from '@/framework/shared/logger';
 import { polyfill } from '@/framework/shared/polyfill';
-import { AuthCallback } from './pages/AuthCallback';
+import { AuthCallback } from '@/pages/AuthCallback';
+import { history, store } from '@/store';
 
 const AccountLazy = Loadable(
-  () => import('./pages/Account'),
+  () => import('@/pages/Account'),
   defaultLoadableOption
 );
 
 const AppLazy = Loadable(
-  () => import('./pages/App'),
+  () => import('@/pages/App'),
   defaultLoadableOption
 );
 
@@ -40,20 +37,7 @@ import('./index.scss');
 polyfill();
 
 iu.getUser().then((user) => {
-  const baseUrl = document.
-    getElementsByTagName('base')[0]?.
-    getAttribute('href') as string;
-  const history = createBrowserHistory({ 'basename': baseUrl });
-
-  window.onerror = window.onunhandledrejection = (...args: any) => {
-    Logger.warn(...args);
-    return false;
-  };
-
-  window.onerror = window.onunhandledrejection = console.error.bind(console);
-
-  initialState.auth.user = user;
-  const store = configureStore(history, initialState);
+  store.dispatch(requestLoginSuc(user));
 
   const fetchProviderOptions: FetchProviderProps['options'] = {
     interceptors: {
