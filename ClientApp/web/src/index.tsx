@@ -8,7 +8,7 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import * as serviceWorker from '@/serviceWorker';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import Protected from '@/layouts/Protected';
+import Protected from '@/components/Protected';
 import { iu, requestLoginSuc } from '@/store/actions/auth';
 import { Routes } from '@/constants';
 import { defaultLoadableOption } from '@/shared/loadable-conf';

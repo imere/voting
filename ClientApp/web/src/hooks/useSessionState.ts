@@ -44,12 +44,12 @@ function useSessionState<T = any>(key: string, value: T): [T, React.Dispatch<Rea
       : value
   );
 
-  const set: React.Dispatch<React.SetStateAction<any>> = function (value) {
-    let v = value;
-    if (typeof value === 'function') {
-      setState((prev: any) => v = value(prev));
+  const set: React.Dispatch<React.SetStateAction<any>> = function (val) {
+    let v = val;
+    if (typeof val === 'function') {
+      setState((prev: any) => v = val(prev));
     } else {
-      setState(value);
+      setState(val);
     }
     sset(key, JSON.stringify(v));
   };

@@ -6,14 +6,14 @@ function useSetStateIfTrue<T = any>(value: T, isTrueRef: React.MutableRefObject<
     setState
   ] = useState(value);
 
-  const set: React.Dispatch<React.SetStateAction<any>> = function (value: any) {
+  const set: React.Dispatch<React.SetStateAction<any>> = function (val) {
     if (!isTrueRef.current) {
       return;
     }
-    if (typeof value === 'function') {
-      setState((prev: any) => value(prev));
+    if (typeof val === 'function') {
+      setState((prev: any) => val(prev));
     } else {
-      setState(value);
+      setState(val);
     }
   };
 

@@ -11,8 +11,8 @@ import { useStateBeforeUnMount } from '@/hooks/useStateBeforeUnMount';
 import styles from './AccountCenter.module.scss';
 import NewFormButton from './NewFormButton';
 
-const PollLazy = loadable(
-  () => import('./Poll')
+const PollsLazy = loadable(
+  () => import('./Polls')
 );
 
 const AccountCenter = () => {
@@ -63,7 +63,7 @@ const AccountCenter = () => {
           dataSource={polls}
           renderItem={(item) => (
             <List.Item>
-              <PollLazy setPolls={setPolls} {...item} />
+              <PollsLazy setPolls={setPolls} {...item} />
             </List.Item>
           )}
         />

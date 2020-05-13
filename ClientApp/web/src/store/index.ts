@@ -1,13 +1,13 @@
 import thunk from 'redux-thunk';
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import { History, createBrowserHistory } from 'history';
+import { createBrowserHistory, History } from 'history';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 
-import { initialState } from '@/store/initial-state';
 import reducers from '@/store/reducers';
+import { initialState } from '@/store/initial-state';
 import { ApplicationState } from '@/store/state';
 
-export function configureStore(history: History, initialState: ApplicationState) {
+export function configureStore(history: History, state: ApplicationState) {
   const middlewares = [
     thunk,
     routerMiddleware(history),
@@ -26,7 +26,7 @@ export function configureStore(history: History, initialState: ApplicationState)
 
   return createStore(
     rootReducer,
-    initialState,
+    state,
     compose(applyMiddleware(...middlewares), ...enhancers)
   );
 }
@@ -38,9 +38,5 @@ function getHistory() {
   return createBrowserHistory({ 'basename': baseUrl });
 }
 
-function getStore(history: History<History.PoorMansUnknown>) {
-  return configureStore(history, initialState);
-}
-
 export const history = getHistory();
-export const store = getStore(history);
+export const store = configureStore(history, initialState);

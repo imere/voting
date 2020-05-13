@@ -97,10 +97,10 @@ export function setItemsLengthMessage(items: QuestionnaireContentType[]): Questi
   return items;
 }
 
-export function setRequiredMessage(rules: RuleObject[], message = '必填项'): RuleObject[] {
+export function setRequiredMessage(rules: RuleObject[], msg = '必填项'): RuleObject[] {
   for (const rule of rules) {
     if (rule.required) {
-      rule.message = message;
+      rule.message = msg;
       break;
     }
     continue;
