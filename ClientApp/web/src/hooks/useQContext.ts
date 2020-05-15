@@ -8,7 +8,7 @@ interface Param {
   listeners?: Array<Function>
 }
 
-export function useQContext({ refreshers = [], listeners = [] }: Param, deps: Array<any>): QEventBus {
+export function useQContext({ refreshers = [], listeners = [] }: Param, deps: Array<any> | undefined): QEventBus {
   const ctx = useContext(QuestionnaireContext);
 
   useEffect(() => {

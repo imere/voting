@@ -1,23 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Input, InputNumber } from 'antd';
 
 import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
 import { getLengthObject, setRulesLengthMessage } from '@/components/Questionnaire/data-util';
-import { QEventBus } from '@/components/Questionnaire/QEventBus';
 import { None } from '@/typings/types';
+import { QuestionnaireContext } from '@/contexts/questionnaire';
 
 import { EditItem } from './EditItem';
 
 type LengthRangeReceivedProps = {
   negative?: boolean
-  ctx: QEventBus
   name: string
   lengthName: string
 }
 
 type LengthRangeProps = LengthRangeReceivedProps
 
-const LengthRange = ({ negative, ctx: { getItem, updateItem }, name, lengthName }: LengthRangeProps) => {
+const LengthRange = ({ negative, name, lengthName }: LengthRangeProps) => {
+  const { getItem, updateItem } = useContext(QuestionnaireContext);
 
   const item = getItem(name) as QuestionnaireContentType;
 

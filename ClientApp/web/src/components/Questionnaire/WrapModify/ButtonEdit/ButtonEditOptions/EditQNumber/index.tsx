@@ -3,13 +3,11 @@ import React from 'react';
 import Layout from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/Layout';
 import LengthRange from '@/components/Questionnaire/WrapModify/ButtonEdit/ButtonEditOptions/Common/LengthRange';
 import { TypeInput } from '@/components/Questionnaire/questionnaire';
-import { QEventBus } from '@/components/Questionnaire/QEventBus';
 import { getLengthMessageByType } from '@/components/Questionnaire/data-util';
 
 import DefaultValue from './DefaultValue';
 
 interface EditQNumberReceivedProps {
-  ctx: QEventBus
   name: TypeInput['name']
 }
 

@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Checkbox, Input } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 
 import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
 import { isRequired, toggleRequired } from '@/components/Questionnaire/data-util';
-import { QEventBus } from '@/components/Questionnaire/QEventBus';
+import { QuestionnaireContext } from '@/contexts/questionnaire';
 
 import { EditItem } from './EditItem';
 
 type LayoutReceivedProps = {
   children?: React.ReactNode
-  ctx: QEventBus
   name: string
 }
 
 type LayoutProps = LayoutReceivedProps
 
-const Layout: React.FC<LayoutProps> = ({ children, ctx: { getItem, updateItem }, name }: LayoutProps) => {
+const Layout: React.FC<LayoutProps> = ({ children, name }: LayoutProps) => {
+  const { getItem, updateItem } = useContext(QuestionnaireContext);
 
   const item = getItem(name) as QuestionnaireContentType;
 
