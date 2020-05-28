@@ -12,7 +12,7 @@ type RedirectToProps = RedirectToReceivedProps
 const RedirectTo = ({ redirectUrl, children }: RedirectToProps) => (
   <>
     {
-      typeof redirectUrl === 'undefined'
+      redirectUrl === undefined || redirectUrl === null
         ? children
         : <Redirect to={redirectUrl} />
     }
