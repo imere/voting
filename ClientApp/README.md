@@ -1,4 +1,4 @@
-# React template
+# voting
 
 ## Available Scripts
 
@@ -35,3 +35,29 @@ Runs tests for files that match \*.test.\*.
 ### `npm run test:service`
 
 Launches the test runner for api testing.
+
+## Client init
+
+```sh
+cd ClientApp
+
+npm install
+
+node ./config/utils/ts2cs.js
+```
+
+## Server init
+
+```sh
+cd ServerApp
+
+nuget restore
+
+dotnet migrations add Initial --project vote.csprj --context VoteContext
+
+dotnet migrations add IS4Configuration --project vote.csprj --context IdentityServer4.EntityFramework.DbContexts.ConfigurationDbContext
+
+dotnet migrations add IS4PersistedGrant --project vote.csprj --context IdentityServer4.EntityFramework.DbContexts.PersistedGrantDbContext
+
+dotnet migrations database update
+```
