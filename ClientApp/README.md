@@ -53,11 +53,11 @@ cd ServerApp
 
 nuget restore
 
-dotnet migrations add Initial --project vote.csprj --context VoteContext
+dotnet migrations add Initial --project vote.csproj --context VoteContext
 
-dotnet migrations add IS4Configuration --project vote.csprj --context IdentityServer4.EntityFramework.DbContexts.ConfigurationDbContext
+dotnet migrations add IS4Configuration --project vote.csproj --context IdentityServer4.EntityFramework.DbContexts.ConfigurationDbContext
 
-dotnet migrations add IS4PersistedGrant --project vote.csprj --context IdentityServer4.EntityFramework.DbContexts.PersistedGrantDbContext
+dotnet migrations add IS4PersistedGrant --project vote.csproj --context IdentityServer4.EntityFramework.DbContexts.PersistedGrantDbContext
 
 dotnet migrations database update
 ```
