@@ -11,34 +11,34 @@ import { toastMessageByStatus } from '@/framework/shared/toast-message';
 import { createPoll } from '@/framework/shared/request-util';
 import { stripRulesLengthMessage } from '@/components/Questionnaire/data-util';
 
+function getInfo(search: string) {
+  const params = new URLSearchParams(search);
+
+  const res = {
+    title: params.get('title'),
+    description: params.get('description') || undefined,
+    isPublic: params.get('public'),
+    expiresAt: params.get('expiresAt'),
+  };
+
+  try {
+    return {
+      title: res.title && decodeURIComponent(res.title).trim(),
+      description: res.description && decodeURIComponent(res.description).trim(),
+      isPublic: res.isPublic && decodeURIComponent(res.isPublic).trim(),
+      expiresAt: res.expiresAt && dayjs(
+        decodeURIComponent(res.expiresAt).trim()
+      ).toDate().toUTCString(),
+    };
+  } catch {
+    return {};
+  }
+}
+
 const NewComponent: React.FC = () => {
   const { search } = useLocation();
 
-  function getInfo() {
-    const params = new URLSearchParams(search);
-
-    const res = {
-      title: params.get('title'),
-      description: params.get('description') || undefined,
-      isPublic: params.get('public'),
-      expiresAt: params.get('expiresAt'),
-    };
-
-    try {
-      return {
-        title: res.title && decodeURIComponent(res.title).trim(),
-        description: res.description && decodeURIComponent(res.description).trim(),
-        isPublic: res.isPublic && decodeURIComponent(res.isPublic).trim(),
-        expiresAt: res.expiresAt && dayjs(
-          decodeURIComponent(res.expiresAt).trim()
-        ).toDate().toUTCString(),
-      };
-    } catch {
-      return {};
-    }
-  }
-
-  const info = getInfo();
+  const info = getInfo(search);
 
   const ctx = useContext(QuestionnaireContext);
 
@@ -74,14 +74,16 @@ const NewComponent: React.FC = () => {
     setRedirectUrl(Routes.ACCOUNT_CENTER);
   }
 
+  const { title, description, isPublic } = info;
+
   return (
     <QCommon
       redirectUrl={redirectUrl}
       isEditing={true}
       info={{
-        title: info.title,
-        description: info.description,
-        isPublic: info.isPublic as unknown as Info['isPublic']
+        title,
+        description,
+        isPublic: isPublic as unknown as Info['isPublic']
       }}
       onConfirmClick={handleConfirmClick}
       onCancelClick={onCancelClick}

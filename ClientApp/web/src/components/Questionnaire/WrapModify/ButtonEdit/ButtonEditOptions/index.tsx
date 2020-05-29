@@ -35,7 +35,7 @@ const ButtonEditOptions = ({ name }: ButtonEditOptionsProps) => {
         label: item.label,
         name,
         rules: isRequired(item.rules) ? ___ : [],
-      }) as any
+      }) as QuestionnaireContentType
     );
   }
 
