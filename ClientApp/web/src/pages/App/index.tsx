@@ -11,7 +11,7 @@ import TopMenuLayout from '@/layouts/TopMenuLayout';
 import AppRoutes from '@/routes/app-routes';
 import { useSessionState } from '@/hooks/useSessionState';
 import { ApplicationState } from '@/store/state';
-import { classnames } from '@/shared/classnames';
+import { classnames } from '@/framework/shared/classnames';
 import { renderRoutes } from '@/routes/util';
 
 import styles from './App.module.scss';

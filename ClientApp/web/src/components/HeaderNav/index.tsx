@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import UserDisplay from '@/components/HeaderUserDisplay';
 import { ApplicationState } from '@/store/state';
-import { classnames } from '@/shared/classnames';
+import { classnames } from '@/framework/shared/classnames';
 
 import styles from './HeaderNav.module.scss';
 

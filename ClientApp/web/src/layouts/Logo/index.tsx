@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { MenuMode } from 'antd/es/menu';
 import { SiderTheme } from 'antd/es/layout/Sider';
 
-import { classnames } from '@/shared/classnames';
+import { classnames } from '@/framework/shared/classnames';
 
 import styles from './Logo.module.scss';
 

@@ -5,7 +5,7 @@ import { SiderTheme } from 'antd/es/layout/Sider';
 import { connect } from 'react-redux';
 
 import { ApplicationState } from '@/store/state';
-import { classnames } from '@/shared/classnames';
+import { classnames } from '@/framework/shared/classnames';
 
 import styles from './Header.module.scss';
 
