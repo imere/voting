@@ -1,10 +1,11 @@
 import { HttpMethod } from '@/typings/types';
+import { isProduction } from '@/shared/env';
 
 export const HOST = 'http://localhost:5000';
 
-export const API_AUTHORITY = 'http://localhost:61598';
+export const API_AUTHORITY = `http://localhost:${isProduction() ? 5000 : 61598}`;
 
-export const API_ORIGIN = 'http://localhost:61598';
+export const API_ORIGIN = `http://localhost:${isProduction() ? 5000 : 61598}`;
 
 /**
  * [put] create
