@@ -21,7 +21,7 @@ const LengthRange = ({ negative, name, lengthName }: LengthRangeProps) => {
 
   const item = getItem(name) as QuestionnaireContentType;
 
-  function handleLengthChange(num: number | None, minmax: 'min' | 'max') {
+  function handleLengthChange(num: string | number | None, minmax: 'min' | 'max') {
 
     let lengthObj = getLengthObject(item.rules);
     if (!lengthObj) {

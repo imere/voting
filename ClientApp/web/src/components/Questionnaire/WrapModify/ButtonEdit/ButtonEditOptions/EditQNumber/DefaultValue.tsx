@@ -16,8 +16,8 @@ const DefaultValue = ({ name }: DefaultValueProps) => {
 
   const item = getItem(name) as TypeNumber;
 
-  function handleChange(value?: number) {
-    item.value = value;
+  function handleChange(value?: number | string) {
+    item.value = Number(value);
     updateItem(item);
   }
 

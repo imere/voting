@@ -1,6 +1,8 @@
+import { Options } from 'use-http';
+
 import { AUTHORIZATION_ALLOWED_URLS, CREDENTIAL_ALLOWED_URLS } from './api/questionnaire';
 
-export async function addAuthorization(init: RequestInit) {
+export async function addAuthorization(init: RequestInit | Options) {
   const user = await import('@/framework/shared/identity-service').then(({ iservice }) =>  iservice.getUser());
   if (user) {
     if (!init.headers) {
@@ -10,11 +12,11 @@ export async function addAuthorization(init: RequestInit) {
   }
 }
 
-export function addCredentials(init: RequestInit) {
+export function addCredentials(init: RequestInit | Options) {
   init.credentials = 'include';
 }
 
-export function addCORS(init: RequestInit) {
+export function addCORS(init: RequestInit | Options) {
   init.mode = 'cors';
 }
 
