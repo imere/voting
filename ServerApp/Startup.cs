@@ -45,7 +45,7 @@ namespace vote
         {
             services.AddLogging();
 
-            services.AddAntiforgery(options => options.Cookie.Name = "X-CSRF-TOKEN");
+            //services.AddAntiforgery(options => options.Cookie.Name = "X-CSRF-TOKEN");
 
             // AddSession(services);
 
@@ -99,7 +99,7 @@ namespace vote
             });
             app.UseAuthentication();
 
-            AddAntiForgery(app, antiforgery);
+            //AddAntiForgery(app, antiforgery);
 
             app.UseMvc(routes =>
             {
@@ -229,7 +229,7 @@ namespace vote
             })
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = "http://localhost:61598";
+                    options.Authority = "http://localhost:5000";
                     options.RequireHttpsMetadata = false;
 
                     options.ApiName = "api1";
