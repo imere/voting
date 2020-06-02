@@ -14,7 +14,7 @@ const { VueLoaderPlugin } = require('vue-loader');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 // const HardSourcePlugin = require("hard-source-webpack-plugin");
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+// const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const CombineManifestPlugin = require('webpack-combine-manifest-plugin');
 
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
@@ -182,53 +182,43 @@ const baseConfig = {
       fix: false,
     }),
     new HtmlPlugin({
-      PUBLIC_PATH,
-      isProd,
-      id: '__root',
+      templateParameters: {
+        PUBLIC_PATH,
+        isProd,
+        id: '__root',
+      },
       'filename': 'index.html',
       'template': './web/public/index.html',
       'inject': true,
       'favicon': './web/public/favicon.ico',
-      'minify': {
-        'removeComments': isProd,
-        'collapseWhitespace': isProd,
-        'removeAttributeQuotes': isProd,
-      },
-      'chunksSortMode': 'dependency',
+      excludeChunks: [
+        'r~callback',
+        'callback'
+      ],
+      'chunksSortMode': 'auto',
     }),
     new HtmlPlugin({
-      PUBLIC_PATH,
-      isProd,
-      id: 'callback',
+      templateParameters: {
+        PUBLIC_PATH,
+        isProd,
+        id: 'callback',
+      },
       'filename': 'auth-callback.html',
       'template': './web/public/index.html',
       'inject': true,
       'favicon': './web/public/favicon.ico',
-      'minify': {
-        'removeComments': isProd,
-        'collapseWhitespace': isProd,
-        'removeAttributeQuotes': isProd,
-      },
-      'chunksSortMode': 'dependency',
+      excludeChunks: [
+        'r~app',
+        'app'
+      ],
+      'chunksSortMode': 'auto',
     }),
-    new HtmlPlugin({
-      "filename": "auth-callback.html",
-      "template": "./web/public/auth-callback.html",
-      "inject": true,
-      PUBLIC_PATH,
-      isProd,
-      "favicon": "./web/public/favicon.ico",
-      "minify": {
-        "removeComments": isProd,
-        "collapseWhitespace": isProd,
-        "removeAttributeQuotes": isProd,
-      },
-      "chunksSortMode": "dependency",
+    new CopyPlugin({
+      patterns: [
+        { 'from': './web/public/robots.txt', 'to': '.' },
+        { 'from': './web/public/*.png', 'to': '.', 'flatten': true },
+      ]
     }),
-    new CopyPlugin([
-      { 'from': './web/public/robots.txt', 'to': '.' },
-      { 'from': './web/public/*.png', 'to': '.', 'flatten': true },
-    ]),
     new MiniCSSExtractPlugin({
       'filename': isProd
         ? CssDist('[name].[contenthash:5].css')

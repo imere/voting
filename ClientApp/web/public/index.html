@@ -3,19 +3,19 @@
 
 <head>
   <meta charset="utf-8" />
-  <base href="<%= htmlWebpackPlugin.options.PUBLIC_PATH %>" />
-  <link rel="icon" href="<%= htmlWebpackPlugin.options.PUBLIC_PATH %>favicon.ico" />
+  <base href="<%= PUBLIC_PATH %>" />
+  <link rel="icon" href="<%= PUBLIC_PATH %>favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Voting System" />
-  <link rel="apple-touch-icon" href="<%= htmlWebpackPlugin.options.PUBLIC_PATH %>logo192.png" />
+  <link rel="apple-touch-icon" href="<%= PUBLIC_PATH %>logo192.png" />
   <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-  <link rel="manifest" href="<%= htmlWebpackPlugin.options.PUBLIC_PATH %>manifest.json" />
+  <link rel="manifest" href="<%= PUBLIC_PATH %>manifest.json" />
   <title>调研投票系统</title>
-  <%= htmlWebpackPlugin.options.isProd ? `
+  <%= isProd ? `
     <script src="https://cdn.bootcss.com/core-js/2.6.9/core.min.js"></script>
     <script src="https://cdn.bootcss.com/react/16.10.2/umd/react.production.min.js"></script>
     <script src="https://cdn.bootcss.com/react-dom/16.10.2/umd/react-dom.production.min.js"></script>
@@ -29,7 +29,7 @@
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="<%= htmlWebpackPlugin.options.id || '' %>"></div>
+  <div id="<%= id || '' %>"></div>
 </body>
 
 </html>
