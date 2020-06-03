@@ -53,16 +53,18 @@ cd ServerApp
 
 nuget restore
 
-dotnet migrations add Initial --project vote.csproj --context VoteContext
+dotnet ef migrations add Vote --project vote.csproj --context VoteContext
 
-dotnet migrations add IS4Configuration --project vote.csproj --context IdentityServer4.EntityFramework.DbContexts.ConfigurationDbContext
+dotnet ef migrations add IS4Configuration --project vote.csproj --context IdentityServer4.EntityFramework.DbContexts.ConfigurationDbContext
 
-dotnet migrations add IS4PersistedGrant --project vote.csproj --context IdentityServer4.EntityFramework.DbContexts.PersistedGrantDbContext
+dotnet ef migrations add IS4PersistedGrant --project vote.csproj --context IdentityServer4.EntityFramework.DbContexts.PersistedGrantDbContext
 
-dotnet migrations database update
+dotnet ef migrations database update
 ```
 
-### Change Authority in Startup.cs
+## Before publishing in Visual Studio
+
+Change Authority in Startup.cs
 
 ```cs
 // development
