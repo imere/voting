@@ -1,5 +1,7 @@
 # voting
 
+Note: not really prepared for production use (yet)
+
 ## Client init
 
 ```sh
@@ -45,6 +47,25 @@ Runs tests for files that match \*.test.\*.
 #### `npm run test:service`
 
 Launches the test runner for api testing.
+
+## SQLServer init
+
+1. Create database
+
+2. In directory `ServerApp`, create `appsettings.json` (and `appsettings.Development.json`) like this, change values as you need
+
+```json
+// appsettings.json
+{
+    "ConnectionStrings": {
+        "VoteConnection": "Data Source=USERNAME\\SQLEXPRESS;Initial Catalog=vote;"
+    },
+    "VoteCredentials": {
+        "UserID": "vote",
+        "Password": "vote"
+    }
+}
+```
 
 ## Server init
 
