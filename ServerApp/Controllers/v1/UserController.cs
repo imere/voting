@@ -55,17 +55,17 @@ namespace vote.UserController.v1
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         //[Authorize(AuthenticationSchemes = IdentityServerConstants.LocalApi.AuthenticationScheme)]
-        [HttpGet]
-        public async Task<ActionResult> GetAllUsers()
-        {
-            var users = (
-                    from o in await _service.GetAllUsers()
-                    select o
-                )
-                .ToList();
+        // [HttpGet]
+        // public async Task<ActionResult> GetAllUsers()
+        // {
+        //     var users = (
+        //             from o in await _service.GetAllUsers()
+        //             select o
+        //         )
+        //         .ToList();
 
-            return Ok(new ResponseState(users));
-        }
+        //     return Ok(new ResponseState(users));
+        // }
 
         [HttpPut]
         public async Task<ActionResult> Register(ApplicationUser user)
