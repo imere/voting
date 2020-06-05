@@ -1,4 +1,3 @@
-// @ts-nocheck
 const MiniCSSExtractWebpackPlugin = require('mini-css-extract-plugin');
 
 exports.createLessLoader = (env) => ({
@@ -31,9 +30,10 @@ exports.createLessLoader = (env) => ({
     {
       'loader': 'less-loader',
       'options': {
-        'javascriptEnabled': true,
-        'strictMath': false,
-        'noIeCompat': false,
+        lessOptions: {
+          env,
+          relativeUrls: true,
+        },
       }
     },
   ]),
