@@ -33,6 +33,9 @@ exports.createLessLoader = (env) => ({
         lessOptions: {
           env,
           relativeUrls: true,
+          'javascriptEnabled': true,
+          'strictMath': false,
+          'noIeCompat': false,
         },
       }
     },
