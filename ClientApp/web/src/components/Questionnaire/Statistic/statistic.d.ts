@@ -1,4 +1,4 @@
-import { QuestionnaireContentType } from '../questionnaire';
+import { QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
 
 export interface ChartReceivedProps {
   data: StatisticData[number];
@@ -9,14 +9,12 @@ export interface Info {
   label: QuestionnaireContentType['label'];
 }
 
-export type ObjectData = {
-  [k: string]: { [k: string]: number };
-};
+export type ObjectData = Record<string, Record<string, number>>;
 
 export type StatisticData = Array<{
   info: Info;
   name: string;
-  count: { [value: string]: number };
+  count: Record<string, number>;
 }>;
 
 export interface Margin {

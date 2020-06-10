@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 import { LocationDescriptor } from 'history';
 
 import { QuestionnaireContext } from '@/contexts/questionnaire';
-import { Questionnaire } from '@/components/Questionnaire/questionnaire';
+import { Questionnaire, QuestionnaireContentType } from '@/components/Questionnaire/questionnaire';
 import { Routes } from '@/constants';
 import { QItemDataFactory, QItemDefaultData, renderQItems } from '@/components/Questionnaire/util';
 import { getItemsValues, addHour } from '@/components/Questionnaire/data-util';
@@ -84,7 +84,7 @@ const QCommon = ({ isEditing, loading, info, onFinish, onConfirmClick, onCancelC
       typename: 'input',
       label: `${id++}`,
       rules: QItemDefaultData.input().rules,
-    }) as any);
+    }) as QuestionnaireContentType);
   }
 
   async function handleConfirmClick(ev: React.MouseEvent<HTMLElement, MouseEvent>) {
