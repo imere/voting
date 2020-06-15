@@ -17,7 +17,7 @@ const ChangeLayout: React.FC = () => {
         defaultChecked={useTML}
         onClick={() => {
           toggleLayout((v) => !v);
-          location.reload();
+          window.location.reload();
         }}
       />
     </div>

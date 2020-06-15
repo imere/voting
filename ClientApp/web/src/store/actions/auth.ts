@@ -100,7 +100,7 @@ class IdentityService {
         // eslint-disable-next-line callback-return
         cb && cb(null);
         dispatch(requestLoginSuc(user));
-        location.href = '/';
+        window.location.href = '/';
       });
     } catch (ex) {
       cb && cb(ex);
