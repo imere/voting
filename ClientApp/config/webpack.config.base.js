@@ -61,22 +61,22 @@ if (isProd) {
 }
 
 const baseConfig = {
-  'mode': currentEnv,
+  mode: currentEnv,
   // 'stats': 'errors-warnings',
-  'entry': {
-    'app': './web/src/index.tsx',
-    'callback': './web/src/framework/AuthCallback/index.ts',
+  entry: {
+    app: './web/src/index.tsx',
+    callback: './web/src/framework/AuthCallback/index.ts',
   },
-  'output': {
-    'publicPath': PUBLIC_PATH,
-    'path': OUTPUT_PATH,
+  output: {
+    publicPath: PUBLIC_PATH,
+    path: OUTPUT_PATH,
   },
-  'devServer': {
-    'quiet': true,
-    'host': DEV_HOST,
-    'port': DEV_PORT,
-    'historyApiFallback': {
-      'rewrites': [
+  devServer: {
+    quiet: true,
+    host: DEV_HOST,
+    port: DEV_PORT,
+    historyApiFallback: {
+      rewrites: [
         // {
         //   'from': /^\/auth-callback$/,
         //   'to': '/auth-callback.html',
@@ -88,9 +88,9 @@ const baseConfig = {
       ],
     },
   },
-  'module': {
+  module: {
     // "noParse": /jquery|lodash|moment|immutable/,
-    'rules': [
+    rules: [
       EslintLoader(currentEnv),
       PugLoader(currentEnv),
       CssLoader(currentEnv),
@@ -105,9 +105,9 @@ const baseConfig = {
       VueLoader(currentEnv),
     ],
   },
-  'resolve': {
-    'symlinks': false,
-    'extensions': [
+  resolve: {
+    symlinks: false,
+    extensions: [
       '.vue',
       '.tsx',
       '.ts',
@@ -115,7 +115,7 @@ const baseConfig = {
       '.jsx',
       '.js',
     ],
-    'alias': {
+    alias: {
       'vue$': 'vue/dist/vue.esm.js',
       'hoist-non-react-statics': path.resolve('./node_modules/hoist-non-react-statics'),
       'react-is': path.resolve('./node_modules/react-is'),
@@ -124,13 +124,13 @@ const baseConfig = {
     //   path.resolve("./"),
     //   path.resolve("./node_modules"),
     // ],
-    'plugins': [
+    plugins: [
       new TsconfigPathsPlugin({
-        'configFile': 'tsconfig.json'
+        configFile: 'tsconfig.json'
       }),
     ]
   },
-  'plugins': [
+  plugins: [
     // new DashboardPlugin(),
     // new BuildNotifier({
     //   title: currentEnv.toUpperCase(),
@@ -189,15 +189,15 @@ const baseConfig = {
         isProd,
         id: '__root',
       },
-      'filename': 'index.html',
-      'template': './web/public/index.html',
-      'inject': true,
-      'favicon': './web/public/favicon.ico',
+      filename: 'index.html',
+      template: './web/public/index.html',
+      inject: true,
+      favicon: './web/public/favicon.ico',
       excludeChunks: [
         'r~callback',
         'callback'
       ],
-      'chunksSortMode': 'auto',
+      chunksSortMode: 'auto',
     }),
     new HtmlPlugin({
       templateParameters: {
@@ -205,30 +205,30 @@ const baseConfig = {
         isProd,
         id: 'callback',
       },
-      'filename': 'auth-callback.html',
-      'template': './web/public/index.html',
-      'inject': true,
-      'favicon': './web/public/favicon.ico',
+      filename: 'auth-callback.html',
+      template: './web/public/index.html',
+      inject: true,
+      favicon: './web/public/favicon.ico',
       excludeChunks: [
         'r~app',
         'app'
       ],
-      'chunksSortMode': 'auto',
+      chunksSortMode: 'auto',
     }),
-    // new CopyPlugin({
-    //   patterns: [
-    //     { 'from': './web/public/robots.txt', 'to': '.' },
-    //     { 'from': './web/public/*.png', 'to': '.', 'flatten': true },
-    //   ]
-    // }),
+    new CopyPlugin({
+      patterns: [
+        { 'from': './web/public/robots.txt', 'to': '.' },
+        { 'from': './web/public/*.png', 'to': '.', 'flatten': true },
+      ]
+    }),
     new MiniCSSExtractPlugin({
-      'filename': isProd
+      filename: isProd
         ? CssDist('[name].[contenthash:5].css')
         : CssDist('[name].css'),
-      'chunkFilename': isProd
+      chunkFilename: isProd
         ? CssDist('[name].[contenthash:5].css')
         : CssDist('[name].css'),
-      'ignoreOrder': false,
+      ignoreOrder: false,
     }),
     new WorkboxPlugin.GenerateSW({
       // these options encourage the ServiceWorkers to get in there fast
@@ -253,16 +253,7 @@ const baseConfig = {
       to: path.join(__dirname, '../', 'dist/manifest.json')
     })
   ],
-  // 'node': {
-  //   'setImmediate': false,
-  //   'dgram': 'empty',
-  //   'fs': 'empty',
-  //   'net': 'empty',
-  //   'tls': 'empty',
-  //   'child_process': 'empty',
-  //   Buffer: false,
-  //   process: false
-  // },
+  node: false,
 };
 
 const mergedConfig = WebpackMerge(baseConfig, require(`./webpack.config.${isProd ? 'prod' : 'dev'}.js`));
