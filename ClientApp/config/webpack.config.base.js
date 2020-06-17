@@ -62,7 +62,7 @@ if (isProd) {
 
 const baseConfig = {
   'mode': currentEnv,
-  'stats': 'errors-warnings',
+  // 'stats': 'errors-warnings',
   'entry': {
     'app': './web/src/index.tsx',
     'callback': './web/src/framework/AuthCallback/index.ts',
@@ -138,7 +138,9 @@ const baseConfig = {
     //   excludeWarnings: true,
     //   suppressSuccess: true,
     // }),
-    new webpack.WatchIgnorePlugin([/\.d\.tsx?$/]),
+    new webpack.WatchIgnorePlugin({
+      paths: [/\.d\.tsx?$/]
+    }),
     // new FriendlyErrorsWebpackPlugin(),
     // new HardSourcePlugin({
     //   // Either an absolute path or relative to webpack's options.context.
@@ -213,12 +215,12 @@ const baseConfig = {
       ],
       'chunksSortMode': 'auto',
     }),
-    new CopyPlugin({
-      patterns: [
-        { 'from': './web/public/robots.txt', 'to': '.' },
-        { 'from': './web/public/*.png', 'to': '.', 'flatten': true },
-      ]
-    }),
+    // new CopyPlugin({
+    //   patterns: [
+    //     { 'from': './web/public/robots.txt', 'to': '.' },
+    //     { 'from': './web/public/*.png', 'to': '.', 'flatten': true },
+    //   ]
+    // }),
     new MiniCSSExtractPlugin({
       'filename': isProd
         ? CssDist('[name].[contenthash:5].css')
@@ -251,23 +253,26 @@ const baseConfig = {
       to: path.join(__dirname, '../', 'dist/manifest.json')
     })
   ],
-  'node': {
-    'setImmediate': false,
-    'dgram': 'empty',
-    'fs': 'empty',
-    'net': 'empty',
-    'tls': 'empty',
-    'child_process': 'empty',
-  },
+  // 'node': {
+  //   'setImmediate': false,
+  //   'dgram': 'empty',
+  //   'fs': 'empty',
+  //   'net': 'empty',
+  //   'tls': 'empty',
+  //   'child_process': 'empty',
+  //   Buffer: false,
+  //   process: false
+  // },
 };
 
 const mergedConfig = WebpackMerge(baseConfig, require(`./webpack.config.${isProd ? 'prod' : 'dev'}.js`));
 
 module.exports = isProd
   ?
-  new SpeedMeasurePlugin({
-    outputFormat: 'human'
-  }).wrap(mergedConfig)
+  mergedConfig
+  // new SpeedMeasurePlugin({
+  //   outputFormat: 'human'
+  // }).wrap(mergedConfig)
   :
   mergedConfig;
 

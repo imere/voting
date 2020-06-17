@@ -36,7 +36,6 @@ module.exports = {
   },
   'optimization': {
     'noEmitOnErrors': true,
-    'moduleIds': 'hashed',
     'splitChunks': {
       'chunks': 'all',
       'maxInitialRequests': Infinity,
