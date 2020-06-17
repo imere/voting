@@ -80,7 +80,7 @@ dotnet ef migrations add IS4Configuration --project vote.csproj --context Identi
 
 dotnet ef migrations add IS4PersistedGrant --project vote.csproj --context IdentityServer4.EntityFramework.DbContexts.PersistedGrantDbContext
 
-dotnet ef migrations database update
+dotnet ef database update
 ```
 
 ## Before publishing in Visual Studio
