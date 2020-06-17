@@ -38,7 +38,7 @@ module.exports = {
         'helpers': true,
         'regenerator': true,
         'useESModules': false,
-        'version': '^7.8.7'
+        'version': '^7.10.2'
       }
     ],
     '@babel/plugin-transform-arrow-functions',
